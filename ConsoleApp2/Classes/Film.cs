@@ -16,10 +16,10 @@ namespace ConsoleApp2.Classes
         }*/
 
 
-        public string name { get; }
-        public string description { get; }
-        public List<string> actors { get; }
-        public List<string> genre { get; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public List<string> actors { get; set; }
+        public List<string> genre { get; set; }
 
 
     }
