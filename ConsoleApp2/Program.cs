@@ -5,7 +5,6 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
 
             List<Film> films = new List<Film>() {
                 new Film(
@@ -65,7 +64,7 @@ namespace ConsoleApp2
             {
                 Console.WriteLine();
                 Console.WriteLine(film.name);
-                Console.WriteLine(film.date.Date);
+                Console.WriteLine($"{ film.date.ToShortDateString()}");
             }
         }
        
