@@ -10,7 +10,7 @@ namespace ConsoleApp2.Classes
     {
         public Film_screening(Film film, float data,float time ){
             this.film = film;
-            this.data = data;   
+            this.data = data;
             this.time = time;
         }
         private Film film;
