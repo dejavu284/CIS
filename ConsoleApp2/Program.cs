@@ -6,11 +6,17 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
-            Film df = new Film(
-                name = "fas",
-                description = "dafs",
-                actors = new List<string>,
-                genre = new List<string>);
+
+            var a = new Film
+            (
+                "fas",
+                "dafs",
+                new List<string> { },
+                new List<string> { }
+            );
+            Console.WriteLine("name: ");
+            Console.WriteLine(a.name);
+            Console.ReadLine();
         }
     }
 }
