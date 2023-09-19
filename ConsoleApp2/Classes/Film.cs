@@ -8,18 +8,19 @@ namespace ConsoleApp2.Classes
 {
     internal class Film
     {
-        public Film(string name, string description, string genre, int year) {
+        public Film(string name, string description, string genre, int year)
+        {
             this.name = name;
             this.description = description;
             this.genre = genre;
             this.year = year;
         }
-        private string name;
-        private string description;
-        private string genre;
-        private int year;
 
-        public string Name { get { return name; } }
 
+        public string name { get; }
+        public string description { get; }
+        public string genre { get; }
+        public int year { get; }
+      
     }
 }

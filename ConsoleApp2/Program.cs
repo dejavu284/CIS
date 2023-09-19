@@ -1,5 +1,4 @@
 ﻿using ConsoleApp2.Classes;
-
 namespace ConsoleApp2
 {
     internal class Program
@@ -7,6 +6,7 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
+
             List<Film> films = new List<Film>() {
             new Film(
                 "Интерстеллар",
@@ -39,7 +39,7 @@ namespace ConsoleApp2
             foreach(Film film in films)
             {
                 Console.WriteLine();
-                Console.WriteLine(film.Name);
+                Console.WriteLine(film.name);
             }
         }
        
