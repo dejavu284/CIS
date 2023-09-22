@@ -8,13 +8,16 @@ namespace ConsoleApp2.Classes
 {
     internal class Film_screening
     {
-        public Film_screening(Film film, float data,float time ){
+        public Film_screening(Film film, DateOnly data, TimeOnly time,CinemaHall hall)
+        {
             this.film = film;
             this.data = data;
             this.time = time;
+            this.hall = hall;
         }
-        private Film film;
-        private float data;
-        private float time;
+        public Film film;
+        public DateOnly data;
+        public TimeOnly time;
+        public CinemaHall hall;
     }
 }
