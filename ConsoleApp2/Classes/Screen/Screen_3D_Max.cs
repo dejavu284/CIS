@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2.Classes.Screen
 {
-    internal class Screen_3D_Max : Screenn
+    internal class Screen_3D_Max : IScreen
     {
         public Screen_3D_Max()
         {

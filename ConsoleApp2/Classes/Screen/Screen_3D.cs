@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2.Classes.Screen
 {
-    internal class Screen_3D : Screen
+    internal class Screen_3D : IScreen
     {
         public Screen_3D()
         {

@@ -7,7 +7,7 @@ using ConsoleApp2.Classes.Screen;
 
 namespace ConsoleApp2.Classes.CinemaHall
 {
-    internal interface CinemaHall
+    internal interface ICinemaHall
     {
         //public Screen screen;
         public Place[,] places { get; }
