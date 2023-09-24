@@ -68,5 +68,22 @@ namespace ConsoleApp2
             }
         }
        
+        public static void OutputInfoFilm(Film films)
+        {
+            Console.WriteLine("Информация о фильме:");
+            Console.WriteLine();
+            Console.WriteLine("Название {0}",films.name);
+            Console.WriteLine("Жанр {0}",films.genre);
+            Console.WriteLine("Год выхода {0}",films.year);
+            Console.WriteLine();
+            Console.WriteLine("Для перехода назад напишите \"назад\"");
+        }
+        public static void OutputTimeFilmScreening(Film films)
+        {
+            Console.WriteLine("Время показа фильма:");
+            Console.WriteLine();
+            //дописать
+        }
+
     }
 }
