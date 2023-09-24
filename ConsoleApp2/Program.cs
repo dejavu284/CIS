@@ -33,15 +33,24 @@ namespace ConsoleApp2
                 2001
                 )
             };
-            }
-        public void OutputAllFilsm(List<Film> films)
-        {
-            foreach(Film film in films)
-            {
-                Console.WriteLine();
-                Console.WriteLine(film.name);
-            }
         }
        
+        public static void OutputInfoFilm(Film films)
+        {
+            Console.WriteLine("Информация о фильме:");
+            Console.WriteLine();
+            Console.WriteLine("Название {0}",films.name);
+            Console.WriteLine("Жанр {0}",films.genre);
+            Console.WriteLine("Год выхода {0}",films.year);
+            Console.WriteLine();
+            Console.WriteLine("Для перехода назад напишите \"назад\"");
+        }
+        public static void OutputTimeFilmScreening(Film films)
+        {
+            Console.WriteLine("Время показа фильма:");
+            Console.WriteLine();
+            //дописать
+        }
+
     }
 }
