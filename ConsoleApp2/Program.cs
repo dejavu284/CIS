@@ -1,6 +1,7 @@
 ﻿using ConsoleApp2.Classes;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleApp2
@@ -10,13 +11,13 @@ namespace ConsoleApp2
         static void Main(string[] args)
         {
             List<Film> films = GetFilmList();
-            List<Film_screening> film_screening = GetFilmScreeningList();
+            Dictionary<string, List<Film_screening>> film_screening = GetFilmScreeningList();
             List<Cinema> cinemas = GetCinemas(film_screening);
-
+            fasdf sadf sadf adsf asdf asdf asf 
             bool repeat = true;
             int script = 0;
             Film film = null;
-            List<Film_screening> thisFilmScrinings = new List<Film_screening>();
+            var thisFilmScrinings = new List<Film_screening>();
             List<DateOnly> dates_film_screenings = new List<DateOnly>();
             Film_screening thisFilmScrining = null;
             while (repeat)
@@ -24,22 +25,22 @@ namespace ConsoleApp2
                 switch (script)
                 {
                     case 0:
-                        OutputFilms(films,ref script);
+                        OutputFilms(films, ref script);
                         break;
                     case 1:
-                        OutputInfoFilm(ChoiceFilm(films,ref film,ref script));
+                        OutputInfoFilm(ChoiceFilm(films, ref film, ref script));
                         break;
                     case 2:
                         FindThisFilmScrinings(film, film_screening, ref thisFilmScrinings, ref script);
                         break;
                     case 3:
-                        FindDataFilmScreening(thisFilmScrinings,ref dates_film_screenings, ref script);
+                        FindDataFilmScreening(thisFilmScrinings, ref dates_film_screenings, ref script);
                         break;
                     case 4:
                         OutputDataFilmScreening(dates_film_screenings, ref script);
                         break;
                     case 5:
-                        FindFilmScreeningByData(ChoiseDataFilmScreening(dates_film_screenings, ref script), thisFilmScrinings,ref thisFilmScrinings,ref script);
+                        FindFilmScreeningByData(ChoiseDataFilmScreening(dates_film_screenings, ref script), thisFilmScrinings, ref thisFilmScrinings, ref script);
                         break;
                     case 6:
                         OutputTimeFilmScreening(thisFilmScrinings, ref script);
@@ -60,7 +61,7 @@ namespace ConsoleApp2
                         BuyTicket(thisFilmScrining, ref script);
                         break;
                     case 12:
-                        CotinuationBuy(thisFilmScrining, ref script,ref repeat);
+                        CotinuationBuy(thisFilmScrining, ref script, ref repeat);
                         break;
                     case 13:
                         ChoiseActionReturn(ref script);
@@ -72,8 +73,8 @@ namespace ConsoleApp2
             Console.ReadLine();
 
         }
-        
-        public static Film ChoiceFilm(List<Film> films,ref Film film,ref int script) // 1
+
+        public static Film ChoiceFilm(List<Film> films, ref Film film, ref int script) // 1
         {
             bool x = true;
             script = 2;
@@ -93,12 +94,12 @@ namespace ConsoleApp2
             }
             return film;
         }
-        public static void OutputFilms(List<Film> films,ref int script) // 0
+        public static void OutputFilms(List<Film> films, ref int script) // 0
         {
             Console.WriteLine("Фильмы в прокате:");
             Console.WriteLine();
             for (int i = 0; i < films.Count; i++)
-                Console.WriteLine("{0}. {1}", i+1, films[i].name);
+                Console.WriteLine("{0}. {1}", i + 1, films[i].name);
             Console.WriteLine();
             Console.WriteLine("Для выбора фильма напишите его цифру.");
             script = 1;
@@ -116,30 +117,30 @@ namespace ConsoleApp2
             Console.WriteLine("Фильм идёт в следующте даты:");
             Console.WriteLine();
         }
-        public static List<Film_screening> FindThisFilmScrinings(Film film,List<Film_screening> film_screenings,ref List<Film_screening> thisFilmScrinings,ref int script) // 2
+        public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings, ref List<Film_screening> thisFilmScrinings, ref int script) // 2
         {
-            foreach(Film_screening film_screening in film_screenings)
-                if(film.name == film_screening.film.name)
-                    thisFilmScrinings.Add(film_screening);
+            foreach (KeyValuePair<string, List<Film_screening>> film_screening in film_screenings)
+                if (film.name == film_screening.Key)
+                    thisFilmScrinings = film_screening.Value;
             script = 3;
-            return thisFilmScrinings;   
-        }
-        public static void FindDataFilmScreening(List<Film_screening> film_screenings,ref List<DateOnly> dates_film_screenings, ref int script) // 3
+            return thisFilmScrinings;
+        } gjjjjjjjjjjjjjjjjjjjjjjjjjk khhgfhhfgh fgh fg hg
+        public static void FindDataFilmScreening(Dictionary<string, List<Film_screening>> film_screenings, ref List<DateOnly> dates_film_screenings, ref int script) // 3
         {
-            foreach (Film_screening film_screening in film_screenings) {
+            foreach (KeyValuePair<string, List<Film_screening>> film_screening in film_screenings) {
                 bool repeat = false;
                 foreach (DateOnly data in dates_film_screenings) {
                     if (data.Year == film_screening.data.Year && data.Month == film_screening.data.Month && data.Day == film_screening.data.Day)
                     {
-                        repeat = true; 
-                        break;   
+                        repeat = true;
+                        break;
                     }
                 }
                 if (!repeat)
                     dates_film_screenings.Add(film_screening.data);
             }
             script = 4;
-            
+
         }
         public static void OutputDataFilmScreening(List<DateOnly> dates_film_screenings, ref int script) // 4
         {
@@ -181,19 +182,19 @@ namespace ConsoleApp2
             }
             return date_film_screenings;
         }
-        public static void FindFilmScreeningByData(DateOnly date_film_screenings,List<Film_screening> all_film_screenings,ref List<Film_screening> film_screenings, ref int script) // 5
+        public static void FindFilmScreeningByData(DateOnly date_film_screenings, List<Film_screening> all_film_screenings, ref List<Film_screening> film_screenings, ref int script) // 5
         {
-            List < Film_screening > film_screenings_temp = new List<Film_screening>();   
+            List<Film_screening> film_screenings_temp = new List<Film_screening>();
             for (int i = 0; i < all_film_screenings.Count; i++)
             {
                 if (date_film_screenings.Year == all_film_screenings[i].data.Year & date_film_screenings.Month == all_film_screenings[i].data.Month & date_film_screenings.Day == all_film_screenings[i].data.Day)
-                film_screenings_temp.Add(all_film_screenings[i]);
+                    film_screenings_temp.Add(all_film_screenings[i]);
             }
             film_screenings = film_screenings_temp;
             script = 6;
         }
 
-        public static void OutputTimeFilmScreening(List<Film_screening> Film_screenings,ref int script) // 6
+        public static void OutputTimeFilmScreening(List<Film_screening> Film_screenings, ref int script) // 6
         {
             Console.WriteLine("Время показа фильма:");
             Console.WriteLine();
@@ -282,10 +283,10 @@ namespace ConsoleApp2
             script = 12;
         }
 
-        public static void CotinuationBuy(Film_screening Film_screening, ref int script,ref bool repeat)//12
+        public static void CotinuationBuy(Film_screening Film_screening, ref int script, ref bool repeat)//12
         {
             Console.WriteLine("Купить ещё?(да/нет)");
-            
+
             bool x = true;
             while (x)
             {
@@ -312,7 +313,7 @@ namespace ConsoleApp2
             Console.WriteLine("2.Выбор даты");
             Console.WriteLine("3.Выбор времени");
             script = 13;
-            
+
         }
         public static void ChoiseActionReturn(ref int script)//13
         {
@@ -378,7 +379,7 @@ namespace ConsoleApp2
             };
             return films;
         }
-        public static List<Film_screening> GetFilmScreeningList() 
+        public static Dictionary<string, List<Film_screening>> GetFilmScreeningList()
         {
             /*
              
@@ -390,31 +391,37 @@ namespace ConsoleApp2
 
              Структура словаря может выглядеть так:
                 
-             new Dict_Film_screening(
-                Фильм_1 : [
-                    new Film_screening(
-                        new DateOnly(...,...,...), 
-                        new TimeOnly(...,...),
-                        ...,
-                        ...),
-                    new Film_screening(
-                        new DateOnly(...,...,...), 
-                        new TimeOnly(...,...),
-                        ...,
-                        ...)
-                ],
-                Фильм_2 : [
-                    new Film_screening(
-                        new DateOnly(...,...,...), 
-                        new TimeOnly(...,...),
-                        ...,
-                        ...),
-                    new Film_screening(
-                        new DateOnly(...,...,...), 
-                        new TimeOnly(...,...),
-                        ...,
-                        ...)
-                ])
+             var Dict_Film_screening = new Dictionary<string, List<Film_screening>>()
+             {
+                { "Властелин колец: Братство кольца", new List<Film_screening>()
+                    {
+                        new Film_screening(
+                            new DateOnly(2023, 9, 24),
+                            new TimeOnly(17,30),
+                            12,
+                            100),
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(19,30),
+                            3,
+                            200)
+                    }
+                },
+                { "Интерстеллар", new List<Film_screening>()
+                    {
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(14,30),
+                            0,
+                            200),
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(12,30),
+                            20,
+                            300)
+                    }
+                }
+            };
             Dict_Film_screening - это словарь, в котором ключами будут названия фильмов, 
             а значеним каждого ключа, является список показов ( дата, время, кол-во билетов, цена)
 
@@ -422,109 +429,168 @@ namespace ConsoleApp2
             и поменять обращение к списку film_screening по ходу программы.
              
              */
-            List<Film_screening> film_screening = new List<Film_screening>()
+            var film_screening = new Dictionary<string, List<Film_screening>>()
+            {
+                { "Властелин колец: Братство кольца", new List<Film_screening>()
+                    {
+                        new Film_screening(
+                            new DateOnly(2023, 9, 24),
+                            new TimeOnly(17,30),
+                            12,
+                            100),
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(19,30),
+                            3,
+                            200)
+                    }
+                },
+                { "Зеленая миля", new List<Film_screening>()
+                    {
+                        new Film_screening(
+                            new DateOnly(2023,10,24),
+                            new TimeOnly(16,30),
+                            10,
+                            200),
+                        new Film_screening(
+                            new DateOnly(2023,10,24),
+                            new TimeOnly(14,30),
+                            1,
+                            250)
+                    }
+                },
+                { "Темный рыцарь", new List<Film_screening>()
+                    {
+                        new Film_screening(
+                            new DateOnly(2023,11,24),
+                            new TimeOnly(12,30),
+                            4,
+                            300),
+                        new Film_screening(
+                            new DateOnly(2023,10,24),
+                            new TimeOnly(12,30),
+                            13,
+                            150)
+                    }
+                },
+                { "Интерстеллар", new List<Film_screening>()
+                    {
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(14,30),
+                            0,
+                            200),
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(12,30),
+                            20,
+                            300)
+                    }
+                }
+            };
+            /*List<Film_screening> film_screening1 = new List<Film_screening>()
             {
                 new Film_screening(
-                    /*new Film(
+                    *//*new Film(
                     "Властелин колец: Братство кольца",
                     "Фэнтези",
                     "Фильм о группе героев, отправляющихся в опасное путешествие, чтобы уничтожить кольцо власти.",
                     2001
-                    ),*/
+                    ),*//*
                      new DateOnly(2023,9,24),
                      new TimeOnly(17,30),
                      12,
                      100
                     ),
                 new Film_screening(
-                     /*new Film(
+                     *//*new Film(
                     "Властелин колец: Братство кольца",
                     "Фэнтези",
                     "Фильм о группе героев, отправляющихся в опасное путешествие, чтобы уничтожить кольцо власти.",
                     2001
-                    ),*/
+                    ),*//*
                      new DateOnly(2023,9,24),
                      new TimeOnly(19,30),
                      3,
                      200
                     ),
                 new Film_screening(
-                     /*new Film(
+                     *//*new Film(
                     "Зеленая миля",
                     "Драма",
                     "Фильм рассказывает историю тюремного смотрителя, который обнаруживает, что один из заключенных обладает необычными способностями.",
                     1999
-                    ),*/
-                      new DateOnly(2023,10,24),
+                    ),*//*
+                     new DateOnly(2023,10,24),
                      new TimeOnly(16,30),
                      10,
                      200
                     ),
                 new Film_screening(
-                    /* new Film(
+                    *//* new Film(
                     "Зеленая миля",
                     "Драма",
                     "Фильм рассказывает историю тюремного смотрителя, который обнаруживает, что один из заключенных обладает необычными способностями.",
                     1999
-                    ),*/
-                      new DateOnly(2023,10,24),
+                    ),*//*
+                     new DateOnly(2023,10,24),
                      new TimeOnly(14,30),
                      1,
                      250
                     ),
                 new Film_screening(
-                    /*new Film(
+                    *//*new Film(
                     "Темный рыцарь",
                     "Боевик",
                     "Этот фильм о супергерое Бэтмене, который сражается с преступником по имени Джокер, чтобы спасти Готэм-сити.",
                     2008
-                    ),*/
+                    ),*//*
                     new DateOnly(2023,11,24),
                     new TimeOnly(12,30),
                     4,
                     300
                     ),
                 new Film_screening(
-                    /*new Film(
+                    *//*new Film(
                     "Темный рыцарь",
                     "Боевик",
                     "Этот фильм о супергерое Бэтмене, который сражается с преступником по имени Джокер, чтобы спасти Готэм-сити.",
                     2008
-                    ),*/
+                    ),*//*
                     new DateOnly(2023,10,24),
                     new TimeOnly(12,30),
                     13,
                     150
                     ),
                 new Film_screening(
-                    /*new Film(
+                    *//*new Film(
                     "Интерстеллар",
                     "Научная фантастика",
                     "Фильм рассказывает историю группы исследователей, которые отправляются в космическое путешествие, чтобы найти новый дом для человечества в другой галактике.",
                     2014
-                    ),*/
+                    ),*//*
                     new DateOnly(2023,9,24),
                     new TimeOnly(14,30),
                     0,
                     200
                     ),
                 new Film_screening(
-                    /*new Film(
+                    *//*new Film(
                     "Интерстеллар",
                     "Научная фантастика",
                     "Фильм рассказывает историю группы исследователей, которые отправляются в космическое путешествие, чтобы найти новый дом для человечества в другой галактике.",
                     2014
-                    ),*/
+                    ),*//*
                     new DateOnly(2023,9,24),
                     new TimeOnly(12,30),
                     20,
                     300
                     )
-            };
+            };*/
             return film_screening;
         }
 
-        public static List<Cinema> GetCinemas(List<Film_screening> film_screening) 
+        public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
         {
             List<Cinema> cimena = new List<Cinema>() {new Cinema(film_screening,"Победа") };
 
