@@ -8,15 +8,15 @@ namespace ConsoleApp2.Classes
 {
     internal class Film_screening
     {
-        public Film_screening(Film film, DateOnly data, TimeOnly time,int countTiket,int prise)
+        public Film_screening(/*Film film,*/ DateOnly data, TimeOnly time,int countTiket,int prise)
         {
-            this.film = film;
+            //this.film = film;
             this.data = data;
             this.time = time;
             this.countTiket = countTiket;
             this.prise = prise;
         }
-        public Film film;
+        //public Film film;
         public DateOnly data;
         public TimeOnly time;
         public int countTiket;
