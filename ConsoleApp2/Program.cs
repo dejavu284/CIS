@@ -11,6 +11,7 @@ namespace ConsoleApp2
         {
             List<Film> films = GetFilmList();
             Dictionary<string, List<Film_screening>> film_screening = GetFilmScreeningList();
+            List<Ticket> basket = new List<Ticket>();
             /*List<Cinema> cinemas = GetCinemas(film_screening);*/
 
             bool repeat = true;
@@ -54,16 +55,19 @@ namespace ConsoleApp2
                         OutputActionReturn(ref script);
                         break;
                     case 10:
-                        ProofBuy(ref script);
+                        ProofBuyTicket(ref script, ref basket,thisFilmScrining);
                         break;
                     case 11:
-                        BuyTicket(film, thisFilmScrining, ref script);
+                        OutputInfoTicket(film, thisFilmScrining, ref script);
                         break;
                     case 12:
-                        CotinuationBuy(thisFilmScrining, ref script, ref repeat);
+                        CotinuationBuy(thisFilmScrining, ref script);
                         break;
                     case 13:
                         ChoiseActionReturn(ref script);
+                        break;
+                    case 14:
+                        EndProgram(ref repeat, basket);
                         break;
                 }
             }
@@ -246,7 +250,7 @@ namespace ConsoleApp2
                 script = 10;
         }
 
-        public static void ProofBuy(ref int script)//10
+        public static void ProofBuyTicket(ref int script,ref List<Ticket> basket,Film_screening film_Screening)//10
         {
             Console.WriteLine("Купить билет?(да/нет)");
             bool x = true;
@@ -257,6 +261,8 @@ namespace ConsoleApp2
                 {
                     script = 11;
                     x = false;
+                    basket.Add(new Ticket(film_Screening));
+                    // добавить изменение данных(изменения кол-ва свободных мест)
                 }
                 else if (ansewer == "нет")
                 {
@@ -267,7 +273,7 @@ namespace ConsoleApp2
                     Console.WriteLine("Некорректный ввод поробуйте ещё раз");
             }
         }
-        public static void BuyTicket(Film Film, Film_screening Film_screening, ref int script)//11
+        public static void OutputInfoTicket(Film Film, Film_screening Film_screening, ref int script)//11
         {
             Console.WriteLine("Билет куплен");
             Console.WriteLine();
@@ -279,10 +285,12 @@ namespace ConsoleApp2
             Console.WriteLine("Дата показа: {0}.{1}.{2}", Film_screening.data.Day, Film_screening.data.Month, Film_screening.data.Year);
             Console.WriteLine();
             Console.WriteLine("Время показа: {0}:{1}", Film_screening.time.Hour, Film_screening.time.Minute);
+            Console.WriteLine();
+
             script = 12;
         }
 
-        public static void CotinuationBuy(Film_screening Film_screening, ref int script, ref bool repeat)//12
+        public static void CotinuationBuy(Film_screening Film_screening, ref int script)//12
         {
             Console.WriteLine("Купить ещё?(да/нет)");
 
@@ -297,7 +305,7 @@ namespace ConsoleApp2
                 }
                 else if (ansewer == "нет")
                 {
-                    repeat = false;
+                    script = 14;
                     x = false;
                 }
                 else
@@ -312,7 +320,6 @@ namespace ConsoleApp2
             Console.WriteLine("2.Выбор даты");
             Console.WriteLine("3.Выбор времени");
             script = 13;
-
         }
         public static void ChoiseActionReturn(ref int script)//13
         {
@@ -347,6 +354,11 @@ namespace ConsoleApp2
                 }
             }
         }
+        public static void EndProgram(ref bool repeat,List<Ticket> basket)//14
+        {
+            repeat = false;
+            // добавить создание файла 
+        }
 
         public static List<Film> GetFilmList()
         {
@@ -380,54 +392,6 @@ namespace ConsoleApp2
         }
         public static Dictionary<string, List<Film_screening>> GetFilmScreeningList()
         {
-            /*
-             
-             Надо изменить этот метод, подругому хранить информацию о показах. 
-             В идеале нужно избежать дублирования текста, то есть сделать такую структуру списка, 
-             в которой только один раз будет встречаться название фильма, и ему будет соответствовать несколько дат со временем.
-
-             Это можно сделать, создав словарь, а не список.
-
-             Структура словаря может выглядеть так:
-                
-             var Dict_Film_screening = new Dictionary<string, List<Film_screening>>()
-             {
-                { "Властелин колец: Братство кольца", new List<Film_screening>()
-                    {
-                        new Film_screening(
-                            new DateOnly(2023, 9, 24),
-                            new TimeOnly(17,30),
-                            12,
-                            100),
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(19,30),
-                            3,
-                            200)
-                    }
-                },
-                { "Интерстеллар", new List<Film_screening>()
-                    {
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(14,30),
-                            0,
-                            200),
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(12,30),
-                            20,
-                            300)
-                    }
-                }
-            };
-            Dict_Film_screening - это словарь, в котором ключами будут названия фильмов, 
-            а значеним каждого ключа, является список показов ( дата, время, кол-во билетов, цена)
-
-            Чтоб использовать такую структуру, нужно будет изменить класс Film_screening,
-            и поменять обращение к списку film_screening по ходу программы.
-             
-             */
             var film_screening = new Dictionary<string, List<Film_screening>>()
             {
                 { "Властелин колец: Братство кольца", new List<Film_screening>()
@@ -502,108 +466,8 @@ namespace ConsoleApp2
                     }
                 }
             };
-            /*List<Film_screening> film_screening1 = new List<Film_screening>()
-            {
-                new Film_screening(
-                    *//*new Film(
-                    "Властелин колец: Братство кольца",
-                    "Фэнтези",
-                    "Фильм о группе героев, отправляющихся в опасное путешествие, чтобы уничтожить кольцо власти.",
-                    2001
-                    ),*//*
-                     new DateOnly(2023,9,24),
-                     new TimeOnly(17,30),
-                     12,
-                     100
-                    ),
-                new Film_screening(
-                     *//*new Film(
-                    "Властелин колец: Братство кольца",
-                    "Фэнтези",
-                    "Фильм о группе героев, отправляющихся в опасное путешествие, чтобы уничтожить кольцо власти.",
-                    2001
-                    ),*//*
-                     new DateOnly(2023,9,24),
-                     new TimeOnly(19,30),
-                     3,
-                     200
-                    ),
-                new Film_screening(
-                     *//*new Film(
-                    "Зеленая миля",
-                    "Драма",
-                    "Фильм рассказывает историю тюремного смотрителя, который обнаруживает, что один из заключенных обладает необычными способностями.",
-                    1999
-                    ),*//*
-                     new DateOnly(2023,10,24),
-                     new TimeOnly(16,30),
-                     10,
-                     200
-                    ),
-                new Film_screening(
-                    *//* new Film(
-                    "Зеленая миля",
-                    "Драма",
-                    "Фильм рассказывает историю тюремного смотрителя, который обнаруживает, что один из заключенных обладает необычными способностями.",
-                    1999
-                    ),*//*
-                     new DateOnly(2023,10,24),
-                     new TimeOnly(14,30),
-                     1,
-                     250
-                    ),
-                new Film_screening(
-                    *//*new Film(
-                    "Темный рыцарь",
-                    "Боевик",
-                    "Этот фильм о супергерое Бэтмене, который сражается с преступником по имени Джокер, чтобы спасти Готэм-сити.",
-                    2008
-                    ),*//*
-                    new DateOnly(2023,11,24),
-                    new TimeOnly(12,30),
-                    4,
-                    300
-                    ),
-                new Film_screening(
-                    *//*new Film(
-                    "Темный рыцарь",
-                    "Боевик",
-                    "Этот фильм о супергерое Бэтмене, который сражается с преступником по имени Джокер, чтобы спасти Готэм-сити.",
-                    2008
-                    ),*//*
-                    new DateOnly(2023,10,24),
-                    new TimeOnly(12,30),
-                    13,
-                    150
-                    ),
-                new Film_screening(
-                    *//*new Film(
-                    "Интерстеллар",
-                    "Научная фантастика",
-                    "Фильм рассказывает историю группы исследователей, которые отправляются в космическое путешествие, чтобы найти новый дом для человечества в другой галактике.",
-                    2014
-                    ),*//*
-                    new DateOnly(2023,9,24),
-                    new TimeOnly(14,30),
-                    0,
-                    200
-                    ),
-                new Film_screening(
-                    *//*new Film(
-                    "Интерстеллар",
-                    "Научная фантастика",
-                    "Фильм рассказывает историю группы исследователей, которые отправляются в космическое путешествие, чтобы найти новый дом для человечества в другой галактике.",
-                    2014
-                    ),*//*
-                    new DateOnly(2023,9,24),
-                    new TimeOnly(12,30),
-                    20,
-                    300
-                    )
-            };*/
             return film_screening;
         }
-
         /*public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
         {
             List<Cinema> cimena = new List<Cinema>() {new Cinema(film_screening,"Победа") };
