@@ -8,7 +8,7 @@ namespace ConsoleApp2.Classes
 {
     internal class Film_screening
     {
-        public Film_screening(/*Film film,*/ DateOnly data, TimeOnly time,int countTiket,int prise)
+        public Film_screening(/*Film film,*/ DateOnly data, TimeOnly time, int countTiket, int prise)
         {
             /*this.film = film;*/
             this.data = data;
@@ -17,9 +17,9 @@ namespace ConsoleApp2.Classes
             this.prise = prise;
         }
        /* public Film film;*/
-        public DateOnly data;
-        public TimeOnly time;
-        public int countTiket;
-        public int prise;
+        public DateOnly data { get; set; }
+        public TimeOnly time { get; set; }
+        public int countTiket { get; set; }
+        public int prise { get; set; }
     }
 }
