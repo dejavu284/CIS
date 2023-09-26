@@ -27,15 +27,11 @@ namespace ConsoleApp2
             string fileName = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film_screening.json";
 
             // Синхронный код
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
             string jsonString = JsonSerializer.Serialize(film_screening, options);
             jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16));
 
             File.WriteAllText(fileName, jsonString);
-
-            // Асинхронный код
-            /*using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, film_screening);*/
 
             Console.WriteLine(Regex.Replace(File.ReadAllText(fileName), @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)));
 
