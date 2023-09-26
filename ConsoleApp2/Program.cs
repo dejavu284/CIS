@@ -12,10 +12,18 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            List<Film> films = GetFilmList();
-            Dictionary<string, List<Film_screening>> film_screening = GetFilmScreeningList();
+            string film_screening_json = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film_screening.json";
+            string film_json = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film.json";
+
+            // Десериализация film.json в список films
+            string str_film_json = File.ReadAllText(film_json);
+            List<Film> films = JsonSerializer.Deserialize<List<Film>>(str_film_json)!;
+
+            // Десериализация film_screening.json в словарь film_screening
+            string str_film_screening_json = File.ReadAllText(film_screening_json);
+            Dictionary<string, List<Film_screening>> film_screening = JsonSerializer.Deserialize<Dictionary<string, List<Film_screening>>>(str_film_screening_json)!;
+
             List<Ticket> basket = new List<Ticket>();
-            /*List<Cinema> cinemas = GetCinemas(film_screening);*/
 
             bool repeat = true;
             int script = 0;
@@ -23,22 +31,6 @@ namespace ConsoleApp2
             var thisFilmScrinings = new List<Film_screening>();
             List<DateOnly> dates_film_screenings = new List<DateOnly>();
             Film_screening thisFilmScrining = null;
-
-            string fileName = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film_screening.json";
-
-            // Синхронный код
-            var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
-            string jsonString = JsonSerializer.Serialize(film_screening, options);
-            jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16));
-
-            File.WriteAllText(fileName, jsonString);
-
-            Console.WriteLine(Regex.Replace(File.ReadAllText(fileName), @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)));
-
-
-
-            Console.ReadLine();
-
             while (repeat)
             {
                 switch (script)
@@ -74,7 +66,7 @@ namespace ConsoleApp2
                         OutputActionReturn(ref script);
                         break;
                     case 10:
-                        ProofBuyTicket(ref script, ref basket,thisFilmScrining);
+                        ProofBuyTicket(ref script, ref basket, thisFilmScrining);
                         break;
                     case 11:
                         OutputInfoTicket(film, thisFilmScrining, ref script);
@@ -90,9 +82,10 @@ namespace ConsoleApp2
                         break;
                 }
             }
+
             Console.WriteLine();
             Console.WriteLine("Спасибо за покупку, приходите ещё");
-            Console.ReadLine();
+            Console.ReadKey();
 
         }
 
@@ -373,115 +366,22 @@ namespace ConsoleApp2
                 }
             }
         }
-        public static void EndProgram(ref bool repeat,List<Ticket> basket)//14
+        public static void EndProgram(ref bool repeat, List<Ticket> basket)//14
         {
             repeat = false;
-            // добавить создание файла 
+            string path = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\basket.json";
+            // Сериализация
+            var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
+
+            string jsonString = JsonSerializer.Serialize(basket, options); // список в строку
+
+            jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
+
+            File.WriteAllText(path, jsonString); // запись в файл .json
+
+            //Console.WriteLine(Regex.Replace(File.ReadAllText(path), @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16))); // чтение из файла
         }
 
-        public static List<Film> GetFilmList()
-        {
-            List<Film> films = new List<Film>() {
-                new Film(
-                    "Интерстеллар",
-                    "Научная фантастика",
-                    "Фильм рассказывает историю группы исследователей, которые отправляются в космическое путешествие, чтобы найти новый дом для человечества в другой галактике.",
-                    2014
-                    ),
-                new Film(
-                    "Темный рыцарь",
-                    "Боевик",
-                    "Этот фильм о супергерое Бэтмене, который сражается с преступником по имени Джокер, чтобы спасти Готэм-сити.",
-                    2008
-                    ),
-                new Film(
-                    "Зеленая миля",
-                    "Драма",
-                    "Фильм рассказывает историю тюремного смотрителя, который обнаруживает, что один из заключенных обладает необычными способностями.",
-                    1999
-                    ),
-                new Film(
-                    "Властелин колец: Братство кольца",
-                    "Фэнтези",
-                    "Фильм о группе героев, отправляющихся в опасное путешествие, чтобы уничтожить кольцо власти.",
-                    2001
-                    )
-            };
-            return films;
-        }
-        public static Dictionary<string, List<Film_screening>> GetFilmScreeningList()
-        {
-            var film_screening = new Dictionary<string, List<Film_screening>>()
-            {
-                { "Властелин колец: Братство кольца", new List<Film_screening>()
-                    {
-                        new Film_screening(
-                            new DateOnly(2023, 9, 24),
-                            new TimeOnly(17,30),
-                            12,
-                            100),
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(19,15),
-                            3,
-                            200),
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(22,00),
-                            3,
-                            200),
-                        new Film_screening(
-                            new DateOnly(2023,9,25),
-                            new TimeOnly(14,30),
-                            3,
-                            200),
-                        new Film_screening(
-                            new DateOnly(2023,9,25),
-                            new TimeOnly(06,00),
-                            3,
-                            200)
-                    }
-                },
-                { "Зеленая миля", new List<Film_screening>()
-                    {
-                        new Film_screening(
-                            new DateOnly(2023,10,24),
-                            new TimeOnly(16,30),
-                            10,
-                            200),
-                        new Film_screening(
-                            new DateOnly(2023,10,24),
-                            new TimeOnly(14,30),
-                            1,
-                            250)
-                    }
-                },
-                { "Темный рыцарь", new List<Film_screening>()
-                    {
-                        new Film_screening(
-                            new DateOnly(2023,11,24),
-                            new TimeOnly(12,30),
-                            4,
-                            300),
-                        new Film_screening(
-                            new DateOnly(2023,10,24),
-                            new TimeOnly(12,30),
-                            13,
-                            150)
-                    }
-                },
-                { "Интерстеллар", new List<Film_screening>()
-                    {
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(14,30),
-                            0,
-                            200)
-                    }
-                }
-            };
-            return film_screening;
-        }
         /*public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
         {
             List<Cinema> cimena = new List<Cinema>() {new Cinema(film_screening,"Победа") };
