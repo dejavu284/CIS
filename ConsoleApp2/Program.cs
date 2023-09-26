@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace ConsoleApp2
 {
@@ -20,6 +23,26 @@ namespace ConsoleApp2
             var thisFilmScrinings = new List<Film_screening>();
             List<DateOnly> dates_film_screenings = new List<DateOnly>();
             Film_screening thisFilmScrining = null;
+
+            string fileName = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film_screening.json";
+
+            // Синхронный код
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(film_screening, options);
+            jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16));
+
+            File.WriteAllText(fileName, jsonString);
+
+            // Асинхронный код
+            /*using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, film_screening);*/
+
+            Console.WriteLine(Regex.Replace(File.ReadAllText(fileName), @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)));
+
+
+
+            Console.ReadLine();
+
             while (repeat)
             {
                 switch (script)
@@ -457,12 +480,7 @@ namespace ConsoleApp2
                             new DateOnly(2023,9,24),
                             new TimeOnly(14,30),
                             0,
-                            200),
-                        new Film_screening(
-                            new DateOnly(2023,9,24),
-                            new TimeOnly(12,30),
-                            20,
-                            300)
+                            200)
                     }
                 }
             };
