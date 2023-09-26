@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleApp2
 {
@@ -12,8 +11,8 @@ namespace ConsoleApp2
         {
             List<Film> films = GetFilmList();
             Dictionary<string, List<Film_screening>> film_screening = GetFilmScreeningList();
-            List<Cinema> cinemas = GetCinemas(film_screening);
-            fasdf sadf sadf adsf asdf asdf asf 
+            /*List<Cinema> cinemas = GetCinemas(film_screening);*/
+
             bool repeat = true;
             int script = 0;
             Film film = null;
@@ -58,7 +57,7 @@ namespace ConsoleApp2
                         ProofBuy(ref script);
                         break;
                     case 11:
-                        BuyTicket(thisFilmScrining, ref script);
+                        BuyTicket(film, thisFilmScrining, ref script);
                         break;
                     case 12:
                         CotinuationBuy(thisFilmScrining, ref script, ref repeat);
@@ -124,10 +123,10 @@ namespace ConsoleApp2
                     thisFilmScrinings = film_screening.Value;
             script = 3;
             return thisFilmScrinings;
-        } gjjjjjjjjjjjjjjjjjjjjjjjjjk khhgfhhfgh fgh fg hg
-        public static void FindDataFilmScreening(Dictionary<string, List<Film_screening>> film_screenings, ref List<DateOnly> dates_film_screenings, ref int script) // 3
+        }
+        public static void FindDataFilmScreening(List<Film_screening> film_screenings, ref List<DateOnly> dates_film_screenings, ref int script) // 3
         {
-            foreach (KeyValuePair<string, List<Film_screening>> film_screening in film_screenings) {
+            foreach (Film_screening film_screening in film_screenings) {
                 bool repeat = false;
                 foreach (DateOnly data in dates_film_screenings) {
                     if (data.Year == film_screening.data.Year && data.Month == film_screening.data.Month && data.Day == film_screening.data.Day)
@@ -155,7 +154,7 @@ namespace ConsoleApp2
             {
                 for (int i = 0; i < dates_film_screenings.Count; i++)
                 {
-                    Console.WriteLine("{0}. {1}.{2}.{3}", i + 1, dates_film_screenings[i].Day, dates_film_screenings[i].Month, dates_film_screenings[i].Year);
+                    Console.WriteLine("{0}. {1}.0{2}.{3}", i + 1, dates_film_screenings[i].Day, dates_film_screenings[i].Month, dates_film_screenings[i].Year);
                     Console.WriteLine();
                 }
                 script = 5;
@@ -207,7 +206,7 @@ namespace ConsoleApp2
             {
                 for (int i = 0; i < Film_screenings.Count; i++)
                 {
-                    Console.WriteLine("{0}. {1}:{2}", i + 1, Film_screenings[i].time.Hour, Film_screenings[i].time.Minute);
+                    Console.WriteLine("{0}. {1}:{2}", i + 1, Film_screenings[i].time. Hour, Film_screenings[i].time.Minute);
                     Console.WriteLine();
                 }
                 script = 7;
@@ -268,14 +267,14 @@ namespace ConsoleApp2
                     Console.WriteLine("Некорректный ввод поробуйте ещё раз");
             }
         }
-        public static void BuyTicket(Film_screening Film_screening, ref int script)//11
+        public static void BuyTicket(Film Film, Film_screening Film_screening, ref int script)//11
         {
             Console.WriteLine("Билет куплен");
             Console.WriteLine();
             Console.WriteLine("Информация о билете:");
-            Console.WriteLine("Фильм: {0}", Film_screening.film.name);
+            Console.WriteLine("Фильм: {0}", Film.name);
             Console.WriteLine();
-            Console.WriteLine("Жанр: {0}", Film_screening.film.genre);
+            Console.WriteLine("Жанр: {0}", Film.genre);
             Console.WriteLine();
             Console.WriteLine("Дата показа: {0}.{1}.{2}", Film_screening.data.Day, Film_screening.data.Month, Film_screening.data.Year);
             Console.WriteLine();
@@ -440,7 +439,22 @@ namespace ConsoleApp2
                             100),
                         new Film_screening(
                             new DateOnly(2023,9,24),
-                            new TimeOnly(19,30),
+                            new TimeOnly(19,15),
+                            3,
+                            200),
+                        new Film_screening(
+                            new DateOnly(2023,9,24),
+                            new TimeOnly(22,00),
+                            3,
+                            200),
+                        new Film_screening(
+                            new DateOnly(2023,9,25),
+                            new TimeOnly(14,30),
+                            3,
+                            200),
+                        new Film_screening(
+                            new DateOnly(2023,9,25),
+                            new TimeOnly(06,00),
                             3,
                             200)
                     }
@@ -590,11 +604,11 @@ namespace ConsoleApp2
             return film_screening;
         }
 
-        public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
+        /*public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
         {
             List<Cinema> cimena = new List<Cinema>() {new Cinema(film_screening,"Победа") };
 
             return new List<Cinema>(); 
-        }
+        }*/
     }
 }
