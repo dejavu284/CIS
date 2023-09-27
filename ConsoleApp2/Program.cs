@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -12,8 +13,15 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            string film_screening_json = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film_screening.json";
-            string film_json = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\film.json";
+            Console.WriteLine($"{Environment.CurrentDirectory}");
+
+            string currentDirectory = $"{Environment.CurrentDirectory}";
+
+            string film_json = currentDirectory + "\\Data\\" + args[0];
+            Console.WriteLine(film_json);
+            string film_screening_json = currentDirectory + "\\Data\\" + args[1];
+            string basket_json = currentDirectory + "\\Data\\" + args[2];
+
 
             // Десериализация film.json в список films
             string str_film_json = File.ReadAllText(film_json);
@@ -78,7 +86,7 @@ namespace ConsoleApp2
                         ChoiseActionReturn(ref script);
                         break;
                     case 14:
-                        EndProgram(ref repeat, basket);
+                        EndProgram(ref repeat, basket, basket_json);
                         break;
                 }
             }
@@ -366,10 +374,10 @@ namespace ConsoleApp2
                 }
             }
         }
-        public static void EndProgram(ref bool repeat, List<Ticket> basket)//14
+        public static void EndProgram(ref bool repeat, List<Ticket> basket, string path)//14
         {
             repeat = false;
-            string path = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\basket.json";
+            //string path = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\basket.json";
             // Сериализация
             var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
 

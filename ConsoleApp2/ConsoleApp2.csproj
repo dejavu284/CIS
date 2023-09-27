@@ -13,4 +13,16 @@
     <None Remove="Classes\CinemaHalls\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\basket.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\film.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\film_screening.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
