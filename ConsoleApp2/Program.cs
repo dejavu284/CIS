@@ -13,12 +13,11 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"{Environment.CurrentDirectory}");
+            
 
             string currentDirectory = $"{Environment.CurrentDirectory}";
 
             string film_json = currentDirectory + "\\Data\\" + args[0];
-            Console.WriteLine(film_json);
             string film_screening_json = currentDirectory + "\\Data\\" + args[1];
             string basket_json = currentDirectory + "\\Data\\" + args[2];
 
