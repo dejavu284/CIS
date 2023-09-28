@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Net.Sockets;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -128,16 +129,11 @@ namespace ConsoleApp2
         }
         public static void OutputInfoFilm(Film film) // 1
         {
-            Console.WriteLine("Информация о фильме: {0}", film.name);
-            Console.WriteLine();
+            Console.WriteLine("\nИнформация о фильме: {0}", film.name);
             Console.WriteLine("Жанр: {0}", film.genre);
-            Console.WriteLine();
             Console.WriteLine("Год выхода: {0}", film.year);
-            Console.WriteLine();
             Console.WriteLine("Описание: {0}", film.description);
-            Console.WriteLine();
-            Console.WriteLine("Фильм идёт в следующте даты:");
-            Console.WriteLine();
+            Console.WriteLine("Фильм идёт в следующте даты:\n");
         }
         public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings, ref List<Film_screening> thisFilmScrinings, ref int script) // 2
         {
@@ -229,7 +225,7 @@ namespace ConsoleApp2
             {
                 for (int i = 0; i < Film_screenings.Count; i++)
                 {
-                    Console.WriteLine("{0}. {1}", i + 1, Film_screenings[i].time);
+                    Console.WriteLine("{0}. {1}. Цена: {2} руб.", i + 1, Film_screenings[i].time, Film_screenings[i].price);
                     Console.WriteLine();
                 }
                 script = 7;
@@ -297,10 +293,10 @@ namespace ConsoleApp2
             Console.WriteLine("\n---------------------------");
             Console.WriteLine("Билет куплен\n");
             Console.WriteLine("Информация о билете:");
-            Console.WriteLine("Фильм: {0}", Film.name);
-            Console.WriteLine("Жанр: {0}", Film.genre);
-            Console.WriteLine("Дата показа: {0}", Film_screening.data);
-            Console.WriteLine("Время показа: {0}", Film_screening.time);
+            Console.WriteLine("Название фильма: {0}", Film.name);
+            Console.WriteLine("Дата сеанса: {0}", Film_screening.data);
+            Console.WriteLine("Время сеанса: {0}", Film_screening.time);
+            Console.WriteLine("Цена билета: {0}", Film_screening.price);
             Console.WriteLine("---------------------------\n");
 
             script = 12;
@@ -390,16 +386,20 @@ namespace ConsoleApp2
         public static void PrintTickets(List<Ticket> basket)
         {
             int counter = 0;
+            int priceOfTickets = 0;
             Console.WriteLine("\n---------------------------");
             Console.WriteLine("Чек:");
             foreach (var ticket in basket)
             {
                 counter++;
+                priceOfTickets += ticket.Price;
                 Console.WriteLine("\nБилет №{0}", counter);
                 Console.WriteLine("Название фильма: {0}", ticket.Name);
                 Console.WriteLine("Дата сеанса: {0}", ticket.Data);
                 Console.WriteLine("Время сеанса: {0}", ticket.Time);
+                Console.WriteLine("Цена билета: {0}", ticket.Price);
             }
+            Console.WriteLine("\nИтоговая стоимость составила: {0}", priceOfTickets);
             Console.WriteLine("---------------------------");
         }
 
