@@ -399,7 +399,6 @@ namespace ConsoleApp2
                 Console.WriteLine("Название фильма: {0}", ticket.Name);
                 Console.WriteLine("Дата сеанса: {0}", ticket.Data);
                 Console.WriteLine("Время сеанса: {0}", ticket.Time);
-                Console.WriteLine("Цена билета: {0}", ticket.Price);
             }
             Console.WriteLine("---------------------------");
         }
