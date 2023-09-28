@@ -73,7 +73,7 @@ namespace ConsoleApp2
                         OutputActionReturn(ref script);
                         break;
                     case 10:
-                        ProofBuyTicket(ref script, ref basket, thisFilmScrining);
+                        ProofBuyTicket(ref script, ref basket, thisFilmScrining, film);
                         break;
                     case 11:
                         OutputInfoTicket(film, thisFilmScrining, ref script);
@@ -177,7 +177,7 @@ namespace ConsoleApp2
             {
                 for (int i = 0; i < dates_film_screenings.Count; i++)
                 {
-                    Console.WriteLine("{0}. {1}.0{2}.{3}", i + 1, dates_film_screenings[i].Day, dates_film_screenings[i].Month, dates_film_screenings[i].Year);
+                    Console.WriteLine("{0}. {1}", i + 1, dates_film_screenings[i]);
                     Console.WriteLine();
                 }
                 script = 5;
@@ -229,7 +229,7 @@ namespace ConsoleApp2
             {
                 for (int i = 0; i < Film_screenings.Count; i++)
                 {
-                    Console.WriteLine("{0}. {1}:{2}", i + 1, Film_screenings[i].time. Hour, Film_screenings[i].time.Minute);
+                    Console.WriteLine("{0}. {1}", i + 1, Film_screenings[i].time);
                     Console.WriteLine();
                 }
                 script = 7;
@@ -269,7 +269,7 @@ namespace ConsoleApp2
                 script = 10;
         }
 
-        public static void ProofBuyTicket(ref int script,ref List<Ticket> basket,Film_screening film_Screening)//10
+        public static void ProofBuyTicket(ref int script, ref List<Ticket> basket, Film_screening film_Screening, Film film)//10
         {
             Console.WriteLine("Купить билет?(да/нет)");
             bool x = true;
@@ -280,7 +280,7 @@ namespace ConsoleApp2
                 {
                     script = 11;
                     x = false;
-                    basket.Add(new Ticket(film_Screening));
+                    basket.Add(new Ticket(film.name, film_Screening.data, film_Screening.time, film_Screening.price));
                     // добавить изменение данных(изменения кол-ва свободных мест)
                 }
                 else if (ansewer == "нет")
@@ -294,17 +294,14 @@ namespace ConsoleApp2
         }
         public static void OutputInfoTicket(Film Film, Film_screening Film_screening, ref int script)//11
         {
-            Console.WriteLine("Билет куплен");
-            Console.WriteLine();
+            Console.WriteLine("\n---------------------------");
+            Console.WriteLine("Билет куплен\n");
             Console.WriteLine("Информация о билете:");
             Console.WriteLine("Фильм: {0}", Film.name);
-            Console.WriteLine();
             Console.WriteLine("Жанр: {0}", Film.genre);
-            Console.WriteLine();
-            Console.WriteLine("Дата показа: {0}.{1}.{2}", Film_screening.data.Day, Film_screening.data.Month, Film_screening.data.Year);
-            Console.WriteLine();
-            Console.WriteLine("Время показа: {0}:{1}", Film_screening.time.Hour, Film_screening.time.Minute);
-            Console.WriteLine();
+            Console.WriteLine("Дата показа: {0}", Film_screening.data);
+            Console.WriteLine("Время показа: {0}", Film_screening.time);
+            Console.WriteLine("---------------------------\n");
 
             script = 12;
         }
@@ -385,8 +382,26 @@ namespace ConsoleApp2
             jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
 
             File.WriteAllText(path, jsonString); // запись в файл .json
+            PrintTickets(basket);
 
             //Console.WriteLine(Regex.Replace(File.ReadAllText(path), @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16))); // чтение из файла
+        }
+
+        public static void PrintTickets(List<Ticket> basket)
+        {
+            int counter = 0;
+            Console.WriteLine("\n---------------------------");
+            Console.WriteLine("Чек:");
+            foreach (var ticket in basket)
+            {
+                counter++;
+                Console.WriteLine("\nБилет №{0}", counter);
+                Console.WriteLine("Название фильма: {0}", ticket.Name);
+                Console.WriteLine("Дата сеанса: {0}", ticket.Data);
+                Console.WriteLine("Время сеанса: {0}", ticket.Time);
+                Console.WriteLine("Цена билета: {0}", ticket.Price);
+            }
+            Console.WriteLine("---------------------------");
         }
 
         /*public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
