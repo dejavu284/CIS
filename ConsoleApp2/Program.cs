@@ -29,14 +29,9 @@ namespace ConsoleApp2
             string str_film_screening_json = File.ReadAllText(film_screening_json_path);
             Dictionary<string, List<Film_screening>> film_screening = JsonSerializer.Deserialize<Dictionary<string, List<Film_screening>>>(str_film_screening_json)!;
 
-            RunScript(film_screening, films, ref basket_json_path, ref film_screening_json_path);
-
-            Console.WriteLine();
-            Console.WriteLine("Спасибо за покупку, приходите ещё");
-            Console.ReadKey();
-
+            RunScript(film_screening, films, basket_json_path, film_screening_json_path);
         }
-        public static void RunScript(Dictionary<string, List<Film_screening>> film_screening, List<Film> films, ref string basket_json, ref string film_screening_json)
+        public static void RunScript(Dictionary<string, List<Film_screening>> film_screening, List<Film> films, string basket_json, string film_screening_json)
         {
             Film film = null;
             List<Ticket> basket = new List<Ticket>();
@@ -98,6 +93,9 @@ namespace ConsoleApp2
                         break;
                 }
             }
+            Console.WriteLine();
+            Console.WriteLine("Спасибо за покупку, приходите ещё");
+            Console.ReadKey();
         }
 
         public static Film ChoiceFilm(List<Film> films, ref int script) // 1
