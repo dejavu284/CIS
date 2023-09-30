@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+//using static System.Net.WebRequestMethods;
 
 namespace ConsoleApp2
 {
@@ -14,31 +15,37 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            
-
             string currentDirectory = $"{Environment.CurrentDirectory}";
 
-            string film_json = currentDirectory + "\\Data\\" + args[0];
-            string film_screening_json = currentDirectory + "\\Data\\" + args[1];
-            string basket_json = currentDirectory + "\\Data\\" + args[2];
-
+            string film_json_path = currentDirectory + "\\Data\\" + args[0];
+            string film_screening_json_path = currentDirectory + "\\Data\\" + args[1];
+            string basket_json_path = currentDirectory + "\\Data\\" + args[2];
 
             // Десериализация film.json в список films
-            string str_film_json = File.ReadAllText(film_json);
+            string str_film_json = File.ReadAllText(film_json_path);
             List<Film> films = JsonSerializer.Deserialize<List<Film>>(str_film_json)!;
 
             // Десериализация film_screening.json в словарь film_screening
-            string str_film_screening_json = File.ReadAllText(film_screening_json);
+            string str_film_screening_json = File.ReadAllText(film_screening_json_path);
             Dictionary<string, List<Film_screening>> film_screening = JsonSerializer.Deserialize<Dictionary<string, List<Film_screening>>>(str_film_screening_json)!;
 
-            List<Ticket> basket = new List<Ticket>();
+            RunScript(film_screening, films, ref basket_json_path, ref film_screening_json_path);
 
-            bool repeat = true;
-            int script = 0;
+            Console.WriteLine();
+            Console.WriteLine("Спасибо за покупку, приходите ещё");
+            Console.ReadKey();
+
+        }
+        public static void RunScript(Dictionary<string, List<Film_screening>> film_screening, List<Film> films, ref string basket_json, ref string film_screening_json)
+        {
             Film film = null;
-            var thisFilmScrinings = new List<Film_screening>();
+            List<Ticket> basket = new List<Ticket>();
+            List<Film_screening> thisFilmScrinings = new List<Film_screening>();
             List<DateOnly> dates_film_screenings = new List<DateOnly>();
             Film_screening thisFilmScrining = null;
+            bool repeat = true;
+            int script = 0;
+
             while (repeat)
             {
                 switch (script)
@@ -47,13 +54,14 @@ namespace ConsoleApp2
                         OutputFilms(films, ref script);
                         break;
                     case 1:
-                        OutputInfoFilm(ChoiceFilm(films, ref film, ref script));
+                        film = ChoiceFilm(films, ref script);
+                        OutputInfoFilm(film);
                         break;
                     case 2:
-                        FindThisFilmScrinings(film, film_screening, ref thisFilmScrinings, ref script);
+                        thisFilmScrinings = FindThisFilmScrinings(film, film_screening, ref script);
                         break;
                     case 3:
-                        FindDataFilmScreening(thisFilmScrinings, ref dates_film_screenings, ref script);
+                        dates_film_screenings = FindDataFilmScreening(thisFilmScrinings, ref script);
                         break;
                     case 4:
                         OutputDataFilmScreening(dates_film_screenings, ref script);
@@ -90,17 +98,13 @@ namespace ConsoleApp2
                         break;
                 }
             }
-
-            Console.WriteLine();
-            Console.WriteLine("Спасибо за покупку, приходите ещё");
-            Console.ReadKey();
-
         }
 
-        public static Film ChoiceFilm(List<Film> films, ref Film film, ref int script) // 1
+        public static Film ChoiceFilm(List<Film> films, ref int script) // 1
         {
             bool x = true;
             script = 2;
+            Film film = null;
             while (x)
             {
                 try
@@ -135,16 +139,18 @@ namespace ConsoleApp2
             Console.WriteLine("Описание: {0}", film.description);
             Console.WriteLine("Фильм идёт в следующте даты:\n");
         }
-        public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings, ref List<Film_screening> thisFilmScrinings, ref int script) // 2
+        public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings, ref int script) // 2
         {
+            List<Film_screening> thisFilmScrinings = new List<Film_screening>();
             foreach (KeyValuePair<string, List<Film_screening>> film_screening in film_screenings)
                 if (film.name == film_screening.Key)
                     thisFilmScrinings = film_screening.Value;
             script = 3;
             return thisFilmScrinings;
         }
-        public static void FindDataFilmScreening(List<Film_screening> film_screenings, ref List<DateOnly> dates_film_screenings, ref int script) // 3
+        public static List<DateOnly> FindDataFilmScreening(List<Film_screening> film_screenings, ref int script) // 3
         {
+            List<DateOnly> dates_film_screenings = new List<DateOnly>();
             foreach (Film_screening film_screening in film_screenings) {
                 bool repeat = false;
                 foreach (DateOnly data in dates_film_screenings) {
@@ -158,7 +164,7 @@ namespace ConsoleApp2
                     dates_film_screenings.Add(film_screening.data);
             }
             script = 4;
-
+            return dates_film_screenings;
         }
         public static void OutputDataFilmScreening(List<DateOnly> dates_film_screenings, ref int script) // 4
         {
@@ -254,9 +260,9 @@ namespace ConsoleApp2
         }
         public static void OutputPlaseFilmScreening(Film_screening Film_screening, ref int script) // 8
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}", Film_screening.countTiket);
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}", Film_screening.countPlase);
             Console.WriteLine();
-            if (Film_screening.countTiket == 0)
+            if (Film_screening.countPlase == 0)
             {
                 Console.WriteLine("К сожелению места закончились.");
                 script = 9;
@@ -264,7 +270,15 @@ namespace ConsoleApp2
             else
                 script = 10;
         }
-
+        public static void OutputActionReturn(ref int script)//9
+        {
+            Console.WriteLine("Куда хотите вернуться?");
+            Console.WriteLine();
+            Console.WriteLine("1.Выбор фильма");
+            Console.WriteLine("2.Выбор даты");
+            Console.WriteLine("3.Выбор времени");
+            script = 13;
+        }
         public static void ProofBuyTicket(ref int script, ref List<Ticket> basket, Film_screening film_Screening, Film film)//10
         {
             Console.WriteLine("Купить билет?(да/нет)");
@@ -324,15 +338,7 @@ namespace ConsoleApp2
                     Console.WriteLine("Некорректный ввод поробуйте ещё раз");
             }
         }
-        public static void OutputActionReturn(ref int script)//9
-        {
-            Console.WriteLine("Куда хотите вернуться?");
-            Console.WriteLine();
-            Console.WriteLine("1.Выбор фильма");
-            Console.WriteLine("2.Выбор даты");
-            Console.WriteLine("3.Выбор времени");
-            script = 13;
-        }
+       
         public static void ChoiseActionReturn(ref int script)//13
         {
             bool x = true;
