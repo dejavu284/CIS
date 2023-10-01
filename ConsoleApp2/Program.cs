@@ -39,54 +39,55 @@ namespace ConsoleApp2
             List<DateOnly> dates_film_screenings = new List<DateOnly>();
             Film_screening thisFilmScrining = null;
             bool repeat = true;
-            int script = 0;
+            int script_number = 0;
 
             while (repeat)
             {
-                switch (script)
+                switch (script_number)
                 {
                     case 0:
-                        OutputFilms(films, ref script);
+                        OutputFilms(films, ref script_number);
                         break;
                     case 1:
-                        film = ChoiceFilm(films, ref script);
+                        film = ChoiceFilm(films, ref script_number);
                         OutputInfoFilm(film);
                         break;
                     case 2:
-                        thisFilmScrinings = FindThisFilmScrinings(film, film_screening, ref script);
+                        thisFilmScrinings = FindThisFilmScrinings(film, film_screening, ref script_number);
                         break;
                     case 3:
-                        dates_film_screenings = FindDataFilmScreening(thisFilmScrinings, ref script);
+                        dates_film_screenings = FindDataFilmScreening(thisFilmScrinings, ref script_number);
                         break;
                     case 4:
-                        OutputDataFilmScreening(dates_film_screenings, ref script);
+                        OutputDataFilmScreening(dates_film_screenings, ref script_number);
                         break;
                     case 5:
-                        FindFilmScreeningByData(ChoiseDataFilmScreening(dates_film_screenings, ref script), thisFilmScrinings, ref thisFilmScrinings, ref script);
+                        DateOnly dataFilmSreening = ChoiseDataFilmScreening(dates_film_screenings, ref script_number);
+                        thisFilmScrinings = FindFilmScreeningByData(dataFilmSreening, thisFilmScrinings, ref script_number);
                         break;
                     case 6:
-                        OutputTimeFilmScreening(thisFilmScrinings, ref script);
+                        OutputTimeFilmScreening(thisFilmScrinings, ref script_number);
                         break;
                     case 7:
-                        thisFilmScrining = ChoiseTimeFilmScreening(thisFilmScrinings, ref script);
+                        thisFilmScrining = ChoiseTimeFilmScreening(thisFilmScrinings, ref script_number);
                         break;
                     case 8:
-                        OutputPlaseFilmScreening(thisFilmScrining, ref script);
+                        OutputPlaseFilmScreening(thisFilmScrining, ref script_number);
                         break;
                     case 9:
-                        OutputActionReturn(ref script);
+                        OutputActionReturn(ref script_number);
                         break;
                     case 10:
-                        ProofBuyTicket(ref script, ref basket, thisFilmScrining, film);
+                        ProofBuyTicket(ref script_number, ref basket, thisFilmScrining, film);
                         break;
                     case 11:
-                        OutputInfoTicket(film, thisFilmScrining, ref script);
+                        OutputInfoTicket(film, thisFilmScrining, ref script_number);
                         break;
                     case 12:
-                        CotinuationBuy(thisFilmScrining, ref script);
+                        CotinuationBuy(thisFilmScrining, ref script_number);
                         break;
                     case 13:
-                        ChoiseActionReturn(ref script);
+                        ChoiseActionReturn(ref script_number);
                         break;
                     case 14:
                         EndProgram(ref repeat, basket, basket_json);
@@ -204,7 +205,7 @@ namespace ConsoleApp2
             }
             return date_film_screenings;
         }
-        public static void FindFilmScreeningByData(DateOnly date_film_screenings, List<Film_screening> all_film_screenings, ref List<Film_screening> film_screenings, ref int script) // 5
+        public static List<Film_screening> FindFilmScreeningByData(DateOnly date_film_screenings, List<Film_screening> all_film_screenings, ref int script) // 5
         {
             List<Film_screening> film_screenings_temp = new List<Film_screening>();
             for (int i = 0; i < all_film_screenings.Count; i++)
@@ -212,8 +213,8 @@ namespace ConsoleApp2
                 if (date_film_screenings.Year == all_film_screenings[i].data.Year & date_film_screenings.Month == all_film_screenings[i].data.Month & date_film_screenings.Day == all_film_screenings[i].data.Day)
                     film_screenings_temp.Add(all_film_screenings[i]);
             }
-            film_screenings = film_screenings_temp;
             script = 6;
+            return film_screenings_temp;
         }
 
         public static void OutputTimeFilmScreening(List<Film_screening> Film_screenings, ref int script) // 6
