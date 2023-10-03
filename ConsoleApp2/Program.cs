@@ -99,7 +99,7 @@ namespace ConsoleApp2
             Console.ReadKey();
         }
 
-        public static Film ChoiceFilm(List<Film> films, ref int script) // 1
+        public static Film ChoiceFilm(List<Film> films, ref int script) // 1 // Кирилл
         {
             bool x = true;
             script = 2;
@@ -120,7 +120,7 @@ namespace ConsoleApp2
             }
             return film;
         }
-        public static void OutputFilms(List<Film> films, ref int script) // 0
+        public static void OutputFilms(List<Film> films, ref int script) // 0 // Кирилл
         {
             Console.WriteLine("Фильмы в прокате:");
             Console.WriteLine();
@@ -132,13 +132,13 @@ namespace ConsoleApp2
         }
         public static void OutputInfoFilm(Film film) // 1
         {
-            Console.WriteLine("\nИнформация о фильме: {0}", film.name);
+            Console.WriteLine("\nИнформация о фильме: {0}", film.name); // Кирилл
             Console.WriteLine("Жанр: {0}", film.genre);
             Console.WriteLine("Год выхода: {0}", film.year);
             Console.WriteLine("Описание: {0}", film.description);
             Console.WriteLine("Фильм идёт в следующте даты:\n");
         }
-        public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings, ref int script) // 2
+        public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings, ref int script) // 2 // Саша
         {
             List<Film_screening> thisFilmScrinings = new List<Film_screening>();
             foreach (KeyValuePair<string, List<Film_screening>> film_screening in film_screenings)
@@ -147,7 +147,7 @@ namespace ConsoleApp2
             script = 3;
             return thisFilmScrinings;
         }
-        public static List<DateOnly> FindDataFilmScreening(List<Film_screening> film_screenings, ref int script) // 3
+        public static List<DateOnly> FindDataFilmScreening(List<Film_screening> film_screenings, ref int script) // 3 // Саша
         {
             List<DateOnly> dates_film_screenings = new List<DateOnly>();
             foreach (Film_screening film_screening in film_screenings) {
@@ -165,7 +165,7 @@ namespace ConsoleApp2
             script = 4;
             return dates_film_screenings;
         }
-        public static void OutputDataFilmScreening(List<DateOnly> dates_film_screenings, ref int script) // 4
+        public static void OutputDataFilmScreening(List<DateOnly> dates_film_screenings, ref int script) // 4 // Саша
         {
             Console.WriteLine("Даты показа фильма:");
             Console.WriteLine();
@@ -184,7 +184,7 @@ namespace ConsoleApp2
                 script = 5;
             }
         }
-        public static DateOnly ChoiseDataFilmScreening(List<DateOnly> dates_film_screenings, ref int script) // 5
+        public static DateOnly ChoiseDataFilmScreening(List<DateOnly> dates_film_screenings, ref int script) // 5 // Кирилл
         {
             Console.WriteLine("Для выбора даты сеанса напишите её цифру.");
             DateOnly date_film_screenings = dates_film_screenings[0];
@@ -205,7 +205,7 @@ namespace ConsoleApp2
             }
             return date_film_screenings;
         }
-        public static List<Film_screening> FindFilmScreeningByData(DateOnly date_film_screenings, List<Film_screening> all_film_screenings, ref int script) // 5
+        public static List<Film_screening> FindFilmScreeningByData(DateOnly date_film_screenings, List<Film_screening> all_film_screenings, ref int script) // 5 // Кирилл
         {
             List<Film_screening> film_screenings_temp = new List<Film_screening>();
             for (int i = 0; i < all_film_screenings.Count; i++)
@@ -217,7 +217,7 @@ namespace ConsoleApp2
             return film_screenings_temp;
         }
 
-        public static void OutputTimeFilmScreening(List<Film_screening> Film_screenings, ref int script) // 6
+        public static void OutputTimeFilmScreening(List<Film_screening> Film_screenings, ref int script) // 6 // Кирилл
         {
             Console.WriteLine("Время показа фильма:");
             Console.WriteLine();
@@ -236,7 +236,7 @@ namespace ConsoleApp2
                 script = 7;
             }
         }
-        public static Film_screening ChoiseTimeFilmScreening(List<Film_screening> Film_screenings, ref int script) // 7
+        public static Film_screening ChoiseTimeFilmScreening(List<Film_screening> Film_screenings, ref int script) // 7 // Кирилл
         {
             Film_screening film_screening = Film_screenings[0];
             bool x = true;
@@ -257,11 +257,11 @@ namespace ConsoleApp2
             }
             return film_screening;
         }
-        public static void OutputPlaseFilmScreening(Film_screening Film_screening, ref int script) // 8
+        public static void OutputPlaseFilmScreening(Film_screening Film_screening, ref int script) // 8 // Саша
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}", Film_screening.countPlase);
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}", Film_screening.countTiket);
             Console.WriteLine();
-            if (Film_screening.countPlase == 0)
+            if (Film_screening.countTiket == 0)
             {
                 Console.WriteLine("К сожелению места закончились.");
                 script = 9;
@@ -269,7 +269,7 @@ namespace ConsoleApp2
             else
                 script = 10;
         }
-        public static void OutputActionReturn(ref int script)//9
+        public static void OutputActionReturn(ref int script)//9 // Саша
         {
             Console.WriteLine("Куда хотите вернуться?");
             Console.WriteLine();
@@ -278,7 +278,7 @@ namespace ConsoleApp2
             Console.WriteLine("3.Выбор времени");
             script = 13;
         }
-        public static void ProofBuyTicket(ref int script, ref List<Ticket> basket, Film_screening film_Screening, Film film)//10
+        public static void ProofBuyTicket(ref int script, ref List<Ticket> basket, Film_screening film_Screening, Film film)//10 // Саша
         {
             Console.WriteLine("Купить билет?(да/нет)");
             bool x = true;
@@ -301,7 +301,7 @@ namespace ConsoleApp2
                     Console.WriteLine("Некорректный ввод поробуйте ещё раз");
             }
         }
-        public static void OutputInfoTicket(Film Film, Film_screening Film_screening, ref int script)//11
+        public static void OutputInfoTicket(Film Film, Film_screening Film_screening, ref int script)//11 // Саша
         {
             Console.WriteLine("\n---------------------------");
             Console.WriteLine("Билет куплен\n");
@@ -315,7 +315,7 @@ namespace ConsoleApp2
             script = 12;
         }
 
-        public static void CotinuationBuy(Film_screening Film_screening, ref int script)//12
+        public static void CotinuationBuy(Film_screening Film_screening, ref int script)//12 // //Кирилл
         {
             Console.WriteLine("Купить ещё?(да/нет)");
 
@@ -338,7 +338,7 @@ namespace ConsoleApp2
             }
         }
        
-        public static void ChoiseActionReturn(ref int script)//13
+        public static void ChoiseActionReturn(ref int script)//13 //Кирилл
         {
             bool x = true;
             while (x)
@@ -371,7 +371,7 @@ namespace ConsoleApp2
                 }
             }
         }
-        public static void EndProgram(ref bool repeat, List<Ticket> basket, string path)//14
+        public static void EndProgram(ref bool repeat, List<Ticket> basket, string path)//14 // Саша
         {
             repeat = false;
             //string path = "C:\\Users\\Я\\source\\repos\\ConsoleApp2\\ConsoleApp2\\Data\\basket.json";
@@ -388,7 +388,7 @@ namespace ConsoleApp2
             //Console.WriteLine(Regex.Replace(File.ReadAllText(path), @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16))); // чтение из файла
         }
 
-        public static void PrintTickets(List<Ticket> basket)
+        public static void PrintTickets(List<Ticket> basket) // Саша
         {
             int counter = 0;
             int priceOfTickets = 0;
@@ -407,12 +407,5 @@ namespace ConsoleApp2
             Console.WriteLine("\nИтоговая стоимость составила: {0}", priceOfTickets);
             Console.WriteLine("---------------------------");
         }
-
-        /*public static List<Cinema> GetCinemas(Dictionary<string, List<Film_screening>> film_screening) 
-        {
-            List<Cinema> cimena = new List<Cinema>() {new Cinema(film_screening,"Победа") };
-
-            return new List<Cinema>(); 
-        }*/
     }
 }
