@@ -103,7 +103,7 @@ namespace ConsoleApp2
                         break;
                     case 14:
                         SaveTickets(basket, basket_json);
-                        PrintReceipt(basket);
+                        OutputReceipt(basket);
                         repeat = false;
                         break;
                 }
@@ -124,19 +124,18 @@ namespace ConsoleApp2
                     film = films[int.Parse(inputStr!) - 1];
                     break;
                 }
-                else DisplayMessageIncorrectInput();
+                else
+                {
+                    DisplayMessageIncorrectInput();
+                }
             }
             Console.WriteLine();
             return film!;
         }
         public static bool CheckingNumberEntryInList<T>(List<T> films, string? index_str)
         {
-            uint index;
-            bool resultChecked = false;
-            bool tryParseCheced = uint.TryParse(index_str, out index);
-            if (tryParseCheced && films.Count >= index)
-                resultChecked = true;
-            return resultChecked;
+            bool tryParseCheced = uint.TryParse(index_str, out uint index);
+            return tryParseCheced && films.Count >= index;
         }
         public static void DisplayMessageIncorrectInput()
         {
@@ -157,14 +156,17 @@ namespace ConsoleApp2
             Console.WriteLine("Жанр: {0}", film.genre);
             Console.WriteLine("Год выхода: {0}", film.year);
             Console.WriteLine("Описание: {0}\n", film.description);
-            Console.WriteLine("Фильм идёт в следующте даты:\n");
         }
         public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> film_screenings) // 2 // Саша
         {
             List<Film_screening> thisFilmScrinings = new ();
             foreach (KeyValuePair<string, List<Film_screening>> film_screening in film_screenings)
+            {
                 if (film.name == film_screening.Key)
+                {
                     thisFilmScrinings = film_screening.Value;
+                }
+            }
             return thisFilmScrinings;
         }
         public static List<DateOnly> FindDataFilmScreening(List<Film_screening> film_screenings) // 3 // Саша
@@ -402,7 +404,7 @@ namespace ConsoleApp2
             File.WriteAllText(path, jsonString); // запись в файл .json
         }
 
-        public static void PrintReceipt(List<Ticket> basket) // Саша
+        public static void OutputReceipt(List<Ticket> basket) // Саша
         {
             int priceOfTickets = 0;
             Console.WriteLine("\n---------------------------");
