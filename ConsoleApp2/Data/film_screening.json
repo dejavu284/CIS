@@ -39,9 +39,15 @@
       "price": 200
     },
     {
+      "data": "2023-09-25",
+      "time": "06:00:00",
+      "countTiket": 8,
+      "price": 250
+    },
+    {
       "data": "2023-10-24",
       "time": "14:30:00",
-      "countTiket": 1,
+      "countTiket": 0,
       "price": 250
     }
   ],
