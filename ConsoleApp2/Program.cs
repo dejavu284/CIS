@@ -96,7 +96,7 @@ namespace ConsoleApp2
 
                 ChoiceData: // выбор даты 
 
-                if (DateFilmScreeningIsEmpty(datesFilmScreenings))
+                if (DateIsEmpty(datesFilmScreenings))
                 {
                     Console.WriteLine("К сожелению у фильма нет показов. Пожалуйста выбирите другой фильм\n");
                     continue;
@@ -251,7 +251,7 @@ namespace ConsoleApp2
             Console.WriteLine();
         }
 
-        public static bool IsDateFilmScreeningExist(List<DateOnly> datesFilmScreenings)
+        public static bool DateIsEmpty(List<DateOnly> datesFilmScreenings)
         {
             return (datesFilmScreenings.Count == 0 || datesFilmScreenings == null);
         }
