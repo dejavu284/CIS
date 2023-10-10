@@ -1,4 +1,4 @@
-﻿using ConsoleApp2.Classes;
+using ConsoleApp2.Classes;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -10,6 +10,7 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
+
             if (DataIsCorrect(args))
             {
                 string currentDirectory = $"{Environment.CurrentDirectory}";
@@ -160,10 +161,10 @@ namespace ConsoleApp2
             while (true)
             {
                 Console.WriteLine("Для выбора фильма напишите его цифру.");
-                string? inputStr = Console.ReadLine();
-                if (CheckingNumberEntryInList(films, inputStr))
+                string? inputIndex = Console.ReadLine();
+                if (IsNumberInList(films, inputIndex))
                 {
-                    film = films[int.Parse(inputStr!) - 1];
+                    film = films[int.Parse(inputIndex!) - 1];
                     break;
                 }
                 else
@@ -174,10 +175,10 @@ namespace ConsoleApp2
             Console.WriteLine();
             return film!;
         }
-        public static bool CheckingNumberEntryInList<T>(List<T> films, string? index_str)
+        public static bool IsNumberInList<T>(List<T> films, string? indexStr)
         {
-            bool tryParseCheced = uint.TryParse(index_str, out uint index);
-            return tryParseCheced && films.Count >= index;
+            bool tryParseChecked = uint.TryParse(indexStr, out uint index);
+            return tryParseChecked && films.Count >= index;
         }
         public static void DisplayMessageIncorrectInput()
         {
@@ -216,19 +217,19 @@ namespace ConsoleApp2
             List<DateOnly> datesFilmScreenings = new();
             foreach (Film_screening filmScreening in filmScreenings)
             {
-                if (!CheckRepeatDates(datesFilmScreenings, filmScreening))
+                if (!IsDatesRepeating(datesFilmScreenings, filmScreening))
                 {
                     datesFilmScreenings.Add(filmScreening.data);
                 }
             }
             return datesFilmScreenings;
         }
-        public static bool CheckRepeatDates(List<DateOnly> datesFilmScreenings, Film_screening filmScreening)
+        public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, Film_screening filmScreening)
         {
             bool repeat = false;
             foreach (DateOnly data in datesFilmScreenings)
             {
-                if (CheckDatesEqual(data, filmScreening))
+                if (IsDatesEqual(data, filmScreening))
                 {
                     repeat = true;
                     break;
@@ -236,7 +237,7 @@ namespace ConsoleApp2
             }
             return repeat;
         }
-        public static bool CheckDatesEqual(DateOnly data, Film_screening filmScreening)
+        public static bool IsDatesEqual(DateOnly data, Film_screening filmScreening)
         {
             return data == filmScreening.data;
         }
@@ -249,8 +250,8 @@ namespace ConsoleApp2
             }
             Console.WriteLine();
         }
-        
-        public static bool DateFilmScreeningIsEmpty(List<DateOnly> datesFilmScreenings)
+
+        public static bool IsDateFilmScreeningExist(List<DateOnly> datesFilmScreenings)
         {
             return (datesFilmScreenings.Count == 0 || datesFilmScreenings == null);
         }
@@ -261,10 +262,10 @@ namespace ConsoleApp2
             while (true)
             {
                 Console.WriteLine("Для выбора даты показа напишите её цифру.");
-                string? inputStr = Console.ReadLine();
-                if (CheckingNumberEntryInList(allDateFilmScreenings, inputStr))
+                string? inputIndex = Console.ReadLine();
+                if (IsNumberInList(allDateFilmScreenings, inputIndex))
                 {
-                    dateFilmScreenings = allDateFilmScreenings[int.Parse(inputStr!) - 1];
+                    dateFilmScreenings = allDateFilmScreenings[int.Parse(inputIndex!) - 1];
                     break;
                 }
                 else
@@ -276,18 +277,22 @@ namespace ConsoleApp2
             Console.WriteLine();
             return dateFilmScreenings!;
         }
-
         // перенести метод в класс FilmScreening
-        public static List<Film_screening> FindFilmScreeningByData(DateOnly datesFilmScreenings, List<Film_screening> all_film_screenings)
+
+        public static List<Film_screening> FindFilmScreeningByData(DateOnly datesFilmScreenings, List<Film_screening> allFilmScreenings)
         {
             List<Film_screening> filmScreeningsTemp = new List<Film_screening>();
-            for (int i = 0; i < all_film_screenings.Count; i++)
-                if (datesFilmScreenings == all_film_screenings[i].data)
-                    filmScreeningsTemp.Add(all_film_screenings[i]);
+            for (int i = 0; i < allFilmScreenings.Count; i++)
+            {
+                if(datesFilmScreenings == allFilmScreenings[i].data)
+                {
+                    filmScreeningsTemp.Add(allFilmScreenings[i]);
+                }
+            }
             return filmScreeningsTemp;
         }
-
-        public static void OutputTimeFilmScreening(List<Film_screening> filmscreenings)
+      
+        public static void OutputTimeFilmScreening(List<Film_screening> filmscreenings) 
         {
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < filmscreenings.Count; i++)
@@ -302,7 +307,7 @@ namespace ConsoleApp2
             {
                 Console.WriteLine("\nДля выбора времени показа напишите её цифру.");
                 string? inputStr = Console.ReadLine();
-                if (CheckingNumberEntryInList(filmScreeningInCertainDay, inputStr))
+                if (IsNumberInList(filmScreeningInCertainDay, inputStr))
                 {
                     filmScreeningInCertainTime = filmScreeningInCertainDay[int.Parse(inputStr!) - 1];
                     break;
@@ -319,7 +324,8 @@ namespace ConsoleApp2
         {
             Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.countTiket);
         }
-        public static bool PlaseIsEmpty(Film_screening filmScreening)
+     
+        public static bool IsPlacesNotEmpty(Film_screening filmScreening)
         {
             return (filmScreening.countTiket == 0);
         }
@@ -366,13 +372,12 @@ namespace ConsoleApp2
             Console.WriteLine("Время сеанса: {0}", ticket.Time);
             Console.WriteLine("Цена билета: {0}", ticket.Price);
         }
-
         public static int ChoiseActionReturn()
         {
-            while (true)
+            while(true) 
             {
                 string? input = Console.ReadLine();
-                if (uint.TryParse(input, out uint scriptNumber))
+                if (IsIndexCorrect(input, out uint scriptNumber))
                     switch (scriptNumber)
                     {
                         case 1:
@@ -388,14 +393,18 @@ namespace ConsoleApp2
                 else DisplayMessageIncorrectInput();
             }
         }
-        public static void SaveTickets(List<Ticket> basket, string path)
+
+        public static bool IsIndexCorrect(string? input, out uint scriptNumber)
+        {
+            return uint.TryParse(input, out scriptNumber);
+        }
+        public static void SaveTickets(List<Ticket> basket, string path)//14 // Саша
         {
             var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
             string jsonString = JsonSerializer.Serialize(basket, options); // список в строку
             jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
             File.WriteAllText(path, jsonString); // запись в файл .json
         }
-
         public static void OutputReceipt(List<Ticket> basket)
         {
             int priceOfTickets = 0;
