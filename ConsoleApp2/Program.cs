@@ -1,16 +1,7 @@
 ﻿using ConsoleApp2.Classes;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.IO;
-using System.Net.Sockets;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using File = System.IO.File;
-//using static System.Net.WebRequestMethods;
 
 namespace ConsoleApp2
 {
@@ -18,21 +9,69 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            string currentDirectory = $"{Environment.CurrentDirectory}";
+            if (CheckDataIsCorrect(args))
+            {
+                string currentDirectory = $"{Environment.CurrentDirectory}";
+                string filmJsonPath = currentDirectory + "\\Data\\" + args[0];
+                string filmScreeningJsonPath = currentDirectory + "\\Data\\" + args[1];
+                string basketJsonPath = currentDirectory + "\\Data\\" + args[2];
 
-            string filmJsonPath = currentDirectory + "\\Data\\" + args[0];
-            string filmScreeningJsonPath = currentDirectory + "\\Data\\" + args[1];
-            string basketJsonPath = currentDirectory + "\\Data\\" + args[2];
+                List<Film> films = new ();
+                Dictionary<string, List<Film_screening>> filmScreening = new();
 
-            // Десериализация film.json в список films
-            string textFilmJson = File.ReadAllText(filmJsonPath);
-            List<Film> films = JsonSerializer.Deserialize<List<Film>>(textFilmJson)!;
-
-            // Десериализация film_screening.json в словарь film_screening
-            string textFilmScreeningJson = File.ReadAllText(filmScreeningJsonPath);
-            Dictionary<string, List<Film_screening>> filmScreening = JsonSerializer.Deserialize<Dictionary<string, List<Film_screening>>>(textFilmScreeningJson)!;
-
-            RunScript(filmScreening, films, basketJsonPath);
+               if(TryDeserializ(filmJsonPath,ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
+               RunScript(filmScreening, films, basketJsonPath);
+            }
+            else
+            {
+                DisplayMessageIncorrectInput();
+            }
+        }
+        public static bool TryDeserializ<T>(string path, ref T element)
+            where T : new()
+        {
+            try
+            {
+                // Десериализация film.json в список films
+                string textJson = File.ReadAllText(path);
+                element = JsonSerializer.Deserialize<T>(textJson)!;
+                var a = new T();
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Не найден файл:\n{0}", path);
+                return false;
+            }
+            catch (JsonException)
+            {
+                Console.WriteLine("Ошибка в файле:\n{0}", path);
+                return false;
+            }
+            catch
+            {
+                Console.WriteLine("Ошибка, попробуйте еще раз.", path);
+                return false;
+            }
+        }
+        public static bool CheckDataIsCorrect(string[] args)
+        {
+            bool flag = false;
+            if (args.Length == 3)
+            {
+                foreach (var nameFile in args)
+                {
+                    if (nameFile.Contains(".json"))
+                    {
+                        flag = true; 
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return flag;
         }
         public static void RunScript(Dictionary<string, List<Film_screening>> filmScreening, List<Film> films, string basketJson)
         {
@@ -49,20 +88,15 @@ namespace ConsoleApp2
                 switch (scriptNumber)
                 {
                     case 0:
-                        OutputFilms(films); 
-                        scriptNumber = 1;
-                        break;
-                    case 1:
+                        OutputFilms(films);
+
                         film = ChoiceFilm(films);
                         OutputInfoFilm(film);
-                        scriptNumber = 2;
-                        break;
-                    case 2:
+
                         thisFilmScrinings = FindThisFilmScrinings(film, filmScreening);
-                        scriptNumber = 3;
-                        break;
-                    case 3:
+
                         datesFilmScreenings = FindDataFilmScreening(thisFilmScrinings);
+
                         scriptNumber = 4;
                         break;
                     case 4:
@@ -75,13 +109,9 @@ namespace ConsoleApp2
                         break;
                     case 6:
                         OutputTimeFilmScreening(thisFilmScrinings);
-                        scriptNumber = 7;
-                        break;
-                    case 7:
+
                         thisFilmScrining = ChoiseTimeFilmScreening(thisFilmScrinings);
-                        scriptNumber = 8;
-                        break;
-                    case 8:
+
                         scriptNumber = OutputPlaseFilmScreening(thisFilmScrining);
                         break;
                     case 9:
@@ -89,13 +119,10 @@ namespace ConsoleApp2
                         scriptNumber = 13;
                         break;
                     case 10:
-                        scriptNumber = ProofBuyTicket(basket, thisFilmScrining, film); // не делал
+                        scriptNumber = ProofBuyTicket(basket, thisFilmScrining, film); 
                         break;
                     case 11:
-                        OutputTicket(basket[^1]); // не делал
-                        scriptNumber = 12;
-                        break;
-                    case 12:
+                        OutputTicket(basket[^1]); 
                         scriptNumber = PoolCotinuationBuy();
                         break;
                     case 13:
@@ -108,6 +135,7 @@ namespace ConsoleApp2
                         break;
                 }
             }
+
             Console.WriteLine("\nСпасибо за покупку, приходите ещё");
             Console.ReadKey();
         }
