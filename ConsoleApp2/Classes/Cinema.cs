@@ -8,11 +8,11 @@ namespace ConsoleApp2.Classes
 {
     internal class Cinema
     {
-        public Cinema(List<Film_screening> film_Screenings,string name) 
+        public Cinema(List<Film_screening> film_Screenings, string name)
         {
             this.film_Screenings = film_Screenings;
             this.name = name;
-        } 
+        }
         public List<Film_screening> film_Screenings { get; set; }
         public string name;
     }
