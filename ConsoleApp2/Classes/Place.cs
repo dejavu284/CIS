@@ -8,10 +8,10 @@ namespace ConsoleApp2.Classes
 {
     internal class Place
     {
-        public Place(string type, double coefficient, bool freedom, int number) 
-        { 
+        public Place(string type, double coefficient, bool freedom, int number)
+        {
             this.type = type;
-            this.coefficient = coefficient; 
+            this.coefficient = coefficient;
             this.freedom = freedom;
             this.number = number;
         }

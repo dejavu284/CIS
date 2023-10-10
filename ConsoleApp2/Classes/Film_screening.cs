@@ -16,7 +16,7 @@ namespace ConsoleApp2.Classes
             this.countTiket = countTiket;
             this.price = price;
         }
-       /* public Film film;*/
+        /* public Film film;*/
         public DateOnly data { get; set; }
         public TimeOnly time { get; set; }
         public int countTiket { get; set; }
