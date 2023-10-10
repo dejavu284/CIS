@@ -271,7 +271,6 @@ namespace ConsoleApp2
             Console.WriteLine();
             return dateFilmScreenings!;
         }
-
         // перенести метод в класс FilmScreening
         public static List<Film_screening> FindFilmScreeningByData(DateOnly datesFilmScreenings, List<Film_screening> allFilmScreenings) // 5 // Кирилл
         {
@@ -285,7 +284,6 @@ namespace ConsoleApp2
             }
             return filmScreeningsTemp;
         }
-
         public static void OutputTimeFilmScreening(List<Film_screening> filmscreenings) // 6 // Кирилл
         {
             Console.WriteLine("Время показа фильма:");
@@ -317,7 +315,7 @@ namespace ConsoleApp2
         public static int OutputPlaseFilmScreening(Film_screening filmScreening) // 8 // Саша
         {
             int script;
-            if (CheckPlaseNotEmpty(filmScreening))
+            if (IsPlacesNotEmpty(filmScreening))
             {
                 Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.countTiket);
                 script = 10;
@@ -329,7 +327,7 @@ namespace ConsoleApp2
             }
             return script;
         }
-        public static bool CheckPlaseNotEmpty(Film_screening filmScreening)
+        public static bool IsPlacesNotEmpty(Film_screening filmScreening)
         {
             return !(filmScreening.countTiket == 0);
         }
@@ -348,14 +346,14 @@ namespace ConsoleApp2
             while (x)
             {
                 string answer = Console.ReadLine();
-                if (CheckAnswerIsPositive(answer))
+                if (IsAnswerPositive(answer))
                 {
                     script = 11;
                     x = false;
                     basket.Add(new Ticket(film.name, filmScreening.data, filmScreening.time, filmScreening.price));
                     // добавить изменение данных(изменения кол-ва свободных мест)
                 }
-                else if (CheckAnswerIsNegative(answer))
+                else if (IsAnswerNegative(answer))
                 {
                     script = 9;
                     x = false;
@@ -369,11 +367,11 @@ namespace ConsoleApp2
             Console.WriteLine("Билет куплен\n");
             return script;
         }
-        public static bool CheckAnswerIsPositive(string answer)
+        public static bool IsAnswerPositive(string answer)
         {
             return answer == "да";
         }
-        public static bool CheckAnswerIsNegative(string answer)
+        public static bool IsAnswerNegative(string answer)
         {
             return answer == "нет";
         }
@@ -396,22 +394,27 @@ namespace ConsoleApp2
             Console.WriteLine("Купить ещё билет?(да/нет)");
             while (true)
             {
-                string? ansewer = Console.ReadLine();
-                if (ansewer == "да")
+                string? answer = Console.ReadLine();
+                if (IsAnswerPositive(answer))
+                {
                     return 0;
-                else if (ansewer == "нет")
+                }
+                else if (IsAnswerNegative(answer))
+                {
                     return 14;
+                }
                 else
+                {
                     DisplayMessageIncorrectInput();
+                }
             }
         }
-       
         public static int ChoiseActionReturn()//13 //Кирилл
         {
             while(true) 
             {
                 string? input = Console.ReadLine();
-                if (uint.TryParse(input,out uint scriptNumber))
+                if (IsIndexCorrect(input, out uint scriptNumber))
                     switch (scriptNumber)
                     {
                         case 1:
@@ -427,6 +430,10 @@ namespace ConsoleApp2
                 else DisplayMessageIncorrectInput();
             }
         }
+        public static bool IsIndexCorrect(string? input, out uint scriptNumber)
+        {
+            return uint.TryParse(input, out scriptNumber);
+        }
         public static void SaveTickets(List<Ticket> basket, string path)//14 // Саша
         {
             var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
@@ -434,7 +441,6 @@ namespace ConsoleApp2
             jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
             File.WriteAllText(path, jsonString); // запись в файл .json
         }
-
         public static void OutputReceipt(List<Ticket> basket) // Саша
         {
             int priceOfTickets = 0;
