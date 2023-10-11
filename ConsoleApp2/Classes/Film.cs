@@ -14,7 +14,7 @@ namespace ConsoleApp2.Classes
             this.description = description;
             this.genre = genre;
             this.year = year;
-            
+
         }
         public string name { get; }
         public string description { get; }
