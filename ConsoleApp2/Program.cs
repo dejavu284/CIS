@@ -119,7 +119,7 @@ namespace ConsoleApp2
                         scriptNumber = 13;
                         break;
                     case 10:
-                        scriptNumber = ProofBuyTicket(basket, thisFilmScrining, film); 
+                        scriptNumber = ProofBuyTicket(basket, thisFilmScrining, film); // в методе 3 параметра - это плохо
                         break;
                     case 11:
                         OutputTicket(basket[^1]); 
@@ -312,6 +312,7 @@ namespace ConsoleApp2
             Console.WriteLine();
             return filmScreeningInCertainTime!;
         }
+        // поменять название, на // OutputCountPlace
         public static int OutputPlaseFilmScreening(Film_screening filmScreening) // 8 // Саша
         {
             int script;
@@ -389,6 +390,7 @@ namespace ConsoleApp2
             Console.WriteLine("Время сеанса: {0}", ticket.Time);
             Console.WriteLine("Цена билета: {0}", ticket.Price);
         }
+        // очень плохое название для метода, оно не отражает то, что в нем происходит, ну или мне просто слова не знакомы эти
         public static int PoolCotinuationBuy()//12 //Кирилл
         {
             Console.WriteLine("Купить ещё билет?(да/нет)");
