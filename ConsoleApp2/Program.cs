@@ -122,6 +122,7 @@ namespace ConsoleApp2
                     else
                     {
                         OutputActionReturn();
+
                         numberAction = ChoiseActionReturn();
                         switch (numberAction)
                         {
@@ -320,6 +321,8 @@ namespace ConsoleApp2
             Console.WriteLine();
             return filmScreeningInCertainTime!;
         }
+
+        // поменять название, на // OutputCountPlace
         public static void OutputPlaseFilmScreening(Film_screening filmScreening)
         {
             Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.countTiket);
