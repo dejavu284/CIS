@@ -80,80 +80,76 @@ namespace ConsoleApp2
             }
             return flag;
         }
+        public static bool IsFilmScreeningNotNull(List<Film_screening> filmScreening)
+        {
+            return filmScreening.Count != 0;
+        }
         //метод класса Basket (возможно конструктор класса)
         public static List<Ticket> BuyTickets(Dictionary<string, List<Film_screening>> filmScreening, List<Film> films)
         {
-            List<Ticket> basket = new List<Ticket>();
-            do
+            List<Ticket> basket = new();
+            bool flagBuyTickets = true;
+            while (flagBuyTickets)
             {
-                int numberAction = 0;
-                // выбор фильма 
-                OutputFilms(films);
-                Film film = GetFilm(films);
-                OutputInfoFilm(film);
-                List<Film_screening> filmScreeningsInOneFilm = FindThisFilmScrinings(film, filmScreening);//метод класса List<Film_screening> уйти от коллекции в Класс FilmScreening добавить NameFilm
-                List<DateOnly> datesFilmScreenings = FindDataFilmScreening(filmScreeningsInOneFilm);
-
-                ChoiceData: // выбор даты 
-
-                if (DateIsEmpty(datesFilmScreenings))
+                Film film;
+                List<Film_screening> filmScreeningsInOneFilm;
+                List<DateOnly> datesFilmScreenings;
+                DateOnly certainDataFilmSreening;
+                List<Film_screening> filmScreeningsInCertainDay = new();
+                Film_screening filmScreeningsInCertainTime = new(new(), new(), -1, -1);
+                while (true) // Выбор фильма
                 {
-                    Console.WriteLine("К сожелению у фильма нет показов. Пожалуйста выбирите другой фильм\n");
-                    continue;
-                }
-                   
-                OutputDataFilmScreening(datesFilmScreenings);
-                
-                DateOnly dataFilmSreening = ChoiseDataFilmScreening(datesFilmScreenings);
-                List<Film_screening> filmScreeningsInOneDay = FindFilmScreeningByData(dataFilmSreening, filmScreeningsInOneFilm); //метод класса List<Film_screening>
-
-            ChoiceTime: //выбор времени 
-
-                OutputTimeFilmScreening(filmScreeningsInOneDay);
-                Film_screening filmScreeningsInOneTime = ChoiseTimeFilmScreening(filmScreeningsInOneDay);
-                if (IsPlacesNotEmpty(filmScreeningsInOneTime))
-                {
-                    OutputPlaseFilmScreening(filmScreeningsInOneTime);
-                    if (PoolYesOrNo("Купить билет?(да/нет)"))
+                    OutputFilms(films);
+                    film = GetFilm(films);
+                    filmScreeningsInOneFilm = FindThisFilmScrinings(film, filmScreening);
+                    if (IsFilmScreeningNotNull(filmScreeningsInOneFilm))
                     {
-                        basket = AddTicket(basket, filmScreeningsInOneTime, film);//метод класса Basket
-                        OutputReceipt(basket);//метод класса Basket
+                        break;
                     }
                     else
                     {
-                        OutputActionReturn();
-
-                        numberAction = ChoiseActionReturn();
-                        switch (numberAction)
-                        {
-                            case 1:
-                                continue;
-                            case 2:
-                                goto ChoiceData;
-                            case 3:
-                                goto ChoiceTime;
-                        }
+                        Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
+                        continue;
                     }
                 }
-                else
+                OutputInfoFilm(film);
+
+                // Выбор даты
+                bool flagChooseDate = true;
+                while (flagChooseDate)
+                { 
+                    datesFilmScreenings = FindDataFilmScreening(filmScreeningsInOneFilm);
+                    OutputDataFilmScreening(datesFilmScreenings);
+                
+                    certainDataFilmSreening = ChoiseDataFilmScreening(datesFilmScreenings);
+                    filmScreeningsInCertainDay = FindFilmScreeningByData(certainDataFilmSreening, filmScreeningsInOneFilm);
+                    flagChooseDate = PoolYesOrNo("Выбрать другую дату? (да/нет)");
+                }
+                // Выбор времени
+                bool flagChooseTime = true;
+                while (flagChooseTime)
                 {
-                    Console.WriteLine("К сожелению места закончились.");
-                    OutputActionReturn();
-                    numberAction = ChoiseActionReturn();
-                    switch (numberAction)
+                    OutputTimeFilmScreening(filmScreeningsInCertainDay);
+                    filmScreeningsInCertainTime = ChoiseTimeFilmScreening(filmScreeningsInCertainDay);
+                    if (!IsPlacesNotEmpty(filmScreeningsInCertainTime))
                     {
-                        case 1:
-                            continue;
-                        case 2:
-                            goto ChoiceData;
-                        case 3:
-                            goto ChoiceTime;
+                        Console.WriteLine("На выбранное время мест нет.\n");
                     }
-
+                    flagChooseTime = PoolYesOrNo("Выбрать другое время? (да/нет)");
                 }
+                if (!IsPlacesNotEmpty(filmScreeningsInCertainTime))
+                {
+                    continue;
+                }
+                OutputPlaseFilmScreening(filmScreeningsInCertainTime);
+                if (PoolYesOrNo("Купить билет?(да/нет)"))
+                {
+                    basket = AddTicket(basket, filmScreeningsInCertainTime, film);//метод класса Basket
+                }
+                OutputCheck(basket);
+                flagBuyTickets = !PoolYesOrNo("Закончить? (да/нет)");
             }
-            while (PoolYesOrNo("Купить ещё билет?(да/нет)"));
-            return basket;
+            return new List<Ticket>();
         }
 
         public static Film GetFilm(List<Film> films) 
@@ -161,20 +157,28 @@ namespace ConsoleApp2
             Film? film;
             while (true)
             {
-                Console.WriteLine("Для выбора фильма напишите его цифру.");
+                Console.WriteLine("Для выбора фильма напишите его цифру:\n");
                 string? inputIndex = Console.ReadLine();
-                if (IsNumberInList(films, inputIndex))
+                film = ChooseFilm(films, inputIndex);
+                if(film.name != null)
                 {
-                    film = films[int.Parse(inputIndex!) - 1];
                     break;
-                }
-                else
-                {
-                    DisplayMessageIncorrectInput();
                 }
             }
             Console.WriteLine();
             return film!;
+        }
+        public static Film ChooseFilm(List<Film> films, string index)
+        {
+            if (IsNumberInList(films, index))
+            {
+                return films[int.Parse(index!) - 1];
+            }
+            else
+            {
+                DisplayMessageIncorrectInput();
+                return new Film(null, null, null, -1);
+            }
         }
         public static bool IsNumberInList<T>(List<T> films, string? indexStr)
         {
@@ -408,7 +412,7 @@ namespace ConsoleApp2
             jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
             File.WriteAllText(path, jsonString); // запись в файл .json
         }
-        public static void OutputReceipt(List<Ticket> basket)
+        public static void OutputCheck(List<Ticket> basket)
         {
             int priceOfTickets = 0;
             Console.WriteLine("\n---------------------------");
