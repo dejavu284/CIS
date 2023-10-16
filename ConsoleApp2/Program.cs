@@ -111,7 +111,7 @@ namespace ConsoleApp2
 
                 OutputTimeFilmScreening(filmScreeningsInOneDay);
                 Film_screening filmScreeningsInOneTime = ChoiseTimeFilmScreening(filmScreeningsInOneDay);
-                if (!PlaseIsEmpty(filmScreeningsInOneTime))
+                if (IsPlacesNotEmpty(filmScreeningsInOneTime))
                 {
                     OutputPlaseFilmScreening(filmScreeningsInOneTime);
                     if (PoolYesOrNo("Купить билет?(да/нет)"))
@@ -330,7 +330,7 @@ namespace ConsoleApp2
      
         public static bool IsPlacesNotEmpty(Film_screening filmScreening)
         {
-            return (filmScreening.countTiket == 0);
+            return (filmScreening.countTiket != 0);
         }
         public static void OutputActionReturn()//9 // Саша
         {
