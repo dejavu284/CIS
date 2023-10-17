@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2.Classes
 {
-    internal class Film_screening
+    internal class FilmScreening
     {
-        public Film_screening(/*Film film,*/ DateOnly data, TimeOnly time, int countTiket, int price)
+        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
         {
-            /*this.film = film;*/
+            this.name = name;
             this.data = data;
             this.time = time;
             this.countTiket = countTiket;
             this.price = price;
         }
-        /* public Film film;*/
+        public string name { get; set; }
         public DateOnly data { get; set; }
         public TimeOnly time { get; set; }
         public int countTiket { get; set; }
