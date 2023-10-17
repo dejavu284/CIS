@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp2.Classes
 {
-    internal class Film_screening
+    internal class FilmScreening
     {
-        public Film_screening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
+        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
         {
             this.name = name;
             this.data = data;
