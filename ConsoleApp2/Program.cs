@@ -107,11 +107,7 @@ namespace ConsoleApp2
                         OutputInfoFilm(film);
                         break;
                     }
-                    else
-                    {
-                        Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
-                        continue;
-                    }
+                    Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
                 }
                 // Выбор даты
                 bool flagChooseDate = true;
