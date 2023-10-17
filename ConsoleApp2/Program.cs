@@ -96,14 +96,15 @@ namespace ConsoleApp2
                 List<DateOnly> datesFilmScreenings;
                 DateOnly certainDataFilmSreening;
                 List<Film_screening> filmScreeningsInCertainDay = new();
-                Film_screening filmScreeningsInCertainTime = new(new(), new(), -1, -1);
+                Film_screening filmScreeningsInCertainTime = new("",new(), new(), -1, -1);
                 while (true) // Выбор фильма
                 {
                     OutputFilms(films);
                     film = GetFilm(films);
-                    filmScreeningsInOneFilm = FindThisFilmScrinings(film, filmScreening);
+                    filmScreeningsInOneFilm = FindThisFilmScrinings(film.name, filmScreening);
                     if (IsFilmScreeningNotNull(filmScreeningsInOneFilm))
                     {
+                        OutputInfoFilm(film);
                         break;
                     }
                     else
@@ -112,8 +113,6 @@ namespace ConsoleApp2
                         continue;
                     }
                 }
-                OutputInfoFilm(film);
-
                 // Выбор даты
                 bool flagChooseDate = true;
                 while (flagChooseDate)
@@ -144,7 +143,7 @@ namespace ConsoleApp2
                 OutputPlaseFilmScreening(filmScreeningsInCertainTime);
                 if (PoolYesOrNo("Купить билет?(да/нет)"))
                 {
-                    basket = AddTicket(basket, filmScreeningsInCertainTime, film);//метод класса Basket
+                    basket = AddTicket(basket, filmScreeningsInCertainTime);//метод класса Basket
                 }
                 OutputCheck(basket);
                 flagBuyTickets = !PoolYesOrNo("Закончить? (да/нет)");
@@ -205,12 +204,12 @@ namespace ConsoleApp2
             Console.WriteLine("Год выхода: {0}", film.year);
             Console.WriteLine("Описание: {0}\n", film.description);
         }
-        public static List<Film_screening> FindThisFilmScrinings(Film film, Dictionary<string, List<Film_screening>> filmScreenings)
+        public static List<Film_screening> FindThisFilmScrinings(string filmName, Dictionary<string, List<Film_screening>> filmScreenings)
         {
             List<Film_screening> thisFilmScrinings = new();
             foreach (KeyValuePair<string, List<Film_screening>> filmScreening in filmScreenings)
             {
-                if (film.name == filmScreening.Key)
+                if (filmName == filmScreening.Key)
                 {
                     thisFilmScrinings = filmScreening.Value;
                 }
@@ -345,9 +344,9 @@ namespace ConsoleApp2
         }
 
         //метод класса Basket
-        public static List<Ticket> AddTicket(List<Ticket> basket, Film_screening filmScreening, Film film)
+        public static List<Ticket> AddTicket(List<Ticket> basket, Film_screening filmScreening)
         { 
-            basket.Add(new Ticket(film.name, filmScreening.data, filmScreening.time, filmScreening.price));
+            basket.Add(new Ticket(filmScreening.name, filmScreening.data, filmScreening.time, filmScreening.price));
             Console.WriteLine("Билет куплен\n");
             return basket;
         }
