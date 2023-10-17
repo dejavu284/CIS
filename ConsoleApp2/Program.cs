@@ -93,12 +93,12 @@ namespace ConsoleApp2
                 if (IsPlacesNotEmpty(filmScreeningInCertainTime))
                 {
                     OutputPlaseFilmScreening(filmScreeningInCertainTime);
-                    if (PoolYesOrNo("Купить билет? (y/n)"))
+                    if (PoolYesOrNo("Купить билет","y","n"))
                     {
                         basket = AddTicket(basket, filmScreeningInCertainTime);//метод класса Basket
                     }
                     OutputCheck(basket);
-                    flagBuyTickets = !PoolYesOrNo("Закончить? (y/n)");
+                    flagBuyTickets = !PoolYesOrNo("Закончить", "y", "n");
                 }
             }
             return new List<Ticket>();
@@ -116,7 +116,7 @@ namespace ConsoleApp2
                     Console.WriteLine("На выбранное время мест нет.\n");
                     return filmScreeningsInCertainTime;
                 }
-                flagChooseTime = PoolYesOrNo("Выбрать другое время? (y/n)");
+                flagChooseTime = PoolYesOrNo("Выбрать другое время", "y", "n");
             }
             throw new InvalidExpressionException ();// сделать свой эксепшен
         }
@@ -130,7 +130,7 @@ namespace ConsoleApp2
                 OutputDataFilmScreening(datesFilmScreenings);
                 DateOnly certainDataFilmSreening = ChoiseDataFilmScreening(datesFilmScreenings);
                 filmScreeningsInCertainDay = FindFilmScreeningByData(certainDataFilmSreening, filmScreeningsInOneFilm);
-                flagChooseDate = PoolYesOrNo("Выбрать другую дату? (да/нет)");
+                flagChooseDate = PoolYesOrNo("Выбрать другую дату", "y", "n");
             }
             return filmScreeningsInCertainDay;
         }
@@ -351,15 +351,15 @@ namespace ConsoleApp2
             Console.WriteLine("Билет куплен\n");
             return basket;
         }
-        public static bool PoolYesOrNo(string question)
+        public static bool PoolYesOrNo(string question,string yes,string no)
         {
-            Console.WriteLine(question);
+            Console.WriteLine("{0}? ({1}/{2})",question,yes,no);
             while (true)
             {
                 string? answer = Console.ReadLine();
-                if (answer.ToLower() == "y")
+                if (answer.ToLower() == yes)
                     return true;
-                else if (answer.ToLower() == "n")
+                else if (answer.ToLower() == no)
                     return false;
                 else
                     DisplayMessageIncorrectInput();
