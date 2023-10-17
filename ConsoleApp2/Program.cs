@@ -105,7 +105,7 @@ namespace ConsoleApp2
         }
         public static FilmScreening ChooseFilmScreeningsInCertainTime(List<FilmScreening> filmScreeningsInCertainDate)
         {
-            FilmScreening filmScreeningsInCertainTime;// хуйня
+            FilmScreening filmScreeningsInCertainTime;
             bool flagChooseTime = true;
             while (flagChooseTime)
             {
@@ -356,8 +356,8 @@ namespace ConsoleApp2
             Console.WriteLine("{0}? ({1}/{2})",question,yes,no);
             while (true)
             {
-                string? answer = Console.ReadLine();
-                if (answer.ToLower() == yes)
+                string answer = Console.ReadLine()!;
+                if (answer!.ToLower() == yes)
                     return true;
                 else if (answer.ToLower() == no)
                     return false;
