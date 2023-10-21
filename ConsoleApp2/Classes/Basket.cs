@@ -24,9 +24,7 @@ namespace ConsoleApp2.Classes
         }
         public static void MessageTicketPurchased()
         {
-            Console.WriteLine("\n---------------------------");
             Console.WriteLine("Билет куплен");
-            Console.WriteLine("\n---------------------------");
         }
         public void MessageCheck()
         {
@@ -35,12 +33,12 @@ namespace ConsoleApp2.Classes
             for (int i = 0; i < _numberTickets; i++)
             {
                 Console.WriteLine("\nБилет №{0}", i + 1);
-                Tickets[i].MessangInfoOfTicket();
+                Tickets[i].MessangInfo();
             }
             Console.WriteLine("\nИтоговая стоимость составила: {0}", Price);
             Console.WriteLine("---------------------------");
         }
-        public void Save(string path)//14 // Саша
+        public void Save(string path)
         {
             var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
             string jsonString = JsonSerializer.Serialize(this, options); // список в строку

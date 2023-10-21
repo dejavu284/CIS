@@ -1,8 +1,6 @@
 using ConsoleApp2.Classes;
-using System.Collections.Generic;
 using System.Data;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using File = System.IO.File;
 
 namespace ConsoleApp2
@@ -24,7 +22,8 @@ namespace ConsoleApp2
 
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
-                    Basket basket = BuyTickets(filmScreening, films);
+                    FilmsPoster filmsPoster = new (films);
+                    Basket basket = BuyTickets(filmScreening, filmsPoster);
                     basket.Save(basketJsonPath);
                 }
                 Console.WriteLine("\nСпасибо за покупку, приходите ещё");
@@ -32,7 +31,7 @@ namespace ConsoleApp2
             }
             else
             {
-                DisplayMessageIncorrectInput();
+                MessageIncorrectInput();
             }
         }
         public static bool TryDeserializ<T>(string path, ref T element)//вынести текст ошибок в свой класс ошибок
@@ -74,16 +73,14 @@ namespace ConsoleApp2
             return filmScreening.Count != 0;
         }
         //возможно метод класса Basket (конструктор класса)
-        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreening, List<Film> films)
+        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
         {
             Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
-
-                OutputFilms(films);
                 // Выбор фильма
-                List<FilmScreening> filmScreeningsInOneFilm = ChooseFilm(films, filmScreening);
+                List<FilmScreening> filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(filmScreening, filmsPoster);
                 // Выбор даты
                 List<FilmScreening> filmScreeningsInCertainDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
                 // Выбор времени
@@ -106,18 +103,18 @@ namespace ConsoleApp2
         {
             FilmScreening filmScreeningsInCertainTime;
             bool flagChooseTime = true;
-            while (flagChooseTime)
+            do
             {
                 OutputTimeFilmScreening(filmScreeningsInCertainDate);
                 filmScreeningsInCertainTime = ChoiseTimeFilmScreening(filmScreeningsInCertainDate);
                 if (!IsPlacesNotEmpty(filmScreeningsInCertainTime))
                 {
                     Console.WriteLine("На выбранное время мест нет.\n");
-                    return filmScreeningsInCertainTime;
+                    throw new InvalidExpressionException();// сделать свой эксепшен
                 }
                 flagChooseTime = PoolYesOrNo("Выбрать другое время", "y", "n");
-            }
-            throw new InvalidExpressionException ();// сделать свой эксепшен
+            } while (flagChooseTime);
+            return filmScreeningsInCertainTime;
         }
         public static List<FilmScreening> ChooseFilmScreeingInCertainDate(List<FilmScreening> filmScreeningsInOneFilm)
         {
@@ -125,7 +122,7 @@ namespace ConsoleApp2
             List < FilmScreening > filmScreeningsInCertainDay = new();
             while (flagChooseDate)
             {
-                List<DateOnly>  datesFilmScreenings = FindDataFilmScreening(filmScreeningsInOneFilm);
+                List<DateOnly>  datesFilmScreenings = FindDatesFilmScreenings(filmScreeningsInOneFilm);
                 OutputDataFilmScreening(datesFilmScreenings);
                 DateOnly certainDataFilmSreening = ChoiseDataFilmScreening(datesFilmScreenings);
                 filmScreeningsInCertainDay = FindFilmScreeningByData(certainDataFilmSreening, filmScreeningsInOneFilm);
@@ -133,78 +130,76 @@ namespace ConsoleApp2
             }
             return filmScreeningsInCertainDay;
         }
-        public static List<FilmScreening> ChooseFilm(List<Film> films, Dictionary<string, List<FilmScreening>> filmScreening)
+        public static DateOnly ChoiseDataFilmScreening(List<DateOnly> allDateFilmScreenings)//??
         {
-            Film film;
+            MessageToSelectItemEnterNumber(); 
+
+            string? inputIndex = Console.ReadLine();
+            DateOnly dateFilmScreenings = FindElByIndex(allDateFilmScreenings, inputIndex);
+            return dateFilmScreenings;
+        }
+        public static FilmScreening ChoiseTimeFilmScreening(List<FilmScreening> filmScreeningInCertainDay)//??
+        {
+            MessageToSelectItemEnterNumber();
+
+            string? inputIndex = Console.ReadLine();
+            FilmScreening filmScreeningInCertainTime = FindElByIndex(filmScreeningInCertainDay, inputIndex);
+            return filmScreeningInCertainTime;
+        }
+        public static Film ChooseFilm(FilmsPoster filmsPoster)//повтор методов вопрос что делать
+        {
+            MessageToSelectItemEnterNumber();
+
+            string? inputNumber = Console.ReadLine();
+            Film film = FindElByIndex(filmsPoster.Films, inputNumber);
+            return film;
+        }
+        public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
+        {
             List<FilmScreening> filmScreeningsInOneFilm = new();
-            bool flagChooseFilm = true;
-            while (flagChooseFilm) // Выбор фильма
+            do
             {
-                film = GetFilm(films);
-                filmScreeningsInOneFilm = FindThisFilmScrinings(film.name, filmScreening);
+                filmsPoster.MessageNamesAllFilms();
+                Film film = ChooseFilm(filmsPoster);
+
+                filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreening);
                 if (IsFilmScreeningNotNull(filmScreeningsInOneFilm))
-                {
-                    OutputInfoFilm(film);
-                    flagChooseFilm = false;
-                }
-                Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
+                    film.MessageInfo();
+                else
+                    Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
             }
+            while (!IsFilmScreeningNotNull(filmScreeningsInOneFilm));
+
             return filmScreeningsInOneFilm;
         }
-        public static Film GetFilm(List<Film> films) 
+        public static T FindElByIndex<T>(List<T> list, string? indexStr)
         {
-            Film? film;
-            while (true)
+            int index = -1;
+            while (index == -1)
             {
-                Console.WriteLine("Для выбора фильма напишите его цифру:\n");
-                string? inputIndex = Console.ReadLine();
-                film = ChooseFilm(films, inputIndex);
-                if(film.name != null)
+                if (!IsNumberInList(list, indexStr, out index))
                 {
-                    break;
+                    MessageIncorrectInput();
+                    throw new ArgumentException("Выбранного елемента нет в списке");
                 }
             }
-            Console.WriteLine();
-            return film!;
+            return list[index - 1];
         }
-        public static Film ChooseFilm(List<Film> films, string index)
+        public static bool IsNumberInList<T>(List<T> films, string? indexStr, out int index)
         {
-            if (IsNumberInList(films, index))
-            {
-                return films[int.Parse(index!) - 1];
-            }
-            else
-            {
-                DisplayMessageIncorrectInput();
-                return new Film(null, null, null, -1);
-            }
-        }
-        public static bool IsNumberInList<T>(List<T> films, string? indexStr)
-        {
-            bool tryParseChecked = uint.TryParse(indexStr, out uint index);
+            bool tryParseChecked = int.TryParse(indexStr, out index);
             return tryParseChecked && films.Count >= index;
         }
-        public static void DisplayMessageIncorrectInput()
+        public static void MessageIncorrectInput()
         {
             Console.WriteLine("\nНекорректный ввод поробуйте ещё раз");
         }
-        public static void OutputFilms(List<Film> films)
+        public static void MessageToSelectItemEnterNumber()
         {
-            Console.WriteLine("Фильмы в прокате:\n");
-            for (int i = 0; i < films.Count; i++)
-            {
-                Console.WriteLine("{0}. {1}", i + 1, films[i].name);
-            }
+            Console.WriteLine("\nДля выбора элемента введите его номер");
             Console.WriteLine();
         }
-        public static void OutputInfoFilm(Film film) 
-        {
-            Console.WriteLine("Информация о фильме {0}", film.name);
-            Console.WriteLine("Жанр: {0}", film.genre);
-            Console.WriteLine("Год выхода: {0}", film.year);
-            Console.WriteLine("Описание: {0}\n", film.description);
-        }
-        public static List<FilmScreening> FindThisFilmScrinings(string filmName, Dictionary<string, List<FilmScreening>> filmScreenings)
+        public static List<FilmScreening> FindFilmScriningsByName(string filmName, Dictionary<string, List<FilmScreening>> filmScreenings)
         {
             List<FilmScreening> thisFilmScrinings = new();
             foreach (KeyValuePair<string, List<FilmScreening>> filmScreening in filmScreenings)
@@ -216,7 +211,7 @@ namespace ConsoleApp2
             }
             return thisFilmScrinings;
         }
-        public static List<DateOnly> FindDataFilmScreening(List<FilmScreening> filmScreenings)
+        public static List<DateOnly> FindDatesFilmScreenings(List<FilmScreening> filmScreenings)
         {
             List<DateOnly> datesFilmScreenings = new();
             foreach (FilmScreening filmScreening in filmScreenings)
@@ -252,29 +247,6 @@ namespace ConsoleApp2
             }
             Console.WriteLine();
         }
-        public static DateOnly ChoiseDataFilmScreening(List<DateOnly> allDateFilmScreenings) 
-        {
-            DateOnly dateFilmScreenings;
-            while (true)
-            {
-                Console.WriteLine("Для выбора даты показа напишите её цифру.");
-                string? inputIndex = Console.ReadLine();
-                if (IsNumberInList(allDateFilmScreenings, inputIndex))
-                {
-                    dateFilmScreenings = allDateFilmScreenings[int.Parse(inputIndex!) - 1];
-                    break;
-                }
-                else
-                {
-                    DisplayMessageIncorrectInput();
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-            return dateFilmScreenings!;
-        }
-        // перенести метод в класс FilmScreening
-
         public static List<FilmScreening> FindFilmScreeningByData(DateOnly datesFilmScreenings, List<FilmScreening> allFilmScreenings)
         {
             List<FilmScreening> filmScreeningsTemp = new List<FilmScreening>();
@@ -296,26 +268,6 @@ namespace ConsoleApp2
                 Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, filmscreenings[i].time, filmscreenings[i].price);
             }
         }
-        public static FilmScreening ChoiseTimeFilmScreening(List<FilmScreening> filmScreeningInCertainDay)
-        {
-            FilmScreening filmScreeningInCertainTime;
-            while (true)
-            {
-                Console.WriteLine("\nДля выбора времени показа напишите её цифру.");
-                string? inputStr = Console.ReadLine();
-                if (IsNumberInList(filmScreeningInCertainDay, inputStr))
-                {
-                    filmScreeningInCertainTime = filmScreeningInCertainDay[int.Parse(inputStr!) - 1];
-                    break;
-                }
-                else
-                {
-                    DisplayMessageIncorrectInput();
-                }
-            }
-            Console.WriteLine();
-            return filmScreeningInCertainTime!;
-        }
         public static void OutputCountPlace(FilmScreening filmScreening)
         {
             Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.countTiket);
@@ -335,12 +287,8 @@ namespace ConsoleApp2
                 else if (answer.ToLower() == no)
                     return false;
                 else
-                    DisplayMessageIncorrectInput();
+                    MessageIncorrectInput();
             }
-        }
-        public static bool IsIndexCorrect(string? input, out uint scriptNumber)
-        {
-            return uint.TryParse(input, out scriptNumber);
         }
     }
 }

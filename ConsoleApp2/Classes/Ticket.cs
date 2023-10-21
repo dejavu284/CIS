@@ -29,7 +29,7 @@ namespace ConsoleApp2.Classes
             int res = random.Next(1000, 9999);
             return res;
         }
-        public void MessangInfoOfTicket()
+        public void MessangInfo()
         {
             Console.WriteLine("---------------------------");
             Console.WriteLine("Информация о билете:");
