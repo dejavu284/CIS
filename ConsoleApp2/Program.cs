@@ -24,8 +24,8 @@ namespace ConsoleApp2
 
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
-                    List<Ticket> basket = BuyTickets(filmScreening, films);
-                    SaveTickets(basket, basketJsonPath);
+                    Basket basket = BuyTickets(filmScreening, films);
+                    basket.Save(basketJsonPath);
                 }
                 Console.WriteLine("\nСпасибо за покупку, приходите ещё");
                 Console.ReadKey();
@@ -35,12 +35,11 @@ namespace ConsoleApp2
                 DisplayMessageIncorrectInput();
             }
         }
-        public static bool TryDeserializ<T>(string path, ref T element)
+        public static bool TryDeserializ<T>(string path, ref T element)//вынести текст ошибок в свой класс ошибок
             where T : new()
         {
             try
             {
-                // Десериализация film.json в список films
                 string textJson = File.ReadAllText(path);
                 element = JsonSerializer.Deserialize<T>(textJson)!;
                 var a = new T();
@@ -74,10 +73,10 @@ namespace ConsoleApp2
         {
             return filmScreening.Count != 0;
         }
-        //метод класса Basket (возможно конструктор класса)
-        public static List<Ticket> BuyTickets(Dictionary<string, List<FilmScreening>> filmScreening, List<Film> films)
+        //возможно метод класса Basket (конструктор класса)
+        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreening, List<Film> films)
         {
-            List<Ticket> basket = new();
+            Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
@@ -92,16 +91,16 @@ namespace ConsoleApp2
 
                 if (IsPlacesNotEmpty(filmScreeningInCertainTime))
                 {
-                    OutputPlaseFilmScreening(filmScreeningInCertainTime);
+                    OutputCountPlace(filmScreeningInCertainTime);
                     if (PoolYesOrNo("Купить билет","y","n"))
                     {
-                        basket = AddTicket(basket, filmScreeningInCertainTime);//метод класса Basket
+                        basket.AddTicket(filmScreeningInCertainTime);
                     }
-                    OutputCheck(basket);
+                    basket.MessageCheck();
                     flagBuyTickets = !PoolYesOrNo("Закончить", "y", "n");
                 }
             }
-            return new List<Ticket>();
+            return new Basket();
         }
         public static FilmScreening ChooseFilmScreeningsInCertainTime(List<FilmScreening> filmScreeningsInCertainDate)
         {
@@ -231,16 +230,14 @@ namespace ConsoleApp2
         }
         public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, FilmScreening filmScreening)
         {
-            bool repeat = false;
             foreach (DateOnly data in datesFilmScreenings)
             {
                 if (IsDatesEqual(data, filmScreening))
                 {
-                    repeat = true;
-                    break;
+                    return true;
                 }
             }
-            return repeat;
+            return false;
         }
         public static bool IsDatesEqual(DateOnly data, FilmScreening filmScreening)
         {
@@ -255,12 +252,6 @@ namespace ConsoleApp2
             }
             Console.WriteLine();
         }
-
-        public static bool DateIsEmpty(List<DateOnly> datesFilmScreenings)
-        {
-            return (datesFilmScreenings.Count == 0 || datesFilmScreenings == null);
-        }
-
         public static DateOnly ChoiseDataFilmScreening(List<DateOnly> allDateFilmScreenings) 
         {
             DateOnly dateFilmScreenings;
@@ -325,31 +316,13 @@ namespace ConsoleApp2
             Console.WriteLine();
             return filmScreeningInCertainTime!;
         }
-
-        // поменять название, на // OutputCountPlace
-        public static void OutputPlaseFilmScreening(FilmScreening filmScreening)
+        public static void OutputCountPlace(FilmScreening filmScreening)
         {
             Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.countTiket);
         }
-     
         public static bool IsPlacesNotEmpty(FilmScreening filmScreening)
         {
             return (filmScreening.countTiket != 0);
-        }
-        public static void OutputActionReturn()//9 // Саша
-        {
-            Console.WriteLine("Куда хотите вернуться?\n");
-            Console.WriteLine("1.Выбор фильма");
-            Console.WriteLine("2.Выбор даты");
-            Console.WriteLine("3.Выбор времени");
-        }
-
-        //метод класса Basket
-        public static List<Ticket> AddTicket(List<Ticket> basket, FilmScreening filmScreening)
-        { 
-            basket.Add(new Ticket(filmScreening.name, filmScreening.data, filmScreening.time, filmScreening.price));
-            Console.WriteLine("Билет куплен\n");
-            return basket;
         }
         public static bool PoolYesOrNo(string question,string yes,string no)
         {
@@ -365,66 +338,9 @@ namespace ConsoleApp2
                     DisplayMessageIncorrectInput();
             }
         }
-        public static void OutputTicket(Ticket ticket)
-        {
-            Console.WriteLine("---------------------------");
-            Console.WriteLine("Информация о билете:");
-            OutputInfoOfTicket(ticket);
-            Console.WriteLine("---------------------------\n");
-        }
-        public static void OutputInfoOfTicket(Ticket ticket)
-        {
-            Console.WriteLine("Название фильма: {0}", ticket.Name);
-            Console.WriteLine("Дата сеанса: {0}", ticket.Data);
-            Console.WriteLine("Время сеанса: {0}", ticket.Time);
-            Console.WriteLine("Цена билета: {0}", ticket.Price);
-        }
-        public static int ChoiseActionReturn()
-        {
-            while(true) 
-            {
-                string? input = Console.ReadLine();
-                if (IsIndexCorrect(input, out uint scriptNumber))
-                    switch (scriptNumber)
-                    {
-                        case 1:
-                            return 1;
-                        case 2:
-                            return 2;
-                        case 3:
-                            return 3;
-                        default:
-                            DisplayMessageIncorrectInput();
-                            break;
-                    }
-                else DisplayMessageIncorrectInput();
-            }
-        }
-
         public static bool IsIndexCorrect(string? input, out uint scriptNumber)
         {
             return uint.TryParse(input, out scriptNumber);
-        }
-        public static void SaveTickets(List<Ticket> basket, string path)//14 // Саша
-        {
-            var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
-            string jsonString = JsonSerializer.Serialize(basket, options); // список в строку
-            jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
-            File.WriteAllText(path, jsonString); // запись в файл .json
-        }
-        public static void OutputCheck(List<Ticket> basket)
-        {
-            int priceOfTickets = 0;
-            Console.WriteLine("\n---------------------------");
-            Console.WriteLine("Чек:");
-            for (int i = 0; i < basket.Count; i++)
-            {
-                priceOfTickets += basket[i].Price;
-                Console.WriteLine("\nБилет №{0}", i + 1);
-                OutputInfoOfTicket(basket[i]);
-            }
-            Console.WriteLine("\nИтоговая стоимость составила: {0}", priceOfTickets);
-            Console.WriteLine("---------------------------");
         }
     }
 }
