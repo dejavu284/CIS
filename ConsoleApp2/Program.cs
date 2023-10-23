@@ -23,8 +23,8 @@ namespace ConsoleApp2
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
                     FilmsPoster filmsPoster = new (films);
-                    Basket basket = Basket.BuyTickets(filmScreening, filmsPoster);
-                    basket.Save(basketJsonPath);
+                    Basket.BuyTickets(filmScreening, filmsPoster);
+                    Basket.Save(basketJsonPath);
                 }
                 Console.WriteLine("\nСпасибо за покупку, приходите ещё");
                 Console.ReadKey();

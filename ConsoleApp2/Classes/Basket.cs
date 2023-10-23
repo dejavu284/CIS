@@ -13,13 +13,13 @@ namespace ConsoleApp2.Classes
     {
         public Basket() {}
         public static List<Ticket> Tickets { get; private set; } = new List<Ticket>();
-        private static int _numberTickets = 0;
+        public static int NumberTickets { get; private set; } = 0;
         public static int Price { get; private set; } = 0;
-        public void AddTicket(FilmScreening filmScreening)
+        public static void AddTicket(FilmScreening filmScreening)
         {
             Tickets.Add(new Ticket(filmScreening.Name, filmScreening.Date, filmScreening.Time, filmScreening.Price));
             Price += filmScreening.Price;
-            _numberTickets++;
+            NumberTickets++;
             MessageTicketPurchased();
         }
         public static void MessageTicketPurchased()
@@ -44,27 +44,15 @@ namespace ConsoleApp2.Classes
                     FilmScreening.OutputCountPlace(filmScreeningInCertainTime);
                     if (FilmScreening.PoolYesOrNo("Купить билет"))
                     {
-                        basket.AddTicket(filmScreeningInCertainTime);
+                        AddTicket(filmScreeningInCertainTime);
                     }
-                    basket.MessageCheck();
+                    ConsoleMessages.MessageCheck();
                     flagBuyTickets = !FilmScreening.PoolYesOrNo("Закончить");
                 }
             }
             return basket;
         }
-        public void MessageCheck()
-        {
-            Console.WriteLine("\n---------------------------");
-            Console.WriteLine("Чек:");
-            for (int i = 0; i < _numberTickets; i++)
-            {
-                Console.WriteLine("\nБилет №{0}", i + 1);
-                Tickets[i].MessangInfo();
-            }
-            Console.WriteLine("\nИтоговая стоимость составила: {0}", Price);
-            Console.WriteLine("---------------------------");
-        }
-        public void Save(string path)
+        public static void Save(string path)
         {
             var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
             string jsonString = JsonSerializer.Serialize(Tickets, options); // список в строку
