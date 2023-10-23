@@ -31,7 +31,7 @@ namespace ConsoleApp2
             }
             else
             {
-                MessageIncorrectInput();
+                ConsoleMessages.MessageIncorrectInput();
             }
         }
         public static bool TryDeserializ<T>(string path, ref T element)//вынести текст ошибок в свой класс ошибок
@@ -68,12 +68,5 @@ namespace ConsoleApp2
             }
             return false;
         }
-        //возможно метод класса Basket (конструктор класса)
-
-        public static void MessageIncorrectInput()
-        {
-            Console.WriteLine("\nНекорректный ввод поробуйте ещё раз");
-        }
-        
     }
 }

@@ -29,14 +29,13 @@ namespace ConsoleApp2.Classes
         public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreenings, FilmsPoster filmsPoster)
         {
             Basket basket = new();
-            FilmScreening chtoto = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
                 // Выбор фильма
-                List<FilmScreening> filmScreeningsInOneFilm = FilmScreening.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
+                List<FilmScreening> filmScreeningsInOneFilm = FilmScreenings.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
                 // Выбор даты
-                List<FilmScreening> filmScreeningsInCertainDate = FilmScreening.ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
+                List<FilmScreening> filmScreeningsInCertainDate = FilmScreenings.ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
                 // Выбор времени
                 FilmScreening filmScreeningInCertainTime = FilmScreening.ChooseFilmScreeningsInCertainTime(filmScreeningsInCertainDate);
 
