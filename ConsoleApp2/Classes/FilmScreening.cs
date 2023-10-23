@@ -1,25 +1,128 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ConsoleApp2.Classes
 {
     internal class FilmScreening
     {
+        public List<FilmScreening> filmScreenings = new();
+        public FilmScreening() { }
         public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
         {
-            this.name = name;
-            this.data = data;
-            this.time = time;
-            this.countTiket = countTiket;
-            this.price = price;
+            this.Name = name;
+            this.Date = data;
+            this.Time = time;
+            this.CountTicket = countTiket;
+            this.Price = price;
         }
-        public string name { get; set; }
-        public DateOnly data { get; set; }
-        public TimeOnly time { get; set; }
-        public int countTiket { get; set; }
-        public int price { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+        [JsonPropertyName("data")]
+        public DateOnly Date { get; set; }
+        [JsonPropertyName("time")]
+        public TimeOnly Time { get; set; }
+        [JsonPropertyName("countTiket")]
+        public int CountTicket { get; set; }
+        [JsonPropertyName("price")]
+        public int Price { get; set; }
+
+        public static FilmScreening ChooseFilmScreeningsInCertainTime(List<FilmScreening> filmScreeningsInCertainDate)
+        {
+            FilmScreening filmScreeningsInCertainTime;
+            bool flagChooseTime;
+            do
+            {
+                OutputTimeFilmScreening(filmScreeningsInCertainDate);
+                filmScreeningsInCertainTime = ChoiseTimeFilmScreening(filmScreeningsInCertainDate);
+                if (!IsPlacesNotEmpty(filmScreeningsInCertainTime))
+                {
+                    Console.WriteLine("На выбранное время мест нет.\n");
+                    throw new InvalidExpressionException();// сделать свой эксепшен
+                }
+                flagChooseTime = PoolYesOrNo("Выбрать другое время");
+            } while (flagChooseTime);
+            return filmScreeningsInCertainTime;
+        }
+        public static bool PoolYesOrNo(string question)
+        {
+            string yes = "y";
+            string no = "n";
+            Console.WriteLine("{0}? ({1}/{2})", question, yes, no);
+            while (true)
+            {
+                string answer = Console.ReadLine()!;
+                if (answer!.ToLower() == yes)
+                    return true;
+                else if (answer.ToLower() == no)
+                    return false;
+                else
+                    MessageIncorrectInput();
+            }
+        }
+        public static void MessageIncorrectInput()
+        {
+            Console.WriteLine("\nНекорректный ввод поробуйте ещё раз");
+        }
+        public static bool IsPlacesNotEmpty(FilmScreening filmScreening)
+        {
+            return (filmScreening.CountTicket != 0);
+        }
+        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
+        {
+            Console.WriteLine("Время показа фильма:");
+            for (int i = 0; i < filmscreenings.Count; i++)
+            {
+                Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, filmscreenings[i].Time, filmscreenings[i].Price);
+            }
+        }
+        public static FilmScreening ChoiseTimeFilmScreening(List<FilmScreening> filmScreeningInCertainDay)//??
+        {
+            /*MessageToSelectItemEnterNumber();
+
+            string? inputIndex = Console.ReadLine();
+            FilmScreening filmScreeningInCertainTime = FindElByIndex(filmScreeningInCertainDay, inputIndex);
+            return filmScreeningInCertainTime;*/
+            return ChooseEl(filmScreeningInCertainDay);
+        }
+        public static T ChooseEl<T>(List<T> elements)//повтор методов вопрос что делать
+        {
+            MessageToSelectItemEnterNumber();
+            T el;
+            do
+            {
+                string? inputNumber = Console.ReadLine();
+                el = FindElByIndex(elements, inputNumber);
+            } while (el == null || el.Equals(default(T)));
+            return el;
+        }
+        public static void MessageToSelectItemEnterNumber()
+        {
+            Console.WriteLine("\nДля выбора элемента введите его номер");
+            Console.WriteLine();
+        }
+        public static T FindElByIndex<T>(List<T> list, string? indexStr)
+        {
+            int index;
+            if (IsNumberInList(list, indexStr, out index))
+            {
+                return list[index - 1];
+            }
+            else
+            {
+                MessageIncorrectInput();
+                return default(T);
+                // throw new ArgumentException("Выбранного елемента нет в списке");
+            }
+        }
+        public static bool IsNumberInList<T>(List<T> films, string? indexStr, out int index)
+        {
+            bool tryParseChecked = int.TryParse(indexStr, out index);
+            return tryParseChecked && films.Count >= index;
+        }
     }
 }

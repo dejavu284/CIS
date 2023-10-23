@@ -17,8 +17,8 @@ namespace ConsoleApp2.Classes
         public static int Price { get; private set; } = 0;
         public void AddTicket(FilmScreening filmScreening)
         {
-            Tickets.Add(new Ticket(filmScreening.name, filmScreening.data, filmScreening.time, filmScreening.price));
-            Price += filmScreening.price;
+            Tickets.Add(new Ticket(filmScreening.Name, filmScreening.Date, filmScreening.Time, filmScreening.Price));
+            Price += filmScreening.Price;
             _numberTickets++;
             MessageTicketPurchased();
         }
@@ -41,7 +41,7 @@ namespace ConsoleApp2.Classes
         public void Save(string path)
         {
             var options = new JsonSerializerOptions { WriteIndented = true }; // опция для развертывания json файла
-            string jsonString = JsonSerializer.Serialize(this, options); // список в строку
+            string jsonString = JsonSerializer.Serialize(Tickets, options); // список в строку
             jsonString = Regex.Replace(jsonString, @"\\u([0-9A-Fa-f]{4})", m => "" + (char)Convert.ToInt32(m.Groups[1].Value, 16)); // меняем кодировку 
             File.WriteAllText(path, jsonString); // запись в файл .json
         }

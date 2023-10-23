@@ -20,6 +20,7 @@ namespace ConsoleApp2.Classes
             MessageFilmsAtTheBoxOffice();
             for (int i = 0; i < Count; i++)
             {
+
                 Console.WriteLine("{0}. {1}", i + 1, Films[i].Name);
             }
         }
