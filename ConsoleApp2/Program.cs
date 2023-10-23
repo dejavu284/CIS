@@ -132,27 +132,36 @@ namespace ConsoleApp2
         }
         public static DateOnly ChoiseDataFilmScreening(List<DateOnly> allDateFilmScreenings)//??
         {
-            MessageToSelectItemEnterNumber(); 
+            /*MessageToSelectItemEnterNumber(); 
 
             string? inputIndex = Console.ReadLine();
             DateOnly dateFilmScreenings = FindElByIndex(allDateFilmScreenings, inputIndex);
-            return dateFilmScreenings;
+            return dateFilmScreenings;*/
+            return ChooseEl(allDateFilmScreenings);
         }
         public static FilmScreening ChoiseTimeFilmScreening(List<FilmScreening> filmScreeningInCertainDay)//??
         {
-            MessageToSelectItemEnterNumber();
+            /*MessageToSelectItemEnterNumber();
 
             string? inputIndex = Console.ReadLine();
             FilmScreening filmScreeningInCertainTime = FindElByIndex(filmScreeningInCertainDay, inputIndex);
-            return filmScreeningInCertainTime;
+            return filmScreeningInCertainTime;*/
+            return ChooseEl(filmScreeningInCertainDay);
         }
-        public static Film ChooseFilm(FilmsPoster filmsPoster)//повтор методов вопрос что делать
+        public static Film ChooseFilm(List<Film> films)//повтор методов вопрос что делать
+        {
+            return ChooseEl(films);
+        }
+        public static T ChooseEl<T>(List<T> elements)//повтор методов вопрос что делать
         {
             MessageToSelectItemEnterNumber();
-
-            string? inputNumber = Console.ReadLine();
-            Film film = FindElByIndex(filmsPoster.Films, inputNumber);
-            return film;
+            T el;
+            do
+            {
+                string? inputNumber = Console.ReadLine();
+                el = FindElByIndex(elements, inputNumber);
+            } while (el == null || el.Equals(default(T)));
+            return el;
         }
         public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
         {
@@ -160,7 +169,7 @@ namespace ConsoleApp2
             do
             {
                 filmsPoster.MessageNamesAllFilms();
-                Film film = ChooseFilm(filmsPoster);
+                Film film = ChooseFilm(filmsPoster.Films);
 
                 filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreening);
                 if (IsFilmScreeningNotNull(filmScreeningsInOneFilm))
@@ -174,16 +183,18 @@ namespace ConsoleApp2
         }
         public static T FindElByIndex<T>(List<T> list, string? indexStr)
         {
-            int index = -1;
-            while (index == -1)
+            int index;
+            if (IsNumberInList(list, indexStr, out index))
             {
-                if (!IsNumberInList(list, indexStr, out index))
-                {
-                    MessageIncorrectInput();
-                    throw new ArgumentException("Выбранного елемента нет в списке");
-                }
+                return list[index - 1];
             }
-            return list[index - 1];
+            else
+            {
+                MessageIncorrectInput();
+                return default(T);
+               // throw new ArgumentException("Выбранного елемента нет в списке");
+            }
+            
         }
         public static bool IsNumberInList<T>(List<T> films, string? indexStr, out int index)
         {
