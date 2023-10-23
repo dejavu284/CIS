@@ -26,6 +26,33 @@ namespace ConsoleApp2.Classes
         {
             Console.WriteLine("Билет куплен");
         }
+        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreenings, FilmsPoster filmsPoster)
+        {
+            Basket basket = new();
+            FilmScreening chtoto = new();
+            bool flagBuyTickets = true;
+            while (flagBuyTickets)
+            {
+                // Выбор фильма
+                List<FilmScreening> filmScreeningsInOneFilm = FilmScreening.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
+                // Выбор даты
+                List<FilmScreening> filmScreeningsInCertainDate = FilmScreening.ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
+                // Выбор времени
+                FilmScreening filmScreeningInCertainTime = FilmScreening.ChooseFilmScreeningsInCertainTime(filmScreeningsInCertainDate);
+
+                if (FilmScreening.IsPlacesNotEmpty(filmScreeningInCertainTime))
+                {
+                    FilmScreening.OutputCountPlace(filmScreeningInCertainTime);
+                    if (FilmScreening.PoolYesOrNo("Купить билет"))
+                    {
+                        basket.AddTicket(filmScreeningInCertainTime);
+                    }
+                    basket.MessageCheck();
+                    flagBuyTickets = !FilmScreening.PoolYesOrNo("Закончить");
+                }
+            }
+            return basket;
+        }
         public void MessageCheck()
         {
             Console.WriteLine("\n---------------------------");
