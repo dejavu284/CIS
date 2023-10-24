@@ -9,97 +9,112 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public List<DateOnly> DatesOfFilmScreenings { get; private set; }
-        public List<FilmScreening> FilmScreenings { get; private set; }
-        FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
+        public List<DateOnly> DatesOfFilmScreenings { get; private set; } = new();
+        public List<FilmScreening> FilmScreenings { get; private set; } = new();
+        public FilmScreeningSchedule() { }
+        public FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
         {
-            this.FilmScreenings = filmScreenings;
+            FilmScreenings = filmScreenings;
         }
-        public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
+        public void ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
-            List<FilmScreening> filmScreeningsInOneFilm;
             do
             {
                 filmsPoster.MessageNamesAllFilms(); // перенести в ConsoleMessages
-                Film film = Film.ChooseFilm(filmsPoster.Films);
+                Film film = Film.ChooseFilm(filmsPoster.Films); // перенести в ViewModels (управление)
 
-                filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreenings);
-                if (IsFilmScreeningsNotNull(filmScreeningsInOneFilm))
-                    film.MessageInfo();
+                FindFilmScriningsByName(film.Name, filmScreenings);
+                if (IsFilmScreeningsNotNull())
+                    ConsoleMessages.MessageInfo(film);
                 else
                     ConsoleMessages.MessageFilmNotExist();
             }
-            while (!IsFilmScreeningsNotNull(filmScreeningsInOneFilm));
+            while (!IsFilmScreeningsNotNull());
 
-            return filmScreeningsInOneFilm;
         }
-        public static List<FilmScreening> FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
+        public void FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
         {
-            List<FilmScreening> thisFilmScrinings = new();
             foreach (FilmScreening filmScreening in filmScreenings)
             {
                 if (filmName == filmScreening.Name)
                 {
-                    thisFilmScrinings.Add(filmScreening);
+                    FilmScreenings.Add(filmScreening);
                 }
             }
-            return thisFilmScrinings;
         }
-        public static bool IsFilmScreeningsNotNull(List<FilmScreening> filmScreenings)
+        private bool IsFilmScreeningsNotNull()
         {
-            return filmScreenings.Count != 0;
+            return FilmScreenings.Count != 0;
         }
 
-        public static List<FilmScreening> ChooseFilmScreeingInCertainDate(List<FilmScreening> filmScreeningsInOneFilm)
+        public void ChooseFilmScreeingInCertainDate()
         {
             bool flagChooseDate = true;
-            List<FilmScreening> filmScreeningsInCertainDay = new();
             while (flagChooseDate)
             {
-                List<DateOnly> datesFilmScreenings = FindDatesFilmScreenings(filmScreeningsInOneFilm);
-                ConsoleMessages.OutputDateFilmScreening(datesFilmScreenings);
-                DateOnly certainDataFilmSreening = ChoiseDateFilmScreening(datesFilmScreenings);
-                filmScreeningsInCertainDay = FindFilmScreeningByDate(certainDataFilmSreening, filmScreeningsInOneFilm);
-                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату");
+                FindDatesFilmScreenings();
+
+                ConsoleMessages.OutputDateFilmScreening(DatesOfFilmScreenings); // это должно быть в ViewModels
+
+                DateOnly certainDataFilmSreening = ChoiseDateFilmScreening();
+                FindFilmScreeningByDate(certainDataFilmSreening);
+                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"); // должно быть в ViewModels
             }
-            return filmScreeningsInCertainDay;
         }
-        public static List<DateOnly> FindDatesFilmScreenings(List<FilmScreening> filmScreenings)
+        private void FindDatesFilmScreenings()
         {
-            List<DateOnly> datesFilmScreenings = new();
-            foreach (FilmScreening filmScreening in filmScreenings)
+            foreach (FilmScreening filmScreening in FilmScreenings)
             {
-                if (!IsDatesRepeating(datesFilmScreenings, filmScreening))
+                if (!IsDatesRepeating(filmScreening))
                 {
-                    datesFilmScreenings.Add(filmScreening.Date);
+                    DatesOfFilmScreenings.Add(filmScreening.Date);
                 }
             }
-            return datesFilmScreenings;
         }
-        public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, FilmScreening filmScreening) // возможно стоит переписать в 4 строчки: return IsDatesEqual(...)
+        public bool IsDatesRepeating(FilmScreening filmScreening)
         {
-            foreach (DateOnly data in datesFilmScreenings)
+            foreach (DateOnly date in DatesOfFilmScreenings)
             {
-                return FilmScreening.IsDatesEqual(data, filmScreening);
+                return FilmScreening.IsDatesEqual(date, filmScreening); // не понятно, можно ли как то так сделать,
+                                                                        // чтоб мы могли не передавать параметры,
+                                                                        // а вызывать этот метод у объекта класса,
+                                                                        // и обращаться к его полям
             }
             return false;
         }
-        public static DateOnly ChoiseDateFilmScreening(List<DateOnly> allDateFilmScreenings)//??
+        public DateOnly ChoiseDateFilmScreening()
         {
-            return ConsoleMessages.ChooseEl(allDateFilmScreenings);
+            return ConsoleMessages.ChooseEl(DatesOfFilmScreenings);
         }
-        public static List<FilmScreening> FindFilmScreeningByDate(DateOnly datesFilmScreenings, List<FilmScreening> allFilmScreenings)
+        public void FindFilmScreeningByDate(DateOnly datesFilmScreenings)
         {
-            List<FilmScreening> filmScreeningsTemp = new List<FilmScreening>();
-            for (int i = 0; i < allFilmScreenings.Count; i++)
+            List<FilmScreening> filmScreeningsTemp = new ();
+
+            for (int i = 0; i < FilmScreenings.Count; i++)
             {
-                if (datesFilmScreenings == allFilmScreenings[i].Date)
+                if (datesFilmScreenings == FilmScreenings[i].Date)
                 {
-                    filmScreeningsTemp.Add(allFilmScreenings[i]);
+                    filmScreeningsTemp.Add(FilmScreenings[i]);
                 }
             }
-            return filmScreeningsTemp;
+            FilmScreenings = filmScreeningsTemp;
         }
 
+        public FilmScreening ChooseFilmScreeningsInCertainTime()
+        {
+            FilmScreening filmScreeningInCertainTime;
+            bool flagChooseTime;
+            do
+            {
+                ConsoleMessages.OutputTimeFilmScreening(FilmScreenings); // должно быть во ViewModels
+                filmScreeningInCertainTime = ChoiseFilmScreeningByTime();
+                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время"); // должно быть во ViewModels
+            } while (flagChooseTime);
+            return filmScreeningInCertainTime;
+        }
+        public FilmScreening ChoiseFilmScreeningByTime()
+        {
+            return ConsoleMessages.ChooseEl(FilmScreenings);
+        }
     }
 }

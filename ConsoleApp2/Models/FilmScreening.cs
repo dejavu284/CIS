@@ -31,36 +31,13 @@ namespace CIS.Models
         public int CountTicket { get; set; }
         [JsonPropertyName("price")]
         public int Price { get; set; }
-
-        public static FilmScreening ChooseFilmScreeningsInCertainTime(List<FilmScreening> filmScreeningsInCertainDate)
+        public bool IsPlacesNotEmpty()
         {
-            FilmScreening filmScreeningsInCertainTime;
-            bool flagChooseTime;
-            do
-            {
-                ConsoleMessages.OutputTimeFilmScreening(filmScreeningsInCertainDate);
-                filmScreeningsInCertainTime = ChoiseFilmScreeningByTime(filmScreeningsInCertainDate);
-                if (!IsPlacesNotEmpty(filmScreeningsInCertainTime))
-                {
-                    Console.WriteLine("На выбранное время мест нет.\n");
-                    //throw new InvalidExpressionException(); // сделать свой эксепшен ?? // Зачем тут вообще нужен эксепшен???
-                }
-                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время");
-            } while (flagChooseTime);
-            return filmScreeningsInCertainTime;
+            return CountTicket != 0;
         }
-        
-        public static bool IsPlacesNotEmpty(FilmScreening filmScreening)
+        public static bool IsDatesEqual(DateOnly date, FilmScreening filmScreening)
         {
-            return filmScreening.CountTicket != 0;
-        }
-        public static FilmScreening ChoiseFilmScreeningByTime(List<FilmScreening> filmScreeningInCertainDay)
-        {
-            return ConsoleMessages.ChooseEl(filmScreeningInCertainDay);
-        }
-        public static bool IsDatesEqual(DateOnly data, FilmScreening filmScreening)
-        {
-            return data == filmScreening.Date;
+            return date == filmScreening.Date;
         }
     }
 }

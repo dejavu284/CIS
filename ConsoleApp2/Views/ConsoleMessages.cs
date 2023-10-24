@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using CIS.Models;
 
 namespace CIS.Views
@@ -90,7 +91,7 @@ namespace CIS.Views
         {
             Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
         }
-        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
+        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings) // добавить вывод свободных мест
         {
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < filmscreenings.Count; i++)
@@ -110,6 +111,17 @@ namespace CIS.Views
                 Console.WriteLine("{0}. {1}", i + 1, datesFilmScreenings[i]);
             }
             Console.WriteLine();
+        }
+        public static void MessagePlaceNotExist()
+        {
+            Console.WriteLine("На выбранное время мест нет.\n");
+        }
+        public static void MessageInfo(Film film) // Перенести в ConsoleMessages
+        {
+            Console.WriteLine("\nИнформация о фильме {0}", film.Name);
+            Console.WriteLine("\nЖанр: {0}", film.Genre);
+            Console.WriteLine("Год выхода: {0}", film.Year);
+            Console.WriteLine("Описание: {0}\n", film.Description);
         }
     }
 }

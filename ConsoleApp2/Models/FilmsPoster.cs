@@ -7,6 +7,7 @@ namespace CIS.Models
 {
     internal class FilmsPoster
     {
+        public FilmsPoster() { }
         public FilmsPoster(List<Film> films)
         {
             Films = films;

@@ -12,26 +12,35 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CIS.Models
 {
-    internal class Basket
+    internal class Basket 
     {
-        public Basket() { }
+        /*public Basket() { }*/
+        public Basket(List<Ticket> tickets, int numberTickets, int price) 
+        {
+            Tickets = tickets;
+            NumberTickets = numberTickets;
+            Price = price;
+        }
         public static List<Ticket> Tickets { get; private set; } = new List<Ticket>();
         public static int NumberTickets { get; private set; } = 0;
         public static int Price { get; private set; } = 0;
-        public static void AddTicket(FilmScreening filmScreening)
+        public void AddTicket(FilmScreening filmScreening)
         {
             Tickets.Add(new Ticket(filmScreening.Name, filmScreening.Date, filmScreening.Time, filmScreening.Price));
             Price += filmScreening.Price;
             NumberTickets++;
         }
-        public static void Save(string path)
+        public void Save(string path) // Не получается сериализовать весь объект,
+                                      // чтобы и билеты и количество билетов и
+                                      // общая сумма были сериализованы
+                                      // 
         {
             var options = new JsonSerializerOptions // опции для развертывания json файла и сериализации в Кириллицу
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
                 WriteIndented = true
             };
-            string jsonString = JsonSerializer.Serialize(Tickets, options); // список в строку
+            string jsonString = JsonSerializer.Serialize(Tickets, options); // список в строку 
             File.WriteAllText(path, jsonString); // запись в файл .json
         }
     }
