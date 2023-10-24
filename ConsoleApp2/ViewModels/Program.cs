@@ -1,10 +1,10 @@
 using System.Data;
 using System.Text.Json;
 using File = System.IO.File;
-using ConsoleApp2.Models;
-using ConsoleApp2.Views;
+using CIS.Models;
+using CIS.Views;
 
-namespace ConsoleApp2.ViewModels
+namespace CIS.ViewModels
 {
     internal class Program
     {

@@ -7,10 +7,10 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Text.Unicode;
 using System.Threading.Tasks;
-using ConsoleApp2.Views;
+using CIS.Views;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ConsoleApp2.Models
+namespace CIS.Models
 {
     internal class Basket
     {

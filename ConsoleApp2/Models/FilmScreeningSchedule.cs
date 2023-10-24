@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleApp2.Views;
+using CIS.Views;
 
-namespace ConsoleApp2.Models
+namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {

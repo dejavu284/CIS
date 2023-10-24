@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using ConsoleApp2.Views;
+using CIS.Views;
 
-namespace ConsoleApp2.Models
+namespace CIS.Models
 {
     internal class FilmScreening
     {

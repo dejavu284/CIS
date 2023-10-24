@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleApp2.Models;
+using CIS.Models;
 
-namespace ConsoleApp2.Views
+namespace CIS.Views
 {
     internal class ConsoleMessages
     {

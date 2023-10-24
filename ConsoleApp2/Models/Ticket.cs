@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-namespace ConsoleApp2.Models
+namespace CIS.Models
 {
     internal class Ticket
     {
