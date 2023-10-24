@@ -19,7 +19,7 @@ namespace CIS.ViewModels
                 string basketJsonPath = currentDirectory + "\\Data\\" + args[2];
 
                 List<Film> films = new();
-                Dictionary<string, List<FilmScreening>> filmScreening = new();
+                List<FilmScreening> filmScreening = new();
 
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
@@ -68,7 +68,7 @@ namespace CIS.ViewModels
             }
             return false;
         }
-        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreenings, FilmsPoster filmsPoster)
+        public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
             Basket basket = new();
             bool flagBuyTickets = true;

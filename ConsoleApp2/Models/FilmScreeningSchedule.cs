@@ -15,15 +15,15 @@ namespace CIS.Models
         {
             this.FilmScreenings = filmScreenings;
         }
-        public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
+        public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
             List<FilmScreening> filmScreeningsInOneFilm;
             do
             {
-                filmsPoster.MessageNamesAllFilms();
+                filmsPoster.MessageNamesAllFilms(); // перенести в ConsoleMessages
                 Film film = Film.ChooseFilm(filmsPoster.Films);
 
-                filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreening);
+                filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreenings);
                 if (IsFilmScreeningsNotNull(filmScreeningsInOneFilm))
                     film.MessageInfo();
                 else
@@ -33,14 +33,14 @@ namespace CIS.Models
 
             return filmScreeningsInOneFilm;
         }
-        public static List<FilmScreening> FindFilmScriningsByName(string filmName, Dictionary<string, List<FilmScreening>> filmScreenings)
+        public static List<FilmScreening> FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
         {
             List<FilmScreening> thisFilmScrinings = new();
-            foreach (KeyValuePair<string, List<FilmScreening>> filmScreening in filmScreenings)
+            foreach (FilmScreening filmScreening in filmScreenings)
             {
-                if (filmName == filmScreening.Key)
+                if (filmName == filmScreening.Name)
                 {
-                    thisFilmScrinings = filmScreening.Value;
+                    thisFilmScrinings.Add(filmScreening);
                 }
             }
             return thisFilmScrinings;
