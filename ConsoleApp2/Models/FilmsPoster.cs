@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp2.Classes
+namespace CIS.Models
 {
     internal class FilmsPoster
     {
@@ -13,13 +12,14 @@ namespace ConsoleApp2.Classes
             Films = films;
             Count = films.Count;
         }
-        public List<Film> Films { get;}
-        public int Count { get; private set;}
+        public List<Film> Films { get; }
+        public int Count { get; private set; }
         public void MessageNamesAllFilms()
         {
             MessageFilmsAtTheBoxOffice();
             for (int i = 0; i < Count; i++)
             {
+
                 Console.WriteLine("{0}. {1}", i + 1, Films[i].Name);
             }
         }

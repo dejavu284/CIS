@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp2.Classes
+namespace CIS.Models
 {
     internal class Ticket
     {
@@ -17,15 +16,15 @@ namespace ConsoleApp2.Classes
             Price = price;
             Cod = CreateRandomCod();
         }
-        public string Name { get;}
-        public DateOnly Data { get;}
-        public TimeOnly Time { get;}
-        public int Price { get;}
-        public int Cod { get;}
+        public string Name { get; }
+        public DateOnly Data { get; }
+        public TimeOnly Time { get; }
+        public int Price { get; }
+        public int Cod { get; }
 
-        private int CreateRandomCod()
+        private static int CreateRandomCod()
         {
-            Random random = new ();
+            Random random = new();
             int res = random.Next(1000, 9999);
             return res;
         }
@@ -40,5 +39,5 @@ namespace ConsoleApp2.Classes
             Console.WriteLine("---------------------------\n");
         }
     }
-    
+
 }
