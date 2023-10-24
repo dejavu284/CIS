@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CIS.Views;
 
+
 namespace CIS.Models
 {
     internal class FilmScreeningSchedule
@@ -22,7 +23,7 @@ namespace CIS.Models
             do
             {
                 ConsoleMessages.MessageNamesAllFilms(filmsPoster); // перенести в ViewModels (управление)
-                Film film = Film.ChooseFilm(filmsPoster.Films); // перенести в ViewModels (управление)
+                Film film = FilmsPoster.ChooseFilm(filmsPoster.Films); // перенести в ViewModels (управление)
 
                 FindFilmScriningsByName(film.Name, filmScreenings);
                 if (IsFilmScreeningsNotNull())
@@ -31,10 +32,6 @@ namespace CIS.Models
                     ConsoleMessages.MessageFilmNotExist(); // перенести в ViewModels (управление)
             }
             while (!IsFilmScreeningsNotNull());
-        }
-        public static Film ChooseFilm(List<Film> films)
-        {
-            return ConsoleMessages.ChooseEl(films);
         }
         public void FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
         {

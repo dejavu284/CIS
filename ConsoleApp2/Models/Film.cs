@@ -28,9 +28,5 @@ namespace CIS.Models
 
         [JsonPropertyName("year")]
         public int Year { get; }
-        public static Film ChooseFilm(List<Film> films)
-        {
-            return ConsoleMessages.ChooseEl(films);
-        }
     }
 }
