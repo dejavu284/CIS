@@ -16,5 +16,9 @@ namespace CIS.Models
         }
         public List<Film> Films { get; }
         public int Count { get; private set; }
+        public static Film ChooseFilm(List<Film> films)
+        {
+            return ConsoleMessages.ChooseEl(films);
+        }
     }
 }
