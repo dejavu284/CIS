@@ -10,6 +10,22 @@ namespace CIS.Views
 {
     internal class ConsoleMessages
     {
+        public static bool PoolYesOrNo(string question)
+        {
+            string yes = "y";
+            string no = "n";
+            Console.WriteLine("{0}? ({1}/{2})", question, yes, no);
+            while (true)
+            {
+                string answer = Console.ReadLine()!;
+                if (answer!.ToLower() == yes)
+                    return true;
+                else if (answer.ToLower() == no)
+                    return false;
+                else
+                    ConsoleMessages.MessageIncorrectInput();
+            }
+        }
         public static void MessageToSelectItemEnterNumber()
         {
             Console.WriteLine("\nДля выбора элемента введите его номер");
@@ -64,6 +80,11 @@ namespace CIS.Views
         public static void MessageTicketPurchased()
         {
             Console.WriteLine("Билет куплен");
+        }
+        public static void MessageCompletionProgram()
+        {
+            Console.WriteLine("\nСпасибо за покупку, приходите ещё");
+            Console.ReadKey();
         }
     }
 }

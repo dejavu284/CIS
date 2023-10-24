@@ -46,25 +46,9 @@ namespace CIS.Models
                     Console.WriteLine("На выбранное время мест нет.\n");
                     throw new InvalidExpressionException();// сделать свой эксепшен
                 }
-                flagChooseTime = !PoolYesOrNo("Оставить выбранное время");
+                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время");
             } while (flagChooseTime);
             return filmScreeningsInCertainTime;
-        }
-        public static bool PoolYesOrNo(string question)
-        {
-            string yes = "y";
-            string no = "n";
-            Console.WriteLine("{0}? ({1}/{2})", question, yes, no);
-            while (true)
-            {
-                string answer = Console.ReadLine()!;
-                if (answer!.ToLower() == yes)
-                    return true;
-                else if (answer.ToLower() == no)
-                    return false;
-                else
-                    ConsoleMessages.MessageIncorrectInput();
-            }
         }
         public static bool IsPlacesNotEmpty(FilmScreening filmScreening)
         {

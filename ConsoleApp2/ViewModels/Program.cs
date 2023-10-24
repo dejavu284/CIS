@@ -27,8 +27,7 @@ namespace CIS.ViewModels
                     BuyTickets(filmScreening, filmsPoster);
                     Basket.Save(basketJsonPath);
                 }
-                Console.WriteLine("\nСпасибо за покупку, приходите ещё");
-                Console.ReadKey();
+                ConsoleMessages.MessageCompletionProgram();
             }
             else
             {
@@ -85,13 +84,13 @@ namespace CIS.ViewModels
                 if (FilmScreening.IsPlacesNotEmpty(filmScreeningInCertainTime))
                 {
                     FilmScreening.OutputCountPlace(filmScreeningInCertainTime);
-                    if (FilmScreening.PoolYesOrNo("Купить билет"))
+                    if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                     {
                         Basket.AddTicket(filmScreeningInCertainTime);
                         ConsoleMessages.MessageTicketPurchased();
                     }
                     ConsoleMessages.MessageCheck();
-                    flagBuyTickets = !FilmScreening.PoolYesOrNo("Закончить");
+                    flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
                 }
             }
             return basket;

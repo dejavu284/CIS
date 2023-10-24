@@ -54,7 +54,7 @@ namespace CIS.Models
                 OutputDateFilmScreening(datesFilmScreenings);
                 DateOnly certainDataFilmSreening = ChoiseDateFilmScreening(datesFilmScreenings);
                 filmScreeningsInCertainDay = FindFilmScreeningByDate(certainDataFilmSreening, filmScreeningsInOneFilm);
-                flagChooseDate = !FilmScreening.PoolYesOrNo("Оставить выбранную дату");
+                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату");
             }
             return filmScreeningsInCertainDay;
         }
