@@ -1,4 +1,5 @@
 using ConsoleApp2.Classes;
+using ConsoleApp2.Models;
 using System.Data;
 using System.Text.Json;
 using File = System.IO.File;

@@ -5,13 +5,14 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ConsoleApp2.Classes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ConsoleApp2.Classes
+namespace ConsoleApp2.Models
 {
     internal class Basket
     {
-        public Basket() {}
+        public Basket() { }
         public static List<Ticket> Tickets { get; private set; } = new List<Ticket>();
         public static int NumberTickets { get; private set; } = 0;
         public static int Price { get; private set; } = 0;
