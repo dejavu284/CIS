@@ -9,7 +9,8 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public List<DateOnly> DatesOfFilmScreenings { get; private set; } = new(); // я напихал везде эти private set и не уверен что это вообще нужно
+        public List<DateOnly> DatesOfFilmScreenings { get; private set; } = new(); // я напихал везде эти
+                                                                                   // private set и не уверен что это вообще нужно
         public List<FilmScreening> FilmScreenings { get; private set; } = new();
         public FilmScreeningSchedule() { }
         public FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
