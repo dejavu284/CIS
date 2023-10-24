@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp2.Views;
 
-namespace ConsoleApp2.Classes
+namespace ConsoleApp2.Models
 {
-    internal class FilmScreenings
+    internal class FilmScreeningSchedule
     {
         public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
         {
@@ -95,7 +96,7 @@ namespace ConsoleApp2.Classes
         }
         public static DateOnly ChoiseDateFilmScreening(List<DateOnly> allDateFilmScreenings)//??
         {
-            return Abstract.ChooseEl(allDateFilmScreenings);
+            return ConsoleMessages.ChooseEl(allDateFilmScreenings);
         }
         public static List<FilmScreening> FindFilmScreeningByDate(DateOnly datesFilmScreenings, List<FilmScreening> allFilmScreenings)
         {

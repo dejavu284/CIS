@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ConsoleApp2.Views;
 
-namespace ConsoleApp2.Classes
+namespace ConsoleApp2.Models
 {
     internal class Film
     {
@@ -29,14 +30,14 @@ namespace ConsoleApp2.Classes
         public int Year { get; }
         public void MessageInfo()
         {
-            Console.WriteLine("\nИнформация о фильме {0}",Name);
-            Console.WriteLine("\nЖанр: {0}",Genre);
-            Console.WriteLine("Год выхода: {0}",Year);
-            Console.WriteLine("Описание: {0}\n",Description);
+            Console.WriteLine("\nИнформация о фильме {0}", Name);
+            Console.WriteLine("\nЖанр: {0}", Genre);
+            Console.WriteLine("Год выхода: {0}", Year);
+            Console.WriteLine("Описание: {0}\n", Description);
         }
         public static Film ChooseFilm(List<Film> films)//повтор методов вопрос что делать
         {
-            return Abstract.ChooseEl(films);
+            return ConsoleMessages.ChooseEl(films);
         }
-    }    
+    }
 }

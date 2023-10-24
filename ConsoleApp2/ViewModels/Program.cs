@@ -1,10 +1,10 @@
-using ConsoleApp2.Classes;
-using ConsoleApp2.Models;
 using System.Data;
 using System.Text.Json;
 using File = System.IO.File;
+using ConsoleApp2.Models;
+using ConsoleApp2.Views;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.ViewModels
 {
     internal class Program
     {
@@ -23,8 +23,8 @@ namespace ConsoleApp2
 
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
-                    FilmsPoster filmsPoster = new (films);
-                    Basket.BuyTickets(filmScreening, filmsPoster);
+                    FilmsPoster filmsPoster = new(films);
+                    BuyTickets(filmScreening, filmsPoster);
                     Basket.Save(basketJsonPath);
                 }
                 Console.WriteLine("\nСпасибо за покупку, приходите ещё");
@@ -65,9 +65,36 @@ namespace ConsoleApp2
         {
             if (args.Length == 3)
             {
-               return  args.All(x => x.Contains(".json"));
+                return args.All(x => x.Contains(".json"));
             }
             return false;
+        }
+        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreenings, FilmsPoster filmsPoster)
+        {
+            Basket basket = new();
+            bool flagBuyTickets = true;
+            while (flagBuyTickets)
+            {
+                // Выбор фильма
+                List<FilmScreening> filmScreeningsInOneFilm = FilmScreeningSchedule.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
+                // Выбор даты
+                List<FilmScreening> filmScreeningsInCertainDate = FilmScreeningSchedule.ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
+                // Выбор времени
+                FilmScreening filmScreeningInCertainTime = FilmScreening.ChooseFilmScreeningsInCertainTime(filmScreeningsInCertainDate);
+
+                if (FilmScreening.IsPlacesNotEmpty(filmScreeningInCertainTime))
+                {
+                    FilmScreening.OutputCountPlace(filmScreeningInCertainTime);
+                    if (FilmScreening.PoolYesOrNo("Купить билет"))
+                    {
+                        Basket.AddTicket(filmScreeningInCertainTime);
+                        ConsoleMessages.MessageTicketPurchased();
+                    }
+                    ConsoleMessages.MessageCheck();
+                    flagBuyTickets = !FilmScreening.PoolYesOrNo("Закончить");
+                }
+            }
+            return basket;
         }
     }
 }

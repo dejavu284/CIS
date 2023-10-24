@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp2.Classes
+namespace ConsoleApp2.Models
 {
     internal class Place
     {

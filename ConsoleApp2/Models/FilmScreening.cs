@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ConsoleApp2.Views;
 
-namespace ConsoleApp2.Classes
+namespace ConsoleApp2.Models
 {
     internal class FilmScreening
     {
@@ -14,11 +15,11 @@ namespace ConsoleApp2.Classes
         public FilmScreening() { }
         public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
         {
-            this.Name = name;
-            this.Date = data;
-            this.Time = time;
-            this.CountTicket = countTiket;
-            this.Price = price;
+            Name = name;
+            Date = data;
+            Time = time;
+            CountTicket = countTiket;
+            Price = price;
         }
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -67,7 +68,7 @@ namespace ConsoleApp2.Classes
         }
         public static bool IsPlacesNotEmpty(FilmScreening filmScreening)
         {
-            return (filmScreening.CountTicket != 0);
+            return filmScreening.CountTicket != 0;
         }
         public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
         {
@@ -79,7 +80,7 @@ namespace ConsoleApp2.Classes
         }
         public static FilmScreening ChoiseFilmScreeningByTime(List<FilmScreening> filmScreeningInCertainDay)//??
         {
-            return Abstract.ChooseEl(filmScreeningInCertainDay);
+            return ConsoleMessages.ChooseEl(filmScreeningInCertainDay);
         }
         public static void OutputCountPlace(FilmScreening filmScreening)
         {

@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Classes\CinemaHalls\**" />
-    <EmbeddedResource Remove="Classes\CinemaHalls\**" />
-    <None Remove="Classes\CinemaHalls\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Data\basket.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -23,11 +17,6 @@
     <None Update="Data\film_screening.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
