@@ -24,8 +24,8 @@ namespace CIS.ViewModels
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
                     FilmsPoster filmsPoster = new(films);
-                    BuyTickets(filmScreening, filmsPoster);
-                    Basket.Save(basketJsonPath);
+                    Basket basket = BuyTickets(filmScreening, filmsPoster);
+                    basket.Save(basketJsonPath);
                 }
                 ConsoleMessages.MessageCompletionProgram();
             }
@@ -34,14 +34,14 @@ namespace CIS.ViewModels
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
-        public static bool TryDeserializ<T>(string path, ref T element)//вынести текст ошибок в свой класс ошибок
+        public static bool TryDeserializ<T>(string path, ref T element) // нужно вынести текст ошибок в свой класс ошибок
             where T : new()
         {
             try
             {
                 string textJson = File.ReadAllText(path);
                 element = JsonSerializer.Deserialize<T>(textJson)!;
-                var a = new T();
+                var a = new T(); // WTF
                 return true;
             }
             catch (FileNotFoundException)
@@ -75,22 +75,27 @@ namespace CIS.ViewModels
             while (flagBuyTickets)
             {
                 // Выбор фильма
-                List<FilmScreening> filmScreeningsInOneFilm = FilmScreeningSchedule.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
+                FilmScreeningSchedule filmScreeningsInOneFilm = new();
+                filmScreeningsInOneFilm.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
                 // Выбор даты
-                List<FilmScreening> filmScreeningsInCertainDate = FilmScreeningSchedule.ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
+                filmScreeningsInOneFilm.ChooseFilmScreeingInCertainDate();
                 // Выбор времени
-                FilmScreening filmScreeningInCertainTime = FilmScreening.ChooseFilmScreeningsInCertainTime(filmScreeningsInCertainDate);
+                FilmScreening filmScreeningInCertainTime = filmScreeningsInOneFilm.ChooseFilmScreeningsInCertainTime();
 
-                if (FilmScreening.IsPlacesNotEmpty(filmScreeningInCertainTime))
+                if (filmScreeningInCertainTime.IsPlacesNotEmpty())
                 {
                     ConsoleMessages.OutputCountPlace(filmScreeningInCertainTime);
                     if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                     {
-                        Basket.AddTicket(filmScreeningInCertainTime);
+                        basket.AddTicket(filmScreeningInCertainTime);
                         ConsoleMessages.MessageTicketPurchased();
                     }
                     ConsoleMessages.MessageCheck();
                     flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
+                }
+                else
+                {
+                    ConsoleMessages.MessagePlaceNotExist();
                 }
             }
             return basket;
