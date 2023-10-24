@@ -10,6 +10,22 @@ namespace CIS.Views
 {
     internal class ConsoleMessages
     {
+        public static bool PoolYesOrNo(string question)
+        {
+            string yes = "y";
+            string no = "n";
+            Console.WriteLine("{0}? ({1}/{2})", question, yes, no);
+            while (true)
+            {
+                string answer = Console.ReadLine()!;
+                if (answer!.ToLower() == yes)
+                    return true;
+                else if (answer.ToLower() == no)
+                    return false;
+                else
+                    ConsoleMessages.MessageIncorrectInput();
+            }
+        }
         public static void MessageToSelectItemEnterNumber()
         {
             Console.WriteLine("\nДля выбора элемента введите его номер");
@@ -64,6 +80,36 @@ namespace CIS.Views
         public static void MessageTicketPurchased()
         {
             Console.WriteLine("Билет куплен");
+        }
+        public static void MessageCompletionProgram()
+        {
+            Console.WriteLine("\nСпасибо за покупку, приходите ещё");
+            Console.ReadKey();
+        }
+        public static void MessageFilmNotExist()
+        {
+            Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
+        }
+        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
+        {
+            Console.WriteLine("Время показа фильма:");
+            for (int i = 0; i < filmscreenings.Count; i++)
+            {
+                Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, filmscreenings[i].Time, filmscreenings[i].Price);
+            }
+        }
+        public static void OutputCountPlace(FilmScreening filmScreening)
+        {
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.CountTicket);
+        }
+        public static void OutputDateFilmScreening(List<DateOnly> datesFilmScreenings)
+        {
+            Console.WriteLine("Даты показа фильма:\n");
+            for (int i = 0; i < datesFilmScreenings.Count; i++)
+            {
+                Console.WriteLine("{0}. {1}", i + 1, datesFilmScreenings[i]);
+            }
+            Console.WriteLine();
         }
     }
 }

@@ -32,59 +32,35 @@ namespace CIS.Models
         [JsonPropertyName("price")]
         public int Price { get; set; }
 
-
         public static FilmScreening ChooseFilmScreeningsInCertainTime(List<FilmScreening> filmScreeningsInCertainDate)
         {
             FilmScreening filmScreeningsInCertainTime;
             bool flagChooseTime;
             do
             {
-                OutputTimeFilmScreening(filmScreeningsInCertainDate);
+                ConsoleMessages.OutputTimeFilmScreening(filmScreeningsInCertainDate);
                 filmScreeningsInCertainTime = ChoiseFilmScreeningByTime(filmScreeningsInCertainDate);
                 if (!IsPlacesNotEmpty(filmScreeningsInCertainTime))
                 {
                     Console.WriteLine("На выбранное время мест нет.\n");
-                    throw new InvalidExpressionException();// сделать свой эксепшен
+                    //throw new InvalidExpressionException(); // сделать свой эксепшен ?? // Зачем тут вообще нужен эксепшен???
                 }
-                flagChooseTime = !PoolYesOrNo("Оставить выбранное время");
+                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время");
             } while (flagChooseTime);
             return filmScreeningsInCertainTime;
         }
-        public static bool PoolYesOrNo(string question)
-        {
-            string yes = "y";
-            string no = "n";
-            Console.WriteLine("{0}? ({1}/{2})", question, yes, no);
-            while (true)
-            {
-                string answer = Console.ReadLine()!;
-                if (answer!.ToLower() == yes)
-                    return true;
-                else if (answer.ToLower() == no)
-                    return false;
-                else
-                    ConsoleMessages.MessageIncorrectInput();
-            }
-        }
+        
         public static bool IsPlacesNotEmpty(FilmScreening filmScreening)
         {
             return filmScreening.CountTicket != 0;
         }
-        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
-        {
-            Console.WriteLine("Время показа фильма:");
-            for (int i = 0; i < filmscreenings.Count; i++)
-            {
-                Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, filmscreenings[i].Time, filmscreenings[i].Price);
-            }
-        }
-        public static FilmScreening ChoiseFilmScreeningByTime(List<FilmScreening> filmScreeningInCertainDay)//??
+        public static FilmScreening ChoiseFilmScreeningByTime(List<FilmScreening> filmScreeningInCertainDay)
         {
             return ConsoleMessages.ChooseEl(filmScreeningInCertainDay);
         }
-        public static void OutputCountPlace(FilmScreening filmScreening)
+        public static bool IsDatesEqual(DateOnly data, FilmScreening filmScreening)
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.CountTicket);
+            return data == filmScreening.Date;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CIS.ViewModels
                 string basketJsonPath = currentDirectory + "\\Data\\" + args[2];
 
                 List<Film> films = new();
-                Dictionary<string, List<FilmScreening>> filmScreening = new();
+                List<FilmScreening> filmScreening = new();
 
                 if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
                 {
@@ -27,8 +27,7 @@ namespace CIS.ViewModels
                     BuyTickets(filmScreening, filmsPoster);
                     Basket.Save(basketJsonPath);
                 }
-                Console.WriteLine("\nСпасибо за покупку, приходите ещё");
-                Console.ReadKey();
+                ConsoleMessages.MessageCompletionProgram();
             }
             else
             {
@@ -69,7 +68,7 @@ namespace CIS.ViewModels
             }
             return false;
         }
-        public static Basket BuyTickets(Dictionary<string, List<FilmScreening>> filmScreenings, FilmsPoster filmsPoster)
+        public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
             Basket basket = new();
             bool flagBuyTickets = true;
@@ -84,14 +83,14 @@ namespace CIS.ViewModels
 
                 if (FilmScreening.IsPlacesNotEmpty(filmScreeningInCertainTime))
                 {
-                    FilmScreening.OutputCountPlace(filmScreeningInCertainTime);
-                    if (FilmScreening.PoolYesOrNo("Купить билет"))
+                    ConsoleMessages.OutputCountPlace(filmScreeningInCertainTime);
+                    if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                     {
                         Basket.AddTicket(filmScreeningInCertainTime);
                         ConsoleMessages.MessageTicketPurchased();
                     }
                     ConsoleMessages.MessageCheck();
-                    flagBuyTickets = !FilmScreening.PoolYesOrNo("Закончить");
+                    flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
                 }
             }
             return basket;

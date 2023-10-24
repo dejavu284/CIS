@@ -9,32 +9,38 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
+        public List<DateOnly> DatesOfFilmScreenings { get; private set; }
+        public List<FilmScreening> FilmScreenings { get; private set; }
+        FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
+        {
+            this.FilmScreenings = filmScreenings;
+        }
+        public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
             List<FilmScreening> filmScreeningsInOneFilm;
             do
             {
-                filmsPoster.MessageNamesAllFilms();
+                filmsPoster.MessageNamesAllFilms(); // перенести в ConsoleMessages
                 Film film = Film.ChooseFilm(filmsPoster.Films);
 
-                filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreening);
+                filmScreeningsInOneFilm = FindFilmScriningsByName(film.Name, filmScreenings);
                 if (IsFilmScreeningsNotNull(filmScreeningsInOneFilm))
                     film.MessageInfo();
                 else
-                    Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
+                    ConsoleMessages.MessageFilmNotExist();
             }
             while (!IsFilmScreeningsNotNull(filmScreeningsInOneFilm));
 
             return filmScreeningsInOneFilm;
         }
-        public static List<FilmScreening> FindFilmScriningsByName(string filmName, Dictionary<string, List<FilmScreening>> filmScreenings)
+        public static List<FilmScreening> FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
         {
             List<FilmScreening> thisFilmScrinings = new();
-            foreach (KeyValuePair<string, List<FilmScreening>> filmScreening in filmScreenings)
+            foreach (FilmScreening filmScreening in filmScreenings)
             {
-                if (filmName == filmScreening.Key)
+                if (filmName == filmScreening.Name)
                 {
-                    thisFilmScrinings = filmScreening.Value;
+                    thisFilmScrinings.Add(filmScreening);
                 }
             }
             return thisFilmScrinings;
@@ -51,10 +57,10 @@ namespace CIS.Models
             while (flagChooseDate)
             {
                 List<DateOnly> datesFilmScreenings = FindDatesFilmScreenings(filmScreeningsInOneFilm);
-                OutputDateFilmScreening(datesFilmScreenings);
+                ConsoleMessages.OutputDateFilmScreening(datesFilmScreenings);
                 DateOnly certainDataFilmSreening = ChoiseDateFilmScreening(datesFilmScreenings);
                 filmScreeningsInCertainDay = FindFilmScreeningByDate(certainDataFilmSreening, filmScreeningsInOneFilm);
-                flagChooseDate = !FilmScreening.PoolYesOrNo("Оставить выбранную дату");
+                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату");
             }
             return filmScreeningsInCertainDay;
         }
@@ -70,29 +76,13 @@ namespace CIS.Models
             }
             return datesFilmScreenings;
         }
-        public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, FilmScreening filmScreening)
+        public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, FilmScreening filmScreening) // возможно стоит переписать в 4 строчки: return IsDatesEqual(...)
         {
             foreach (DateOnly data in datesFilmScreenings)
             {
-                if (IsDatesEqual(data, filmScreening))
-                {
-                    return true;
-                }
+                return FilmScreening.IsDatesEqual(data, filmScreening);
             }
             return false;
-        }
-        public static bool IsDatesEqual(DateOnly data, FilmScreening filmScreening)
-        {
-            return data == filmScreening.Date;
-        }
-        public static void OutputDateFilmScreening(List<DateOnly> datesFilmScreenings)
-        {
-            Console.WriteLine("Даты показа фильма:\n");
-            for (int i = 0; i < datesFilmScreenings.Count; i++)
-            {
-                Console.WriteLine("{0}. {1}", i + 1, datesFilmScreenings[i]);
-            }
-            Console.WriteLine();
         }
         public static DateOnly ChoiseDateFilmScreening(List<DateOnly> allDateFilmScreenings)//??
         {

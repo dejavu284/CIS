@@ -14,7 +14,7 @@ namespace CIS.Models
         }
         public List<Film> Films { get; }
         public int Count { get; private set; }
-        public void MessageNamesAllFilms()
+        public void MessageNamesAllFilms() // перенести в ConsoleMessages
         {
             MessageFilmsAtTheBoxOffice();
             for (int i = 0; i < Count; i++)
