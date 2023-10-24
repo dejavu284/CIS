@@ -9,6 +9,12 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
+        public List<DateOnly> DatesOfFilmScreenings { get; private set; }
+        public List<FilmScreening> FilmScreenings { get; private set; }
+        FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
+        {
+            this.FilmScreenings = filmScreenings;
+        }
         public static List<FilmScreening> ChooseFilmScreeingInCertainFilm(Dictionary<string, List<FilmScreening>> filmScreening, FilmsPoster filmsPoster)
         {
             List<FilmScreening> filmScreeningsInOneFilm;
@@ -21,7 +27,7 @@ namespace CIS.Models
                 if (IsFilmScreeningsNotNull(filmScreeningsInOneFilm))
                     film.MessageInfo();
                 else
-                    Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
+                    ConsoleMessages.MessageFilmNotExist();
             }
             while (!IsFilmScreeningsNotNull(filmScreeningsInOneFilm));
 
@@ -51,7 +57,7 @@ namespace CIS.Models
             while (flagChooseDate)
             {
                 List<DateOnly> datesFilmScreenings = FindDatesFilmScreenings(filmScreeningsInOneFilm);
-                OutputDateFilmScreening(datesFilmScreenings);
+                ConsoleMessages.OutputDateFilmScreening(datesFilmScreenings);
                 DateOnly certainDataFilmSreening = ChoiseDateFilmScreening(datesFilmScreenings);
                 filmScreeningsInCertainDay = FindFilmScreeningByDate(certainDataFilmSreening, filmScreeningsInOneFilm);
                 flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату");
@@ -70,29 +76,13 @@ namespace CIS.Models
             }
             return datesFilmScreenings;
         }
-        public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, FilmScreening filmScreening)
+        public static bool IsDatesRepeating(List<DateOnly> datesFilmScreenings, FilmScreening filmScreening) // возможно стоит переписать в 4 строчки: return IsDatesEqual(...)
         {
             foreach (DateOnly data in datesFilmScreenings)
             {
-                if (IsDatesEqual(data, filmScreening))
-                {
-                    return true;
-                }
+                return FilmScreening.IsDatesEqual(data, filmScreening);
             }
             return false;
-        }
-        public static bool IsDatesEqual(DateOnly data, FilmScreening filmScreening)
-        {
-            return data == filmScreening.Date;
-        }
-        public static void OutputDateFilmScreening(List<DateOnly> datesFilmScreenings)
-        {
-            Console.WriteLine("Даты показа фильма:\n");
-            for (int i = 0; i < datesFilmScreenings.Count; i++)
-            {
-                Console.WriteLine("{0}. {1}", i + 1, datesFilmScreenings[i]);
-            }
-            Console.WriteLine();
         }
         public static DateOnly ChoiseDateFilmScreening(List<DateOnly> allDateFilmScreenings)//??
         {

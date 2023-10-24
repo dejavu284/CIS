@@ -83,7 +83,7 @@ namespace CIS.ViewModels
 
                 if (FilmScreening.IsPlacesNotEmpty(filmScreeningInCertainTime))
                 {
-                    FilmScreening.OutputCountPlace(filmScreeningInCertainTime);
+                    ConsoleMessages.OutputCountPlace(filmScreeningInCertainTime);
                     if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                     {
                         Basket.AddTicket(filmScreeningInCertainTime);
