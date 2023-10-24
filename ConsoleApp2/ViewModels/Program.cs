@@ -70,7 +70,7 @@ namespace CIS.ViewModels
         }
         public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
-            Basket basket = new(new List<Ticket>(), 0, 0);
+            Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {

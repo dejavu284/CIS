@@ -14,13 +14,7 @@ namespace CIS.Models
 {
     internal class Basket 
     {
-        /*public Basket() { }*/
-        public Basket(List<Ticket> tickets, int numberTickets, int price) 
-        {
-            Tickets = tickets;
-            NumberTickets = numberTickets;
-            Price = price;
-        }
+        public Basket() { }
         public static List<Ticket> Tickets { get; private set; } = new List<Ticket>();
         public static int NumberTickets { get; private set; } = 0;
         public static int Price { get; private set; } = 0;
