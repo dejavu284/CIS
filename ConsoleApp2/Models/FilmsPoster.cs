@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CIS.Views;
 
 namespace CIS.Models
 {
@@ -15,18 +16,5 @@ namespace CIS.Models
         }
         public List<Film> Films { get; }
         public int Count { get; private set; }
-        public void MessageNamesAllFilms() // перенести в ConsoleMessages
-        {
-            MessageFilmsAtTheBoxOffice();
-            for (int i = 0; i < Count; i++)
-            {
-
-                Console.WriteLine("{0}. {1}", i + 1, Films[i].Name);
-            }
-        }
-        private void MessageFilmsAtTheBoxOffice()
-        {
-            Console.WriteLine("Фильмы в прокате:\n");
-        }
     }
 }

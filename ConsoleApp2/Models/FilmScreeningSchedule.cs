@@ -9,7 +9,7 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public List<DateOnly> DatesOfFilmScreenings { get; private set; } = new();
+        public List<DateOnly> DatesOfFilmScreenings { get; private set; } = new(); // я напихал везде эти private set и не уверен что это вообще нужно
         public List<FilmScreening> FilmScreenings { get; private set; } = new();
         public FilmScreeningSchedule() { }
         public FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
@@ -20,17 +20,20 @@ namespace CIS.Models
         {
             do
             {
-                filmsPoster.MessageNamesAllFilms(); // перенести в ConsoleMessages
+                ConsoleMessages.MessageNamesAllFilms(filmsPoster); // перенести в ViewModels (управление)
                 Film film = Film.ChooseFilm(filmsPoster.Films); // перенести в ViewModels (управление)
 
                 FindFilmScriningsByName(film.Name, filmScreenings);
                 if (IsFilmScreeningsNotNull())
-                    ConsoleMessages.MessageInfo(film);
+                    ConsoleMessages.MessageInfo(film); // перенести в ViewModels (управление)
                 else
-                    ConsoleMessages.MessageFilmNotExist();
+                    ConsoleMessages.MessageFilmNotExist(); // перенести в ViewModels (управление)
             }
             while (!IsFilmScreeningsNotNull());
-
+        }
+        public static Film ChooseFilm(List<Film> films)
+        {
+            return ConsoleMessages.ChooseEl(films);
         }
         public void FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
         {
@@ -52,7 +55,7 @@ namespace CIS.Models
             bool flagChooseDate = true;
             while (flagChooseDate)
             {
-                FindDatesFilmScreenings();
+                FindDatesFilmScreenings(); // перенести в ViewModels (управление)
 
                 ConsoleMessages.OutputDateFilmScreening(DatesOfFilmScreenings); // это должно быть в ViewModels
 
