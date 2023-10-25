@@ -47,7 +47,7 @@ namespace CIS.Models
             foreach (DateOnly date in DatesOfFilmScreenings)
             {
                 return filmScreening.IsDatesEqual(date);                // не понятно, можно ли как то так сделать,
-                                                                        // чтоб мы могли dне передавать параметры,
+                                                                        // чтоб мы могли не передавать параметры,
                                                                         // а вызывать этот метод у объекта класса,
                                                                         // и обращаться к его полям
             }
