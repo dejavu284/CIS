@@ -12,15 +12,15 @@ namespace CIS.Models
     internal class FilmScreening
     {
         public List<FilmScreening> filmScreenings = new();
-        public FilmScreening() { }
-        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
+        /*public FilmScreening() { } // Странно, что у нас есть пустые конструкторы классов
+        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price) // 0 ссылок на конструктор, зачем он нужен?
         {
             Name = name;
             Date = data;
             Time = time;
             CountTicket = countTiket;
             Price = price;
-        }
+        }*/
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("data")]
@@ -35,9 +35,9 @@ namespace CIS.Models
         {
             return CountTicket != 0;
         }
-        public static bool IsDatesEqual(DateOnly date, FilmScreening filmScreening)
+        public bool IsDatesEqual(DateOnly date)
         {
-            return date == filmScreening.Date;
+            return date == Date;
         }
     }
 }

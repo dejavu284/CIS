@@ -35,6 +35,7 @@ namespace CIS.ViewModels
             }
         }
         public static bool TryDeserializ<T>(string path, ref T element) // нужно вынести текст ошибок в свой класс ошибок
+                                                                        // Возможно нужно перенести этот метод в класс Data в папке Data
             where T : new()
         {
             try
@@ -60,7 +61,7 @@ namespace CIS.ViewModels
                 return false;
             }
         }
-        public static bool DataIsCorrect(string[] args)
+        public static bool DataIsCorrect(string[] args) // Возможно нужно перенести этот метод в класс Data в папке Data
         {
             if (args.Length == 3)
             {
@@ -68,19 +69,18 @@ namespace CIS.ViewModels
             }
             return false;
         }
-        public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
+        public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster) // Нужно избавиться от list<filmscreeening> у меня не получилось(
         {
             Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
                 // Выбор фильма
-                FilmScreeningSchedule filmScreeningsInOneFilm = new();
-                filmScreeningsInOneFilm.ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
+                FilmScreeningSchedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
                 // Выбор даты
-                filmScreeningsInOneFilm.ChooseFilmScreeingInCertainDate();
+                FilmScreeningSchedule filmScreeningsInOneDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
                 // Выбор времени
-                FilmScreening filmScreeningInCertainTime = filmScreeningsInOneFilm.ChooseFilmScreeningsInCertainTime();
+                FilmScreening filmScreeningInCertainTime = ChooseFilmScreeningsInCertainTime(filmScreeningsInOneDate);
 
                 if (filmScreeningInCertainTime.IsPlacesNotEmpty())
                 {
@@ -99,6 +99,51 @@ namespace CIS.ViewModels
                 }
             }
             return basket;
+        }
+        public static FilmScreeningSchedule ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
+        {
+            FilmScreeningSchedule FilmScreenings = new();
+            do
+            {
+                ConsoleMessages.MessageNamesAllFilms(filmsPoster); 
+                Film film = FilmsPoster.ChooseFilm(filmsPoster.Films); 
+
+                FilmScreenings.FindFilmScriningsByName(film.Name, filmScreenings); // Метод бизнес логики
+                if (FilmScreenings.IsFilmScreeningsNotNull()) // Метод бизнес логики
+                    ConsoleMessages.MessageInfo(film); 
+                else
+                    ConsoleMessages.MessageFilmNotExist(); 
+            }
+            while (!FilmScreenings.IsFilmScreeningsNotNull()); // Метод бизнес логики
+            return FilmScreenings;
+        }
+        public static FilmScreeningSchedule ChooseFilmScreeingInCertainDate(FilmScreeningSchedule filmScreenings)
+        {
+            bool flagChooseDate = true;
+            DateOnly certainDataFilmSreening = new();
+            while (flagChooseDate)
+            {
+                filmScreenings.DatesOfFilmScreenings = new();
+                filmScreenings.FindDatesFilmScreenings(); // Метод бизнес логики
+                ConsoleMessages.OutputDateFilmScreening(filmScreenings.DatesOfFilmScreenings); 
+
+                certainDataFilmSreening = filmScreenings.ChoiseDateFilmScreening(); // Метод бизнес логики
+                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"); 
+            }
+            filmScreenings.FindFilmScreeningByDate(certainDataFilmSreening); // Метод бизнес логики
+            return filmScreenings;
+        }
+        public static FilmScreening ChooseFilmScreeningsInCertainTime(FilmScreeningSchedule filmScreenings)
+        {
+            FilmScreening filmScreeningInCertainTime;
+            bool flagChooseTime;
+            do
+            {
+                ConsoleMessages.OutputTimeFilmScreening(filmScreenings.FilmScreenings); 
+                filmScreeningInCertainTime = filmScreenings.ChoiseFilmScreeningByTime(); // Метод бизнес логики
+                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время"); 
+            } while (flagChooseTime);
+            return filmScreeningInCertainTime;
         }
     }
 }

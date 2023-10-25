@@ -10,28 +10,13 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public List<DateOnly> DatesOfFilmScreenings { get; private set; } = new(); // я напихал везде эти
-                                                                                   // private set и не уверен что это вообще нужно
+        public List<DateOnly> DatesOfFilmScreenings { get; set; } = new();          // я напихал везде эти
+                                                                                    // private set и не уверен что это вообще нужно
         public List<FilmScreening> FilmScreenings { get; private set; } = new();
-        public FilmScreeningSchedule() { }
-        public FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
+        public FilmScreeningSchedule() { } // Странно, что у нас есть пустые конструкторы классов
+        public FilmScreeningSchedule(List<FilmScreening> filmScreenings) // 0 ссылок на конструктор
         {
             FilmScreenings = filmScreenings;
-        }
-        public void ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
-        {
-            do
-            {
-                ConsoleMessages.MessageNamesAllFilms(filmsPoster); // перенести в ViewModels (управление)
-                Film film = FilmsPoster.ChooseFilm(filmsPoster.Films); // перенести в ViewModels (управление)
-
-                FindFilmScriningsByName(film.Name, filmScreenings);
-                if (IsFilmScreeningsNotNull())
-                    ConsoleMessages.MessageInfo(film); // перенести в ViewModels (управление)
-                else
-                    ConsoleMessages.MessageFilmNotExist(); // перенести в ViewModels (управление)
-            }
-            while (!IsFilmScreeningsNotNull());
         }
         public void FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
         {
@@ -43,26 +28,11 @@ namespace CIS.Models
                 }
             }
         }
-        private bool IsFilmScreeningsNotNull()
+        public bool IsFilmScreeningsNotNull()
         {
             return FilmScreenings.Count != 0;
         }
-
-        public void ChooseFilmScreeingInCertainDate()
-        {
-            bool flagChooseDate = true;
-            while (flagChooseDate)
-            {
-                FindDatesFilmScreenings(); // перенести в ViewModels (управление)
-
-                ConsoleMessages.OutputDateFilmScreening(DatesOfFilmScreenings); // это должно быть в ViewModels
-
-                DateOnly certainDataFilmSreening = ChoiseDateFilmScreening();
-                FindFilmScreeningByDate(certainDataFilmSreening);
-                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"); // должно быть в ViewModels
-            }
-        }
-        private void FindDatesFilmScreenings()
+        public void FindDatesFilmScreenings()
         {
             foreach (FilmScreening filmScreening in FilmScreenings)
             {
@@ -76,7 +46,7 @@ namespace CIS.Models
         {
             foreach (DateOnly date in DatesOfFilmScreenings)
             {
-                return FilmScreening.IsDatesEqual(date, filmScreening); // не понятно, можно ли как то так сделать,
+                return filmScreening.IsDatesEqual(date);                // не понятно, можно ли как то так сделать,
                                                                         // чтоб мы могли не передавать параметры,
                                                                         // а вызывать этот метод у объекта класса,
                                                                         // и обращаться к его полям
@@ -99,19 +69,6 @@ namespace CIS.Models
                 }
             }
             FilmScreenings = filmScreeningsTemp;
-        }
-
-        public FilmScreening ChooseFilmScreeningsInCertainTime()
-        {
-            FilmScreening filmScreeningInCertainTime;
-            bool flagChooseTime;
-            do
-            {
-                ConsoleMessages.OutputTimeFilmScreening(FilmScreenings); // должно быть во ViewModels
-                filmScreeningInCertainTime = ChoiseFilmScreeningByTime();
-                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время"); // должно быть во ViewModels
-            } while (flagChooseTime);
-            return filmScreeningInCertainTime;
         }
         public FilmScreening ChoiseFilmScreeningByTime()
         {

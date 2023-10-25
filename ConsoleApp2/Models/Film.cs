@@ -10,7 +10,7 @@ namespace CIS.Models
 {
     internal class Film
     {
-        public Film(string name, string genre, string description, int year)
+        public Film(string name, string genre, string description, int year) // На этот конструктор 0 ссылок
         {
             Name = name;
             Description = description;
