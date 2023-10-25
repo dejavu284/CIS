@@ -14,7 +14,7 @@ namespace CIS.Models
 {
     internal class Basket 
     {
-        public Basket() { }
+        /*public Basket() { }*/ // Странно, что у нас есть пустые конструкторы классов
         public static List<Ticket> Tickets { get; private set; } = new List<Ticket>();
         public static int NumberTickets { get; private set; } = 0;
         public static int Price { get; private set; } = 0;

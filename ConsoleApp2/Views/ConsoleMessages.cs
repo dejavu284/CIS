@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using CIS.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CIS.Views
 {
@@ -43,12 +44,24 @@ namespace CIS.Views
             for (int i = 0; i < Basket.NumberTickets; i++)
             {
                 Console.WriteLine("\nБилет №{0}", i + 1);
-                Basket.Tickets[i].MessangInfo();
+                MessangInfo(Basket.Tickets[i]);
             }
             Console.WriteLine("\nИтоговая стоимость составила: {0}", Basket.Price);
             Console.WriteLine("---------------------------");
         }
-        public static T ChooseEl<T>(List<T> elements)
+        public static void MessangInfo(Ticket ticket)
+        {
+            Console.WriteLine("---------------------------");
+            Console.WriteLine("Информация о билете:");
+            Console.WriteLine("Название фильма: {0}", ticket.Name);
+            Console.WriteLine("Дата сеанса: {0}", ticket.Data);
+            Console.WriteLine("Время сеанса: {0}", ticket.Time);
+            Console.WriteLine("Цена билета: {0}", ticket.Price);
+            Console.WriteLine("---------------------------\n");
+        }
+        public static T ChooseEl<T>(List<T> elements) // Этот метод вызывается в классах Schedule и Poster, хотя должен вызываться только в классе Program
+                                                      // так как этот метод является View честью, он должен управляться через ViewModels, тобишь через Program
+                                                      // Либо его нужно переписать так, чтобы он был частью бизнес логики, а весь ввод/вывод перенести в Program
         {
             ConsoleMessages.MessageToSelectItemEnterNumber();
             T el;
@@ -116,7 +129,7 @@ namespace CIS.Views
         {
             Console.WriteLine("На выбранное время мест нет.\n");
         }
-        public static void MessageInfo(Film film) // Перенести в ConsoleMessages
+        public static void MessageInfo(Film film)
         {
             Console.WriteLine("\nИнформация о фильме {0}", film.Name);
             Console.WriteLine("\nЖанр: {0}", film.Genre);
@@ -125,16 +138,12 @@ namespace CIS.Views
         }
         public static void MessageNamesAllFilms(FilmsPoster films)
         {
-            MessageFilmsAtTheBoxOffice();
+            Console.WriteLine("Фильмы в прокате:\n");
             for (int i = 0; i < films.Count; i++)
             {
 
                 Console.WriteLine("{0}. {1}", i + 1, films.Films[i].Name);
             }
-        }
-        public static void MessageFilmsAtTheBoxOffice()
-        {
-            Console.WriteLine("Фильмы в прокате:\n");
         }
     }
 }

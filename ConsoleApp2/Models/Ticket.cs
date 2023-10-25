@@ -28,16 +28,6 @@ namespace CIS.Models
             int res = random.Next(1000, 9999);
             return res;
         }
-        public void MessangInfo()
-        {
-            Console.WriteLine("---------------------------");
-            Console.WriteLine("Информация о билете:");
-            Console.WriteLine("Название фильма: {0}", Name);
-            Console.WriteLine("Дата сеанса: {0}", Data);
-            Console.WriteLine("Время сеанса: {0}", Time);
-            Console.WriteLine("Цена билета: {0}", Price);
-            Console.WriteLine("---------------------------\n");
-        }
     }
 
 }

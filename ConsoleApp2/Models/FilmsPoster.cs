@@ -16,7 +16,7 @@ namespace CIS.Models
         }
         public List<Film> Films { get; }
         public int Count { get; private set; }
-        public static Film ChooseFilm(List<Film> films)
+        public static Film ChooseFilm(List<Film> films) // Странно, что в бизнес логике есть метод, который вызывает метод из класса ViewModels
         {
             return ConsoleMessages.ChooseEl(films);
         }
