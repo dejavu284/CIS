@@ -11,7 +11,7 @@ namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public FilmScreeningSchedule(List<FilmScreening> filmScreenings)
+        public FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
         {
             FilmScreenings = filmScreenings;
             Dates = FindDates(filmScreenings);
