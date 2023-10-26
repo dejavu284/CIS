@@ -11,35 +11,35 @@ namespace CIS.ViewModels
         {
             if (WorkingData.DataIsCorrect(args))
             {
-                string currentDirectory = $"{Environment.CurrentDirectory}";
-                string filmJsonPath = currentDirectory + "\\Data\\" + args[0];
-                string filmScreeningJsonPath = currentDirectory + "\\Data\\" + args[1];
-                string basketJsonPath = currentDirectory + "\\Data\\" + args[2];
-
+                WorkingData data = new(args);
                 List<Film> films = new();
-                List<FilmScreening> filmScreening = new();
+                List<FilmScreening> filmScreenings = new();
 
-                if (WorkingData.TryDeserializ(filmJsonPath, ref films) && WorkingData.TryDeserializ(filmScreeningJsonPath, ref filmScreening))//перенести в класс Data
+                if (data.TryDeserializ(data.FilmJsonPath, ref films) && data.TryDeserializ(data.FilmScreeningJsonPath, ref filmScreenings))
                 {
                     FilmsPoster filmsPoster = new(films);
-                    Basket basket = BuyTickets(filmScreening, filmsPoster);
-                    WorkingData.Save(basketJsonPath, basket);//перенести в класс Data
+                    FilmScreeningSchedule schedule = new(filmScreenings);
+                    Basket basket = BuyTickets(schedule, filmsPoster);
+                    WorkingData.Save(data.BasketJsonPath, basket);
+                    ConsoleMessages.MessageCompletionProgram();
                 }
-                ConsoleMessages.MessageCompletionProgram();
+                else
+                    ConsoleMessages.MessageIncorrectInput();
             }
             else
             {
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
-        public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster) // Нужно избавиться от list<filmscreeening> у меня не получилось(
+
+        public static Basket BuyTickets(FilmScreeningSchedule schedule, FilmsPoster filmsPoster)
         {
             Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
                 // Выбор фильма
-                FilmScreeningSchedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(filmScreenings, filmsPoster);
+                FilmScreeningSchedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(schedule, filmsPoster);
                 // Выбор даты
                 FilmScreeningSchedule filmScreeningsInOneDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
                 // Выбор времени
@@ -63,9 +63,8 @@ namespace CIS.ViewModels
             }
             return basket;
         }
-        public static FilmScreeningSchedule ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
+        public static FilmScreeningSchedule ChooseFilmScreeingInCertainFilm(FilmScreeningSchedule schedule, FilmsPoster filmsPoster)
         {
-            FilmScreeningSchedule schedule = new(filmScreenings);
             FilmScreeningSchedule scheduleWithOneFilm;
             Film film;
             do

@@ -1,4 +1,5 @@
 ﻿using CIS.Models;
+using CIS.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,21 @@ namespace CIS.Data
 {
     internal class WorkingData
     {
+        public WorkingData(string[] args)
+        {
+            if (DataIsCorrect(args))
+            {
+                CurrentDirectory = $"{Environment.CurrentDirectory}";
+                FilmJsonPath = CurrentDirectory + "\\Data\\" + args[0];
+                FilmScreeningJsonPath = CurrentDirectory + "\\Data\\" + args[1];
+                BasketJsonPath = CurrentDirectory + "\\Data\\" + args[2];
+            }
+        }    
+        private string? CurrentDirectory { get; set; }
+        public string? FilmJsonPath { get; private set; }
+        public string? FilmScreeningJsonPath { get; private set; }
+        public string? BasketJsonPath { get; private set; }
+
         public static bool DataIsCorrect(string[] args)
         {
             if (args.Length == 3)
@@ -20,7 +36,7 @@ namespace CIS.Data
             }
             return false;
         }
-        public static bool TryDeserializ<T>(string path, ref T element)
+        public bool TryDeserializ<T>(string? path, ref T element)
             where T : new()
         {
             try
@@ -46,7 +62,7 @@ namespace CIS.Data
             }
         }
 
-        public static void Save<T>(string path, T element)
+        public static void Save<T>(string? path, T element)
         {
             var options = new JsonSerializerOptions
             {

@@ -25,7 +25,7 @@ namespace CIS.Views
                 else if (answer.ToLower() == no)
                     return false;
                 else
-                    ConsoleMessages.MessageIncorrectInput();
+                    MessageIncorrectInput();
             }
         }
         public static void MessageToSelectItemEnterNumber()
@@ -61,33 +61,21 @@ namespace CIS.Views
         }
         public static T ChooseEl<T>(List<T> elements)
         {
-            ConsoleMessages.MessageToSelectItemEnterNumber();
-            T el;
+            MessageToSelectItemEnterNumber();
             do
             {
                 string? inputNumber = Console.ReadLine();
-                el = FindElByIndex(elements, inputNumber);
-            } while (el == null || el.Equals(default(T)));
-            return el;
+                int index;
+                if(IsNumberInList(elements.Count, inputNumber, out index))
+                    return elements[index - 1];
+                else
+                    MessageIncorrectInput(); // throw new ArgumentException("Выбранного елемента нет в списке");
+            } while (true);
         }
-        public static T FindElByIndex<T>(List<T> list, string? indexStr)
-        {
-            int index;
-            if (IsNumberInList(list, indexStr, out index))
-            {
-                return list[index - 1];
-            }
-            else
-            {
-                ConsoleMessages.MessageIncorrectInput();
-                return default(T);
-                // throw new ArgumentException("Выбранного елемента нет в списке");
-            }
-        }
-        public static bool IsNumberInList<T>(List<T> films, string? indexStr, out int index)
+        private static bool IsNumberInList(int count, string? indexStr, out int index)
         {
             bool tryParseChecked = int.TryParse(indexStr, out index);
-            return tryParseChecked && films.Count >= index && index > 0;
+            return tryParseChecked && count >= index && index > 0;
         }
         public static void MessageTicketPurchased()
         {
@@ -102,7 +90,7 @@ namespace CIS.Views
         {
             Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
         }
-        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings) // добавить вывод свободных мест
+        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
         {
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < filmscreenings.Count; i++)
@@ -139,7 +127,6 @@ namespace CIS.Views
             Console.WriteLine("Фильмы в прокате:\n");
             for (int i = 0; i < films.Count; i++)
             {
-
                 Console.WriteLine("{0}. {1}", i + 1, films.Films[i].Name);
             }
         }
