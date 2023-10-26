@@ -10,27 +10,28 @@ using CIS.Views;
 
 namespace CIS.Models
 {
+    
     internal class FilmScreening
     {
-        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
+        public FilmScreening(string name, DateOnly date, TimeOnly time, int countTicket, int price)
         {
             Name = name;
-            Date = data;
+            Date = date;
             Time = time;
-            CountTicket = countTiket;
+            CountTicket = countTicket;
             Price = price;
         }
-        public FilmScreening() { }
+        
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get;private set; }
         [JsonPropertyName("data")]
-        public DateOnly Date { get; set; }
+        public DateOnly Date { get;private set; }
         [JsonPropertyName("time")]
-        public TimeOnly Time { get; set; }
+        public TimeOnly Time { get; private set; }
         [JsonPropertyName("countTiket")]
-        public int CountTicket { get; set; }
+        public int CountTicket { get; private set; }
         [JsonPropertyName("price")]
-        public int Price { get; set; }
+        public int Price { get; private set; }
         public bool IsPlacesNotEmpty()
         {
             return CountTicket != 0;

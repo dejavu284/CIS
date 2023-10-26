@@ -37,16 +37,16 @@ namespace CIS.Views
         {
             Console.WriteLine("\nНекорректный ввод поробуйте ещё раз");
         }
-        public static void MessageCheck()
+        public static void MessageCheck(Basket basket)
         {
             Console.WriteLine("\n---------------------------");
             Console.WriteLine("Чек:");
-            for (int i = 0; i < Basket.NumberTickets; i++)
+            for (int i = 0; i < basket.NumberTickets; i++)
             {
                 Console.WriteLine("\nБилет №{0}", i + 1);
-                MessangInfo(Basket.Tickets[i]);
+                MessangInfo(basket.Tickets[i]);
             }
-            Console.WriteLine("\nИтоговая стоимость составила: {0}", Basket.Price);
+            Console.WriteLine("\nИтоговая стоимость составила: {0}", basket.Price);
             Console.WriteLine("---------------------------");
         }
         public static void MessangInfo(Ticket ticket)

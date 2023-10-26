@@ -1,8 +1,7 @@
-using System.Data;
-using System.Text.Json;
-using File = System.IO.File;
+
 using CIS.Models;
 using CIS.Views;
+using CIS.Data;
 
 namespace CIS.ViewModels
 {
@@ -10,7 +9,7 @@ namespace CIS.ViewModels
     {
         static void Main(string[] args)
         {
-            if (DataIsCorrect(args))
+            if (WorkingData.DataIsCorrect(args))
             {
                 string currentDirectory = $"{Environment.CurrentDirectory}";
                 string filmJsonPath = currentDirectory + "\\Data\\" + args[0];
@@ -20,11 +19,11 @@ namespace CIS.ViewModels
                 List<Film> films = new();
                 List<FilmScreening> filmScreening = new();
 
-                if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))//перенести в класс Data
+                if (WorkingData.TryDeserializ(filmJsonPath, ref films) && WorkingData.TryDeserializ(filmScreeningJsonPath, ref filmScreening))//перенести в класс Data
                 {
                     FilmsPoster filmsPoster = new(films);
                     Basket basket = BuyTickets(filmScreening, filmsPoster);
-                    basket.Save(basketJsonPath);//перенести в класс Data
+                    WorkingData.Save(basketJsonPath, basket);//перенести в класс Data
                 }
                 ConsoleMessages.MessageCompletionProgram();
             }
@@ -32,40 +31,6 @@ namespace CIS.ViewModels
             {
                 ConsoleMessages.MessageIncorrectInput();
             }
-        }
-        public static bool TryDeserializ<T>(string path, ref T element) //перенести в класс Data
-            where T : new()
-        {
-            try
-            {
-                string textJson = File.ReadAllText(path);
-                element = JsonSerializer.Deserialize<T>(textJson)!;
-                //var a = new T(); // WTF
-                return true;
-            }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine("Не найден файл:\n{0}", path);
-                return false;
-            }
-            catch (JsonException)
-            {
-                Console.WriteLine("Ошибка в файле:\n{0}", path);
-                return false;
-            }
-            catch
-            {
-                Console.WriteLine("Ошибка, попробуйте еще раз.", path);
-                return false;
-            }
-        }
-        public static bool DataIsCorrect(string[] args) // Возможно нужно перенести этот метод в класс Data в папке Data
-        {
-            if (args.Length == 3)
-            {
-                return args.All(x => x.Contains(".json"));
-            }
-            return false;
         }
         public static Basket BuyTickets(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster) // Нужно избавиться от list<filmscreeening> у меня не получилось(
         {
@@ -88,7 +53,7 @@ namespace CIS.ViewModels
                         basket.AddTicket(filmScreeningInCertainTime);
                         ConsoleMessages.MessageTicketPurchased();
                     }
-                    ConsoleMessages.MessageCheck();
+                    ConsoleMessages.MessageCheck(basket);
                     flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
                 }
                 else
