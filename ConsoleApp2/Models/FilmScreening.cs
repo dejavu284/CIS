@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CIS.Views;
@@ -11,16 +12,15 @@ namespace CIS.Models
 {
     internal class FilmScreening
     {
-        public List<FilmScreening> filmScreenings = new();
-        /*public FilmScreening() { } // Странно, что у нас есть пустые конструкторы классов
-        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price) // 0 ссылок на конструктор, зачем он нужен?
+        public FilmScreening(string name, DateOnly data, TimeOnly time, int countTiket, int price)
         {
             Name = name;
             Date = data;
             Time = time;
             CountTicket = countTiket;
             Price = price;
-        }*/
+        }
+        public FilmScreening() { }
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("data")]
@@ -34,10 +34,6 @@ namespace CIS.Models
         public bool IsPlacesNotEmpty()
         {
             return CountTicket != 0;
-        }
-        public bool IsDatesEqual(DateOnly date)
-        {
-            return date == Date;
         }
     }
 }

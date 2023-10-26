@@ -59,9 +59,7 @@ namespace CIS.Views
             Console.WriteLine("Цена билета: {0}", ticket.Price);
             Console.WriteLine("---------------------------\n");
         }
-        public static T ChooseEl<T>(List<T> elements) // Этот метод вызывается в классах Schedule и Poster, хотя должен вызываться только в классе Program
-                                                      // так как этот метод является View честью, он должен управляться через ViewModels, тобишь через Program
-                                                      // Либо его нужно переписать так, чтобы он был частью бизнес логики, а весь ввод/вывод перенести в Program
+        public static T ChooseEl<T>(List<T> elements)
         {
             ConsoleMessages.MessageToSelectItemEnterNumber();
             T el;

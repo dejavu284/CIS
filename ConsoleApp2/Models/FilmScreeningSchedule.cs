@@ -4,63 +4,65 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CIS.Views;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace CIS.Models
 {
     internal class FilmScreeningSchedule
     {
-        public List<DateOnly> DatesOfFilmScreenings { get; set; } = new();          // я напихал везде эти
-                                                                                    // private set и не уверен что это вообще нужно
-        public List<FilmScreening> FilmScreenings { get; private set; } = new();
-        public FilmScreeningSchedule() { } // Странно, что у нас есть пустые конструкторы классов
-        public FilmScreeningSchedule(List<FilmScreening> filmScreenings) // 0 ссылок на конструктор
+        public FilmScreeningSchedule(List<FilmScreening> filmScreenings)
         {
             FilmScreenings = filmScreenings;
+            Dates = FindDates(filmScreenings);
+            _count = filmScreenings.Count;
         }
-        public void FindFilmScriningsByName(string filmName, List<FilmScreening> filmScreenings)
+        public List<DateOnly> Dates { get; private set; } = new();    // private set и не уверен что это вообще нужно  
+
+        public List<FilmScreening> FilmScreenings { get; private set; } = new();
+
+        public int Count { get { return _count; } }
+
+        private int _count = 0;
+        
+        public FilmScreeningSchedule FindByName(string filmName)
         {
-            foreach (FilmScreening filmScreening in filmScreenings)
+            List<FilmScreening> filmScreenings = new();
+            foreach (FilmScreening filmScreening in FilmScreenings)
             {
                 if (filmName == filmScreening.Name)
                 {
-                    FilmScreenings.Add(filmScreening);
+                    filmScreenings.Add(filmScreening);
                 }
             }
+            return new(filmScreenings);
         }
-        public bool IsFilmScreeningsNotNull()
+        public bool IsNull()
         {
-            return FilmScreenings.Count != 0;
+            return Count == 0;
         }
-        public void FindDatesFilmScreenings()
+        private List<DateOnly> FindDates(List<FilmScreening> filmScreenings)
         {
-            foreach (FilmScreening filmScreening in FilmScreenings)
+            List<DateOnly> dates = new List<DateOnly>();
+            foreach (FilmScreening filmScreening in filmScreenings)
             {
-                if (!IsDatesRepeating(filmScreening))
+                if (!IsDatesRepeating(filmScreening.Date, dates))
                 {
-                    DatesOfFilmScreenings.Add(filmScreening.Date);
+                    dates.Add(filmScreening.Date);
                 }
             }
+            return dates;
         }
-        public bool IsDatesRepeating(FilmScreening filmScreening)
+        private bool IsDatesRepeating(DateOnly date,List<DateOnly> dates)
         {
-            foreach (DateOnly date in DatesOfFilmScreenings)
-            {
-                return filmScreening.IsDatesEqual(date);                // не понятно, можно ли как то так сделать,
-                                                                        // чтоб мы могли не передавать параметры,
-                                                                        // а вызывать этот метод у объекта класса,
-                                                                        // и обращаться к его полям
-            }
+            foreach (DateOnly thisDate in dates)
+                if (thisDate == date)
+                    return true;       
             return false;
         }
-        public DateOnly ChoiseDateFilmScreening()
-        {
-            return ConsoleMessages.ChooseEl(DatesOfFilmScreenings);
-        }
-        public void FindFilmScreeningByDate(DateOnly datesFilmScreenings)
+        public FilmScreeningSchedule FindFilmScreeningByDate(DateOnly datesFilmScreenings)
         {
             List<FilmScreening> filmScreeningsTemp = new ();
-
             for (int i = 0; i < FilmScreenings.Count; i++)
             {
                 if (datesFilmScreenings == FilmScreenings[i].Date)
@@ -68,11 +70,7 @@ namespace CIS.Models
                     filmScreeningsTemp.Add(FilmScreenings[i]);
                 }
             }
-            FilmScreenings = filmScreeningsTemp;
-        }
-        public FilmScreening ChoiseFilmScreeningByTime()
-        {
-            return ConsoleMessages.ChooseEl(FilmScreenings);
+            return new(filmScreeningsTemp);
         }
     }
 }

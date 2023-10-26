@@ -10,7 +10,6 @@ namespace CIS.ViewModels
     {
         static void Main(string[] args)
         {
-
             if (DataIsCorrect(args))
             {
                 string currentDirectory = $"{Environment.CurrentDirectory}";
@@ -21,11 +20,11 @@ namespace CIS.ViewModels
                 List<Film> films = new();
                 List<FilmScreening> filmScreening = new();
 
-                if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))
+                if (TryDeserializ(filmJsonPath, ref films) && TryDeserializ(filmScreeningJsonPath, ref filmScreening))//перенести в класс Data
                 {
                     FilmsPoster filmsPoster = new(films);
                     Basket basket = BuyTickets(filmScreening, filmsPoster);
-                    basket.Save(basketJsonPath);
+                    basket.Save(basketJsonPath);//перенести в класс Data
                 }
                 ConsoleMessages.MessageCompletionProgram();
             }
@@ -34,15 +33,14 @@ namespace CIS.ViewModels
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
-        public static bool TryDeserializ<T>(string path, ref T element) // нужно вынести текст ошибок в свой класс ошибок
-                                                                        // Возможно нужно перенести этот метод в класс Data в папке Data
+        public static bool TryDeserializ<T>(string path, ref T element) //перенести в класс Data
             where T : new()
         {
             try
             {
                 string textJson = File.ReadAllText(path);
                 element = JsonSerializer.Deserialize<T>(textJson)!;
-                var a = new T(); // WTF
+                //var a = new T(); // WTF
                 return true;
             }
             catch (FileNotFoundException)
@@ -102,47 +100,42 @@ namespace CIS.ViewModels
         }
         public static FilmScreeningSchedule ChooseFilmScreeingInCertainFilm(List<FilmScreening> filmScreenings, FilmsPoster filmsPoster)
         {
-            FilmScreeningSchedule FilmScreenings = new();
+            FilmScreeningSchedule schedule = new(filmScreenings);
+            FilmScreeningSchedule scheduleWithOneFilm;
+            Film film;
             do
             {
                 ConsoleMessages.MessageNamesAllFilms(filmsPoster); 
-                Film film = FilmsPoster.ChooseFilm(filmsPoster.Films); 
+                film = ConsoleMessages.ChooseEl(filmsPoster.Films);
 
-                FilmScreenings.FindFilmScriningsByName(film.Name, filmScreenings); // Метод бизнес логики
-                if (FilmScreenings.IsFilmScreeningsNotNull()) // Метод бизнес логики
-                    ConsoleMessages.MessageInfo(film); 
+                scheduleWithOneFilm = schedule.FindByName(film.Name); // Метод бизнес логики
+                if (scheduleWithOneFilm.IsNull()) // Метод бизнес логики
+                    ConsoleMessages.MessageFilmNotExist();
                 else
-                    ConsoleMessages.MessageFilmNotExist(); 
+                    ConsoleMessages.MessageInfo(film);
             }
-            while (!FilmScreenings.IsFilmScreeningsNotNull()); // Метод бизнес логики
-            return FilmScreenings;
+            while (scheduleWithOneFilm.IsNull()); // Метод бизнес логики
+            return scheduleWithOneFilm;
         }
         public static FilmScreeningSchedule ChooseFilmScreeingInCertainDate(FilmScreeningSchedule filmScreenings)
         {
-            bool flagChooseDate = true;
             DateOnly certainDataFilmSreening = new();
-            while (flagChooseDate)
+            do
             {
-                filmScreenings.DatesOfFilmScreenings = new();
-                filmScreenings.FindDatesFilmScreenings(); // Метод бизнес логики
-                ConsoleMessages.OutputDateFilmScreening(filmScreenings.DatesOfFilmScreenings); 
-
-                certainDataFilmSreening = filmScreenings.ChoiseDateFilmScreening(); // Метод бизнес логики
-                flagChooseDate = !ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"); 
-            }
+                ConsoleMessages.OutputDateFilmScreening(filmScreenings.Dates);
+                certainDataFilmSreening = ConsoleMessages.ChooseEl(filmScreenings.Dates); // Метод бизнес логики
+            } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"));
             filmScreenings.FindFilmScreeningByDate(certainDataFilmSreening); // Метод бизнес логики
             return filmScreenings;
         }
         public static FilmScreening ChooseFilmScreeningsInCertainTime(FilmScreeningSchedule filmScreenings)
         {
             FilmScreening filmScreeningInCertainTime;
-            bool flagChooseTime;
             do
             {
                 ConsoleMessages.OutputTimeFilmScreening(filmScreenings.FilmScreenings); 
-                filmScreeningInCertainTime = filmScreenings.ChoiseFilmScreeningByTime(); // Метод бизнес логики
-                flagChooseTime = !ConsoleMessages.PoolYesOrNo("Оставить выбранное время"); 
-            } while (flagChooseTime);
+                filmScreeningInCertainTime = ConsoleMessages.ChooseEl(filmScreenings.FilmScreenings); // Метод бизнес логики
+            } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранное время"));
             return filmScreeningInCertainTime;
         }
     }
