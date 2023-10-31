@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CIS.Models
 {
     internal class Cinema
     {
-        public Cinema(List<FilmScreening> film_Screenings, string name)
+        public Cinema(string name, string address,int id ,Schedule schedule, List<Hall> halls, Poster poster)
         {
-            this.film_Screenings = film_Screenings;
-            this.name = name;
+            Name = name;
+            Address = address;
+            Id = id;
+            Schedule = schedule;
+            Halls = halls;
+            Poster = poster;
         }
-        public List<FilmScreening> film_Screenings { get; set; }
-        public string name;
+
+        public string Name { get; }
+        public string Address { get; }
+        public int Id { get; } 
+        public Schedule Schedule { get;}
+       
+        public List<Hall> Halls { get; }
+        public Poster Poster { get;}
     }
 }

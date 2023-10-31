@@ -17,8 +17,8 @@ namespace CIS.ViewModels
 
                 if (data.TryDeserializ(data.FilmJsonPath, ref films) && data.TryDeserializ(data.FilmScreeningJsonPath, ref filmScreenings))
                 {
-                    FilmsPoster filmsPoster = new(films);
-                    FilmScreeningSchedule schedule = new(filmScreenings);
+                    Poster filmsPoster = new(films);
+                    Schedule schedule = new(filmScreenings);
                     Basket basket = BuyTickets(schedule, filmsPoster);
                     WorkingData.Save(data.BasketJsonPath, basket);
                     ConsoleMessages.MessageCompletionProgram();
@@ -32,16 +32,16 @@ namespace CIS.ViewModels
             }
         }
 
-        public static Basket BuyTickets(FilmScreeningSchedule schedule, FilmsPoster filmsPoster)
+        public static Basket BuyTickets(Schedule schedule, Poster filmsPoster)
         {
             Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
                 // Выбор фильма
-                FilmScreeningSchedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(schedule, filmsPoster);
+                Schedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(schedule, filmsPoster);
                 // Выбор даты
-                FilmScreeningSchedule filmScreeningsInOneDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
+                Schedule filmScreeningsInOneDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
                 // Выбор времени
                 FilmScreening filmScreeningInCertainTime = ChooseFilmScreeningsInCertainTime(filmScreeningsInOneDate);
 
@@ -63,9 +63,9 @@ namespace CIS.ViewModels
             }
             return basket;
         }
-        public static FilmScreeningSchedule ChooseFilmScreeingInCertainFilm(FilmScreeningSchedule schedule, FilmsPoster filmsPoster)
+        public static Schedule ChooseFilmScreeingInCertainFilm(Schedule schedule, Poster filmsPoster)
         {
-            FilmScreeningSchedule scheduleWithOneFilm;
+            Schedule scheduleWithOneFilm;
             Film film;
             do
             {
@@ -81,7 +81,7 @@ namespace CIS.ViewModels
             while (scheduleWithOneFilm.IsNull()); // Метод бизнес логики
             return scheduleWithOneFilm;
         }
-        public static FilmScreeningSchedule ChooseFilmScreeingInCertainDate(FilmScreeningSchedule filmScreenings)
+        public static Schedule ChooseFilmScreeingInCertainDate(Schedule filmScreenings)
         {
             DateOnly certainDataFilmSreening = new();
             do
@@ -92,7 +92,7 @@ namespace CIS.ViewModels
             filmScreenings.FindFilmScreeningByDate(certainDataFilmSreening); // Метод бизнес логики
             return filmScreenings;
         }
-        public static FilmScreening ChooseFilmScreeningsInCertainTime(FilmScreeningSchedule filmScreenings)
+        public static FilmScreening ChooseFilmScreeningsInCertainTime(Schedule filmScreenings)
         {
             FilmScreening filmScreeningInCertainTime;
             do

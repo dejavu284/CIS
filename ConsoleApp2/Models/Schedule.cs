@@ -1,31 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CIS.Views;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-
+﻿
 namespace CIS.Models
 {
-    internal class FilmScreeningSchedule
+    internal class Schedule
     {
-        public FilmScreeningSchedule(List<FilmScreening> filmScreenings) 
+        public Schedule(List<FilmScreening> filmScreenings) 
         {
             FilmScreenings = filmScreenings;
-            Dates = FindDates(filmScreenings);
-            _count = filmScreenings.Count;
         }
-        public List<DateOnly> Dates { get; private set; } = new();    // private set и не уверен что это вообще нужно  
+        public List<DateOnly> Dates { get { return FindDates(FilmScreenings); }}
 
         public List<FilmScreening> FilmScreenings { get; private set; } = new();
 
-        public int Count { get { return _count; } }
+        public int Count { get { return FilmScreenings.Count; } }
 
-        private int _count = 0;
         
-        public FilmScreeningSchedule FindByName(string filmName)
+        public Schedule FindByName(string filmName)
         {
             List<FilmScreening> filmScreenings = new();
             foreach (FilmScreening filmScreening in FilmScreenings)
@@ -60,7 +49,7 @@ namespace CIS.Models
                     return true;       
             return false;
         }
-        public FilmScreeningSchedule FindFilmScreeningByDate(DateOnly datesFilmScreenings)
+        public Schedule FindFilmScreeningByDate(DateOnly datesFilmScreenings)
         {
             List<FilmScreening> filmScreeningsTemp = new ();
             for (int i = 0; i < FilmScreenings.Count; i++)

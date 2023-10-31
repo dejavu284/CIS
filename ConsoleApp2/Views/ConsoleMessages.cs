@@ -122,7 +122,7 @@ namespace CIS.Views
             Console.WriteLine("Год выхода: {0}", film.Year);
             Console.WriteLine("Описание: {0}\n", film.Description);
         }
-        public static void MessageNamesAllFilms(FilmsPoster films)
+        public static void MessageNamesAllFilms(Poster films)
         {
             Console.WriteLine("Фильмы в прокате:\n");
             for (int i = 0; i < films.Count; i++)

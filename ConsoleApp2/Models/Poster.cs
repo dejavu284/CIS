@@ -6,14 +6,13 @@ using CIS.Views;
 
 namespace CIS.Models
 {
-    internal class FilmsPoster
+    internal class Poster
     {
-        public FilmsPoster(List<Film> films)
+        public Poster(List<Film> films)
         {
             Films = films;
-            Count = films.Count;
         }
         public List<Film> Films { get; }
-        public int Count { get; private set; }
+        public int Count { get { return Films.Count; } }
     }
 }
