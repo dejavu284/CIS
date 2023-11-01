@@ -11,6 +11,9 @@
     <None Update="Data\basket.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Data\cinemas.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Data\film.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

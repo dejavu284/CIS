@@ -12,14 +12,11 @@ namespace CIS.ViewModels
             if (WorkingData.DataIsCorrect(args))
             {
                 WorkingData data = new(args);
-                List<Film> films = new();
-                List<FilmScreening> filmScreenings = new();
+                List<Cinema> cinemas = new();
 
-                if (data.TryDeserializ(data.FilmJsonPath, ref films) && data.TryDeserializ(data.FilmScreeningJsonPath, ref filmScreenings))
+                if (data.TryDeserializ(data.CinemasJsonPath, ref cinemas))
                 {
-                    Poster filmsPoster = new(films);
-                    Schedule schedule = new(filmScreenings);
-                    Basket basket = BuyTickets(schedule, filmsPoster);
+                    Basket basket = BuyTickets(cinemas);
                     WorkingData.Save(data.BasketJsonPath, basket);
                     ConsoleMessages.MessageCompletionProgram();
                 }
@@ -32,14 +29,15 @@ namespace CIS.ViewModels
             }
         }
 
-        public static Basket BuyTickets(Schedule schedule, Poster filmsPoster)
+        public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();
             bool flagBuyTickets = true;
             while (flagBuyTickets)
             {
+                Cinema cinema = ChoiseCinema(cinemas);
                 // Выбор фильма
-                Schedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(schedule, filmsPoster);
+                Schedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(cinema.Schedule, cinema.Poster);
                 // Выбор даты
                 Schedule filmScreeningsInOneDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
                 // Выбор времени
@@ -70,6 +68,7 @@ namespace CIS.ViewModels
             {
                 ConsoleMessages.OutputCinemas(cinemas);
                 cinema = ConsoleMessages.ChooseEl(cinemas);
+                ConsoleMessages.MessageInfoCinema(cinema);
             } while (ConsoleMessages.PoolYesOrNo("Выбрать другой кинотеарт?"));
             return cinema;
         }

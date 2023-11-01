@@ -16,7 +16,7 @@ namespace CIS.Views
         {
             string yes = "y";
             string no = "n";
-            Console.WriteLine("{0}? ({1}/{2})", question, yes, no);
+            Console.WriteLine("\n{0}? ({1}/{2})\n", question, yes, no);
             while (true)
             {
                 string answer = Console.ReadLine()!;
@@ -35,7 +35,7 @@ namespace CIS.Views
         }
         public static void MessageIncorrectInput()
         {
-            Console.WriteLine("\nНекорректный ввод поробуйте ещё раз");
+            Console.WriteLine("\nНекорректный ввод поробуйте ещё раз\n");
         }
         public static void MessageCheck(Basket basket)
         {
@@ -124,7 +124,7 @@ namespace CIS.Views
         }
         public static void MessageNamesAllFilms(Poster films)
         {
-            Console.WriteLine("Фильмы в прокате:\n");
+            Console.WriteLine("\nФильмы в прокате:\n");
             for (int i = 0; i < films.Count; i++)
             {
                 Console.WriteLine("{0}. {1}", i + 1, films.Films[i].Name);
@@ -138,11 +138,11 @@ namespace CIS.Views
                 Console.WriteLine("{0}. {1}", i + 1, cinemas[i].Name);
             }
         }
-        public static void MessageCinema(Cinema cinema)
+        public static void MessageInfoCinema(Cinema cinema)
         {
-            Console.WriteLine("\nИнформация о кинотеатр \"{0}\": ",cinema.Name);
+            Console.WriteLine("\nИнформация о кинотеатре \"{0}\": ",cinema.Name);
             Console.WriteLine("\nАдрес: {0} ",cinema.Address);
-            Console.WriteLine("\nРейтинг:(добавить)");
+            Console.WriteLine("Рейтинг:(добавить)\n");
         }
     }
 }

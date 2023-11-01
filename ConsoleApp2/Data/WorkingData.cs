@@ -17,20 +17,19 @@ namespace CIS.Data
         {
             if (DataIsCorrect(args))
             {
+                Args = args;
                 CurrentDirectory = $"{Environment.CurrentDirectory}";
-                FilmJsonPath = CurrentDirectory + "\\Data\\" + args[0];
-                FilmScreeningJsonPath = CurrentDirectory + "\\Data\\" + args[1];
-                BasketJsonPath = CurrentDirectory + "\\Data\\" + args[2];
+                BasketJsonPath = CurrentDirectory + "\\Data\\" + args[1];
             }
         }    
+        private string[] Args { get;}
         private string? CurrentDirectory { get; set; }
-        public string? FilmJsonPath { get; private set; }
-        public string? FilmScreeningJsonPath { get; private set; }
+        public string? CinemasJsonPath { get {return CurrentDirectory + "\\Data\\" + Args[0]; } }
         public string? BasketJsonPath { get; private set; }
 
         public static bool DataIsCorrect(string[] args)
         {
-            if (args.Length == 3)
+            if (args.Length == 2)
             {
                 return args.All(x => x.Contains(".json"));
             }
