@@ -9,7 +9,7 @@ namespace CIS.Models
 {
     internal class Hall
     {
-        public Hall(int[,] layout,int number,string screen) 
+        public Hall(int number, string screen, int[,] layout) 
         {
             Layout = layout;
             Number = number;
@@ -20,6 +20,7 @@ namespace CIS.Models
         public string Screen { get; } // строка или отдельный класс?
         public int CountPlase { get { return Layout.Length; } }
         public int CountPows { get { return Layout.GetLength(0); } }
+        public int CountColums { get { return Layout.GetLength(1); } }
 
     }
 }

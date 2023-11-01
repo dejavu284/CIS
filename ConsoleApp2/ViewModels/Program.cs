@@ -63,6 +63,16 @@ namespace CIS.ViewModels
             }
             return basket;
         }
+        public static Cinema ChoiseCinema(List<Cinema> cinemas)
+        {
+            Cinema cinema;
+            do
+            {
+                ConsoleMessages.OutputCinemas(cinemas);
+                cinema = ConsoleMessages.ChooseEl(cinemas);
+            } while (ConsoleMessages.PoolYesOrNo("Выбрать другой кинотеарт?"));
+            return cinema;
+        }
         public static Schedule ChooseFilmScreeingInCertainFilm(Schedule schedule, Poster filmsPoster)
         {
             Schedule scheduleWithOneFilm;

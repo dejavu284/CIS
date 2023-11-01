@@ -7,17 +7,19 @@ namespace CIS.Models
 {
     internal class Place
     {
-        public Place(string type, double coefficient, bool freedom, int number)
+        public Place(int number,int row,int colum,int price, bool feedom)
         {
-            this.type = type;
-            this.coefficient = coefficient;
-            this.freedom = freedom;
-            this.number = number;
+            Number = number;
+            Row = row;
+            Colum = colum;
+            Price = price;
+            Freedom = feedom;
         }
 
-        public string type;
-        public double coefficient;
-        public bool freedom;
-        public int number;
+        public int Price { get; }
+        public int Row { get; }
+        public int Colum { get; }
+        public bool Freedom { get; set; }
+        public int Number { get; }
     }
 }

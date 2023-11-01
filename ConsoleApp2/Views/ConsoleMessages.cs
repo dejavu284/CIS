@@ -130,5 +130,19 @@ namespace CIS.Views
                 Console.WriteLine("{0}. {1}", i + 1, films.Films[i].Name);
             }
         }
+        public static void OutputCinemas(List<Cinema> cinemas)
+        {
+            Console.WriteLine("Кинотеатры:\n");
+            for (int i = 0; i < cinemas.Count; i++)
+            {
+                Console.WriteLine("{0}. {1}", i + 1, cinemas[i].Name);
+            }
+        }
+        public static void MessageCinema(Cinema cinema)
+        {
+            Console.WriteLine("\nИнформация о кинотеатр \"{0}\": ",cinema.Name);
+            Console.WriteLine("\nАдрес: {0} ",cinema.Address);
+            Console.WriteLine("\nРейтинг:(добавить)");
+        }
     }
 }

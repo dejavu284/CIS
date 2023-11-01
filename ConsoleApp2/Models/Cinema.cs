@@ -17,7 +17,6 @@ namespace CIS.Models
         public string Address { get; }
         public int Id { get; } 
         public Schedule Schedule { get;}
-       
         public List<Hall> Halls { get; }
         public Poster Poster { get;}
     }
