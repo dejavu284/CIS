@@ -1,4 +1,5 @@
-﻿using CIS.Models;
+﻿using CIS.Data;
+using CIS.Models;
 using CIS.Views;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,27 @@ namespace CIS.ViewModels
 {
     internal class MainViewModel
     {
+        public static void StartProgram(string[] args)
+        {
+            if (WorkingData.DataIsCorrect(args))
+            {
+                WorkingData data = new(args);
+                List<Cinema> cinemas = new();
+
+                if (data.TryDeserializ(data.CinemasJsonPath, ref cinemas))
+                {
+                    Basket basket = MainViewModel.BuyTickets(cinemas);
+                    WorkingData.Save(data.BasketJsonPath, basket);
+                    ConsoleMessages.MessageCompletionProgram();
+                }
+                else
+                    ConsoleMessages.MessageIncorrectInput();
+            }
+            else
+            {
+                ConsoleMessages.MessageIncorrectInput();
+            }
+        }
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();
@@ -50,7 +72,7 @@ namespace CIS.ViewModels
                 ConsoleMessages.OutputCinemas(cinemas);
                 cinema = ConsoleMessages.ChooseEl(cinemas);
                 ConsoleMessages.MessageInfoCinema(cinema);
-            } while (ConsoleMessages.PoolYesOrNo("Выбрать другой кинотеарт?"));
+            } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранный кинотеарт"));
             return cinema;
         }
         public static Schedule ChooseShowInCertainFilm(Schedule schedule, Poster filmsPoster)
