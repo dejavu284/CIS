@@ -8,22 +8,25 @@ namespace CIS.Models
 {
     internal class Seating
     {
-        public Seating(List<Place> places, int idHall)
+        public Seating(int[][] places, int idHall)
         {
             Places = places;
             IdHall = idHall;
         }
         public int CountAvailablePlaces { get { return CalcCountAvailablePlaces(); } }
-        List<Place> Places{ get; }
+        int[][] Places{ get; }
         int IdHall { get; }
         private int CalcCountAvailablePlaces()
         {
             int countAvailablePlaces = 0;
-            for (int i = 0; i < Places.Count; i++)
+            for (int i = 0; i < Places.GetLength(0); i++)
             {
-                if (Places[i].Freedom)
+                for (int j = 0; j < Places[i].Length; j++)
                 {
-                    countAvailablePlaces += 1;
+                    if (Places[i][j] != -1)
+                    {
+                        countAvailablePlaces += 1;
+                    }
                 }
             }
             return countAvailablePlaces;
