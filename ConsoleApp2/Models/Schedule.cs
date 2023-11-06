@@ -19,7 +19,7 @@ namespace CIS.Models
             List<Show> shows = new();
             foreach (Show show in Shows)
             {
-                if (filmName == show.Name && show.CountAvailablePlaces != 0)
+                if (filmName == show.Name && show.Seating.CountAvailablePlaces != 0)
                 {
                     shows.Add(show);
                 }

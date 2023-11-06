@@ -87,12 +87,12 @@ namespace CIS.Views
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < shows.Count; i++)
             {
-                Console.WriteLine("\n{0}. {1}. Цена: {2} руб. Количество мест: {3}", i + 1, shows[i].Time, shows[i].Price, shows[i].CountAvailablePlaces);
+                Console.WriteLine("\n{0}. {1}. Цена: {2} руб. Количество мест: {3}", i + 1, shows[i].Time, shows[i].Price, shows[i].Seating.CountAvailablePlaces);
             }
         }
         public static void OutputCountPlace(Show show)
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.CountAvailablePlaces);
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.Seating.CountAvailablePlaces);
         }
         public static void OutputDateShow(List<DateOnly> datesShows)
         {

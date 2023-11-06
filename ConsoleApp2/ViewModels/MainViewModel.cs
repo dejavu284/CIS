@@ -48,7 +48,7 @@ namespace CIS.ViewModels
                 // Выбор времени
                 Show showInCertainTime = ChooseShowsInCertainTime(showsInOneDate);
 
-                if (showInCertainTime.IsPlacesNotEmpty())
+                if (showInCertainTime.Seating.IsPlacesNotEmpty())
                 {
                     ConsoleMessages.OutputCountPlace(showInCertainTime);
                     if (ConsoleMessages.PoolYesOrNo("Купить билет"))

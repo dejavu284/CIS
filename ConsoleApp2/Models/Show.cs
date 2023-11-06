@@ -13,20 +13,19 @@ namespace CIS.Models
             Seating = seating;
         }
 
+        [JsonPropertyName("Seating")]
         public Seating Seating { get; }
+
         [JsonPropertyName("name")] // Эти свойства нужно убрать
         public string Name { get;private set; }
+
         [JsonPropertyName("data")]
         public DateOnly Date { get;private set; }
+
         [JsonPropertyName("time")]
         public TimeOnly Time { get; private set; }
-        [JsonPropertyName("countTiket")]
-        public int CountAvailablePlaces { get; private set; }
+
         [JsonPropertyName("price")]
         public int Price { get; private set; }
-        public bool IsPlacesNotEmpty()
-        {
-            return CountAvailablePlaces != 0;
-        }
     }
 }

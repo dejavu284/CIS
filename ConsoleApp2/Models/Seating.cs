@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CIS.Models
@@ -14,8 +15,12 @@ namespace CIS.Models
             IdHall = idHall;
         }
         public int CountAvailablePlaces { get { return CalcCountAvailablePlaces(); } }
-        int[][] Places{ get; }
-        int IdHall { get; }
+
+        [JsonPropertyName("Places")]
+        public int[][] Places{ get; set; }
+
+        [JsonPropertyName("IdHall")]
+        public int IdHall { get; set; }
         private int CalcCountAvailablePlaces()
         {
             int countAvailablePlaces = 0;
@@ -31,6 +36,9 @@ namespace CIS.Models
             }
             return countAvailablePlaces;
         }
-
+        public bool IsPlacesNotEmpty()
+        {
+            return CountAvailablePlaces != 0;
+        }
     }
 }

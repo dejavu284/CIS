@@ -3,7 +3,7 @@ namespace CIS.Models
 {
     internal class Cinema
     {
-        public Cinema(string name, string address,int id ,Schedule schedule, List<Hall> halls, Poster poster)
+        public Cinema(string name, string address, int id, Schedule schedule, List<Hall> halls, Poster poster)
         {
             Name = name;
             Address = address;
