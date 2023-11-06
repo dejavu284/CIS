@@ -3,9 +3,12 @@ using CIS.Models;
 using CIS.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CIS.ViewModels
 {
@@ -40,31 +43,49 @@ namespace CIS.ViewModels
             {
                 Cinema cinema = ChoiseCinema(cinemas);
 
-                ConsoleMessages.OutputSeatings(cinema.Halls[0]);
+                ConsoleMessages.OutputSeatings(cinema.Schedule.Shows[0].Seating.Places);
                 // Выбор фильма
                 Schedule showsInOneFilm = ChooseShowInCertainFilm(cinema.Schedule, cinema.Poster);
                 // Выбор даты
                 Schedule showsInOneDate = ChooseShowInCertainDate(showsInOneFilm);
                 // Выбор времени
                 Show showInCertainTime = ChooseShowsInCertainTime(showsInOneDate);
+                // Выбор места
+                List<Place> places = ChoosePlaces(showInCertainTime);
 
-                if (showInCertainTime.Seating.IsPlacesNotEmpty())
+                if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                 {
-                    ConsoleMessages.OutputCountPlace(showInCertainTime);
-                    if (ConsoleMessages.PoolYesOrNo("Купить билет"))
-                    {
-                        basket.AddTicket(showInCertainTime);
-                        ConsoleMessages.MessageTicketPurchased();
-                    }
-                    ConsoleMessages.MessageCheck(basket);
-                    flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
+                    basket.AddTicket(showInCertainTime, places);
+                    ConsoleMessages.MessageTicketPurchased();
                 }
-                else
-                {
-                    ConsoleMessages.MessagePlaceNotExist();
-                }
+                ConsoleMessages.MessageCheck(basket);
+                flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
+                
             }
             return basket;
+        }
+        public static List<Place> ChoosePlaces(Show showInCertainTime)
+        {
+            List<Place> places = new();
+            do
+            {
+                ConsoleMessages.OutputSeatings(showInCertainTime.Seating.Places);
+                int row;
+                int col;
+                int price;
+                do
+                {
+                    ConsoleMessages.MessageBookingRequeast();
+                    row = ConsoleMessages.ChooseRow(showInCertainTime);
+                    col = ConsoleMessages.ChooseCol(showInCertainTime, row);
+                    ConsoleMessages.MessagePlaceCost(showInCertainTime, row, col);
+                } while (!ConsoleMessages.PoolYesOrNo("Забранировать выбранное место"));
+                price = showInCertainTime.Seating.Places[row][col];
+                Place place = new(row, col, price);
+                places.Add(place);
+                showInCertainTime.Seating.Places[row][col] = -1;
+            } while(ConsoleMessages.PoolYesOrNo("Хотите забранировать еще одно место"));
+            return places;
         }
         public static Cinema ChoiseCinema(List<Cinema> cinemas)
         {
@@ -72,7 +93,7 @@ namespace CIS.ViewModels
             do
             {
                 ConsoleMessages.OutputCinemas(cinemas);
-                cinema = ConsoleMessages.ChooseEl(cinemas);
+                cinema = ConsoleMessages.ChooseEl(cinemas, "кинотеатра");
                 ConsoleMessages.MessageInfoCinema(cinema);
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранный кинотеарт"));
             return cinema;
@@ -83,8 +104,8 @@ namespace CIS.ViewModels
             Film film;
             do
             {
-                ConsoleMessages.MessageNamesAllFilms(filmsPoster, schedule);
-                film = ConsoleMessages.ChooseEl(filmsPoster.Films);
+                ConsoleMessages.MessageNamesAllFilms(filmsPoster);
+                film = ConsoleMessages.ChooseEl(filmsPoster.Films, "показа");
 
                 scheduleWithOneFilm = schedule.FindByName(film.Name); 
                 if (scheduleWithOneFilm.IsNull()) 
@@ -101,7 +122,7 @@ namespace CIS.ViewModels
             do
             {
                 ConsoleMessages.OutputDateShow(shows.Dates);
-                certainDateShow = ConsoleMessages.ChooseEl(shows.Dates);
+                certainDateShow = ConsoleMessages.ChooseEl(shows.Dates, "даты");
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"));
             shows.FindShowByDate(certainDateShow);
             return shows;
@@ -112,8 +133,7 @@ namespace CIS.ViewModels
             do
             {
                 ConsoleMessages.OutputTimeShow(shows.Shows);
-                showInCertainTime = ConsoleMessages.ChooseEl(shows.Shows);
-                ConsoleMessages.OutputCountPlace(showInCertainTime);
+                showInCertainTime = ConsoleMessages.ChooseEl(shows.Shows, "времени");
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранное время"));
             return showInCertainTime;
         }

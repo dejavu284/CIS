@@ -20,11 +20,6 @@ namespace CIS.Views
                     MessageIncorrectInput();
             }
         }
-        public static void MessageToSelectItemEnterNumber()
-        {
-            Console.WriteLine("\nДля выбора элемента введите его номер");
-            Console.WriteLine();
-        }
         public static void MessageIncorrectInput()
         {
             Console.WriteLine("\nНекорректный ввод поробуйте ещё раз\n");
@@ -48,20 +43,97 @@ namespace CIS.Views
             Console.WriteLine("Название фильма: {0}", ticket.Name);
             Console.WriteLine("Дата сеанса: {0}", ticket.Data);
             Console.WriteLine("Время сеанса: {0}", ticket.Time);
-            Console.WriteLine("Цена билета: {0}", ticket.Price);
+            Console.WriteLine("Ряд {0}, место {1}", ticket.Place.Row + 1, ticket.Place.Colum + 1);
+            Console.WriteLine("Цена билета: {0}", ticket.Place.Price);
             Console.WriteLine("---------------------------\n");
         }
-        public static T ChooseEl<T>(List<T> elements)
+        public static void MessageBookingRequeast()
         {
-            MessageToSelectItemEnterNumber();
+            Console.WriteLine("Укажите ряд и место, которое хотите забронировать.");
+        }
+        public static void MessagePlaceCost(Show shoInCertainTime, int row, int col)
+        {
+            Console.WriteLine("Стоимость покупки места состовляет: {0}", shoInCertainTime.Seating.Places[row][col]);
+        }
+        public static int ChooseRow(Show showInCertainTime)
+        {
+            do
+            {
+                Console.WriteLine("Ряд:");
+                string strRow = Console.ReadLine();
+                int row;
+                if (IsNumberInList(showInCertainTime.Seating.Places.GetLength(0), strRow, out row))
+                {
+                    for (int j = 0; j < showInCertainTime.Seating.Places[row-1].Length; j++) // перенести в seating.cs
+                    {
+                        if(showInCertainTime.Seating.Places[row - 1][j] != -1)
+                        {
+                            return row - 1;
+                        }
+                    }
+                    MessageRowOccupied();
+                    continue;
+                }
+                else
+                {
+                    MessageIncorrectInput();
+                }
+            } while (true);
+        }
+        public static void MessagePlaceOccupied()
+        {
+            Console.WriteLine("Выбранное место занято, пожалуйста, выберете другое.");
+        }
+        public static void MessageRowOccupied()
+        {
+            Console.WriteLine("Все места в ряду заняты, пожалуйста, выберете другой.");
+        }
+        public static int ChooseCol(Show showInCertainTime, int row)
+        {
+            do
+            {
+                Console.WriteLine("Место:");
+                string strCol = Console.ReadLine()!;
+                int col;
+                if (IsNumberInList(showInCertainTime.Seating.Places[row].Length, strCol, out col))
+                {
+                    if (showInCertainTime.Seating.Places[row][col-1] != -1) // перенести в seating.cs
+                    {
+                        return col - 1;
+                    }
+                    else
+                    {
+                        MessagePlaceOccupied();
+                        continue;
+                    }
+                }
+                else
+                {
+                    MessageIncorrectInput();
+                }
+            } while (true);
+        }
+        public static void MessageToSelectItemEnterNumber(string nameOfTypeElement)
+        {
+            Console.WriteLine("\nДля выбора {0} введите его номер", nameOfTypeElement);
+            Console.WriteLine();
+        }
+        public static T ChooseEl<T>(List<T> elements, string nameOfTypeElement)
+        {
+            MessageToSelectItemEnterNumber(nameOfTypeElement);
             do
             {
                 string? inputNumber = Console.ReadLine();
+                Console.WriteLine();
                 int index;
                 if(IsNumberInList(elements.Count, inputNumber, out index))
+                {
                     return elements[index - 1];
+                }
                 else
+                {
                     MessageIncorrectInput(); // throw new ArgumentException("Выбранного елемента нет в списке");
+                }
             } while (true);
         }
         private static bool IsNumberInList(int count, string? indexStr, out int index)
@@ -87,7 +159,7 @@ namespace CIS.Views
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < shows.Count; i++)
             {
-                Console.WriteLine("\n{0}. {1}. Цена: {2} руб. Количество мест: {3}", i + 1, shows[i].Time, shows[i].Price, shows[i].Seating.CountAvailablePlaces);
+                Console.WriteLine("\n{0}. {1}. Количество мест: {2}", i + 1, shows[i].Time, shows[i].Seating.CountAvailablePlaces);
             }
         }
         public static void OutputCountPlace(Show show)
@@ -114,7 +186,7 @@ namespace CIS.Views
             Console.WriteLine("Год выхода: {0}", film.Year);
             Console.WriteLine("Описание: {0}\n", film.Description);
         }
-        public static void MessageNamesAllFilms(Poster films, Schedule schedule)
+        public static void MessageNamesAllFilms(Poster films)
         {
             Console.WriteLine("\nФильмы в прокате:\n");
             for (int i = 0; i < films.Count; i++)
@@ -136,17 +208,27 @@ namespace CIS.Views
             Console.WriteLine("\nАдрес: {0} ",cinema.Address);
             Console.WriteLine("Рейтинг:(добавить)\n");
         }
-        public static void OutputSeatings(Hall hall)
+        public static void OutputSeatings(int[][] places)
         {
-            for (int i = 0; i < hall.CountRows; i++)
+            Console.WriteLine("Схема зала указана ниже:\n");
+            Console.WriteLine("Места, отмеченные знаком '*' - заняты.\n");
+            for (int i = 0; i < places.GetLength(0); i++)
             {
                 Console.Write("Ряд {0}. Места: ", i + 1);
-                for (int j = 0; j < hall.CountCols; j++)
+                for (int j = 0; j < places[0].Length; j++)
                 {
-                    Console.Write("{0}  ", hall.Layout[i][j]);
+                    if (places[i][j] != -1)
+                    {
+                        Console.Write("{0}  ", j + 1);
+                    }
+                    else
+                    {
+                        Console.Write("{0}* ", j + 1);
+                    }
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
     }
 }

@@ -8,18 +8,18 @@ namespace CIS.Models
 {
     internal class Ticket
     {
-        public Ticket(string name, DateOnly data, TimeOnly time, int price)
+        public Ticket(string name, DateOnly data, TimeOnly time, Place place)
         {
             Name = name;
             Data = data;
             Time = time;
-            Price = price;
+            Place = place;
             Cod = CreateRandomCod();
         }
         public string Name { get; }
         public DateOnly Data { get; }
         public TimeOnly Time { get; }
-        public int Price { get; }
+        public Place Place { get; }
         public int Cod { get; }
 
         private static int CreateRandomCod() // хорошо или плохо?
