@@ -9,17 +9,18 @@ namespace CIS.Models
 {
     internal class Hall
     {
-        public Hall(int number, string screen, int[][] layout) 
+        public Hall(int id, string screen, int[][] layout) 
         {
+            Id = id;
             Layout = layout;
-            Number = number;
             Screen = screen;
         }
+        public int Id { get; }
         public int[][] Layout { get; }
-        public int Number { get; }
         public string Screen { get; } // строка или отдельный класс?
         public int CountPlase { get { return CalcCoutPlase(Layout); } }
-        public int CountPows { get { return Layout.GetLength(0); } }
+        public int CountRows { get { return Layout.GetLength(0); } }
+        public int CountCols { get { return CountPlase/CountRows; } }
 
         private int CalcCoutPlase(int[][] layout)
         {

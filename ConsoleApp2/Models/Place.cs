@@ -7,19 +7,19 @@ namespace CIS.Models
 {
     internal class Place
     {
-        public Place(int number,int row,int colum,int price, bool feedom)
+        public Place(int id,int row,int colum,int price, bool freedom)
         {
-            Number = number;
+            Id = id;
             Row = row;
             Colum = colum;
             Price = price;
-            Freedom = feedom;
+            Freedom = freedom;
         }
 
         public int Price { get; }
         public int Row { get; }
         public int Colum { get; }
         public bool Freedom { get; set; }
-        public int Number { get; }
+        public int Id { get; }
     }
 }

@@ -87,12 +87,12 @@ namespace CIS.Views
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < shows.Count; i++)
             {
-                Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, shows[i].Time, shows[i].Price);
+                Console.WriteLine("\n{0}. {1}. Цена: {2} руб. Количество мест: {3}", i + 1, shows[i].Time, shows[i].Price, shows[i].CountAvailablePlaces);
             }
         }
         public static void OutputCountPlace(Show show)
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.CountTicket);
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.CountAvailablePlaces);
         }
         public static void OutputDateShow(List<DateOnly> datesShows)
         {
@@ -114,7 +114,7 @@ namespace CIS.Views
             Console.WriteLine("Год выхода: {0}", film.Year);
             Console.WriteLine("Описание: {0}\n", film.Description);
         }
-        public static void MessageNamesAllFilms(Poster films)
+        public static void MessageNamesAllFilms(Poster films, Schedule schedule)
         {
             Console.WriteLine("\nФильмы в прокате:\n");
             for (int i = 0; i < films.Count; i++)
@@ -135,6 +135,18 @@ namespace CIS.Views
             Console.WriteLine("\nИнформация о кинотеатре \"{0}\": ",cinema.Name);
             Console.WriteLine("\nАдрес: {0} ",cinema.Address);
             Console.WriteLine("Рейтинг:(добавить)\n");
+        }
+        public static void OutputSeatings(Hall hall)
+        {
+            for (int i = 0; i < hall.CountRows; i++)
+            {
+                Console.Write("Ряд {0}. Места: ", i + 1);
+                for (int j = 0; j < hall.CountCols; j++)
+                {
+                    Console.Write("{0}  ", hall.Layout[i][j]);
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

@@ -39,6 +39,8 @@ namespace CIS.ViewModels
             while (flagBuyTickets)
             {
                 Cinema cinema = ChoiseCinema(cinemas);
+
+                ConsoleMessages.OutputSeatings(cinema.Halls[0]);
                 // Выбор фильма
                 Schedule showsInOneFilm = ChooseShowInCertainFilm(cinema.Schedule, cinema.Poster);
                 // Выбор даты
@@ -81,27 +83,27 @@ namespace CIS.ViewModels
             Film film;
             do
             {
-                ConsoleMessages.MessageNamesAllFilms(filmsPoster);
+                ConsoleMessages.MessageNamesAllFilms(filmsPoster, schedule);
                 film = ConsoleMessages.ChooseEl(filmsPoster.Films);
 
-                scheduleWithOneFilm = schedule.FindByName(film.Name); // Метод бизнес логики
-                if (scheduleWithOneFilm.IsNull()) // Метод бизнес логики
+                scheduleWithOneFilm = schedule.FindByName(film.Name); 
+                if (scheduleWithOneFilm.IsNull()) 
                     ConsoleMessages.MessageFilmNotExist();
                 else
                     ConsoleMessages.MessageInfo(film);
             }
-            while (scheduleWithOneFilm.IsNull()); // Метод бизнес логики
+            while (scheduleWithOneFilm.IsNull());
             return scheduleWithOneFilm;
         }
         public static Schedule ChooseShowInCertainDate(Schedule shows)
         {
-            DateOnly certainDataShow = new();
+            DateOnly certainDateShow;
             do
             {
                 ConsoleMessages.OutputDateShow(shows.Dates);
-                certainDataShow = ConsoleMessages.ChooseEl(shows.Dates); // Метод бизнес логики
+                certainDateShow = ConsoleMessages.ChooseEl(shows.Dates);
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"));
-            shows.FindShowByDate(certainDataShow); // Метод бизнес логики
+            shows.FindShowByDate(certainDateShow);
             return shows;
         }
         public static Show ChooseShowsInCertainTime(Schedule shows)
@@ -110,7 +112,8 @@ namespace CIS.ViewModels
             do
             {
                 ConsoleMessages.OutputTimeShow(shows.Shows);
-                showInCertainTime = ConsoleMessages.ChooseEl(shows.Shows); // Метод бизнес логики
+                showInCertainTime = ConsoleMessages.ChooseEl(shows.Shows);
+                ConsoleMessages.OutputCountPlace(showInCertainTime);
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранное время"));
             return showInCertainTime;
         }
