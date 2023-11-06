@@ -16,10 +16,8 @@ namespace CIS.Models
         }
         public int CountAvailablePlaces { get { return CalcCountAvailablePlaces(); } }
 
-        [JsonPropertyName("Places")]
         public int[][] Places{ get; set; }
 
-        [JsonPropertyName("IdHall")]
         public int IdHall { get; set; }
         private int CalcCountAvailablePlaces()
         {
