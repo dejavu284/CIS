@@ -11,9 +11,9 @@ using CIS.Views;
 namespace CIS.Models
 {
     
-    internal class FilmScreening
+    internal class Show
     {
-        public FilmScreening(string name, DateOnly date, TimeOnly time, int countTicket, int price)
+        public Show(string name, DateOnly date, TimeOnly time, int countTicket, int price)
         {
             Name = name;
             Date = date;

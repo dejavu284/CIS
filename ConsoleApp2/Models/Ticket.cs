@@ -22,7 +22,7 @@ namespace CIS.Models
         public int Price { get; }
         public int Cod { get; }
 
-        private static int CreateRandomCod()
+        private static int CreateRandomCod() // хорошо или плохо?
         {
             Random random = new();
             int res = random.Next(1000, 9999);

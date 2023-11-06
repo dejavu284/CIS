@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using CIS.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using CIS.Models;
 
 namespace CIS.Views
 {
@@ -90,24 +82,24 @@ namespace CIS.Views
         {
             Console.WriteLine("К сожалению, фильм не идет в кинотеатре\nВыберете другой фильм\n");
         }
-        public static void OutputTimeFilmScreening(List<FilmScreening> filmscreenings)
+        public static void OutputTimeShow(List<Show> shows)
         {
             Console.WriteLine("Время показа фильма:");
-            for (int i = 0; i < filmscreenings.Count; i++)
+            for (int i = 0; i < shows.Count; i++)
             {
-                Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, filmscreenings[i].Time, filmscreenings[i].Price);
+                Console.WriteLine("\n{0}. {1}. Цена: {2} руб.", i + 1, shows[i].Time, shows[i].Price);
             }
         }
-        public static void OutputCountPlace(FilmScreening filmScreening)
+        public static void OutputCountPlace(Show show)
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", filmScreening.CountTicket);
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.CountTicket);
         }
-        public static void OutputDateFilmScreening(List<DateOnly> datesFilmScreenings)
+        public static void OutputDateShow(List<DateOnly> datesShows)
         {
             Console.WriteLine("Даты показа фильма:\n");
-            for (int i = 0; i < datesFilmScreenings.Count; i++)
+            for (int i = 0; i < datesShows.Count; i++)
             {
-                Console.WriteLine("{0}. {1}", i + 1, datesFilmScreenings[i]);
+                Console.WriteLine("{0}. {1}", i + 1, datesShows[i]);
             }
             Console.WriteLine();
         }

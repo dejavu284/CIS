@@ -3,41 +3,41 @@ namespace CIS.Models
 {
     internal class Schedule
     {
-        public Schedule(List<FilmScreening> filmScreenings) 
+        public Schedule(List<Show> shows) 
         {
-            FilmScreenings = filmScreenings;
+            Shows = shows;
         }
-        public List<DateOnly> Dates { get { return FindDates(FilmScreenings); }}
+        public List<DateOnly> Dates { get { return FindDates(Shows); }}
 
-        public List<FilmScreening> FilmScreenings { get; private set; } = new();
+        public List<Show> Shows { get; private set; } = new();
 
-        public int Count { get { return FilmScreenings.Count; } }
+        public int Count { get { return Shows.Count; } }
 
         
         public Schedule FindByName(string filmName)
         {
-            List<FilmScreening> filmScreenings = new();
-            foreach (FilmScreening filmScreening in FilmScreenings)
+            List<Show> shows = new();
+            foreach (Show show in Shows)
             {
-                if (filmName == filmScreening.Name)
+                if (filmName == show.Name)
                 {
-                    filmScreenings.Add(filmScreening);
+                    shows.Add(show);
                 }
             }
-            return new(filmScreenings);
+            return new(shows);
         }
         public bool IsNull()
         {
             return Count == 0;
         }
-        private List<DateOnly> FindDates(List<FilmScreening> filmScreenings)
+        private List<DateOnly> FindDates(List<Show> shows)
         {
             List<DateOnly> dates = new List<DateOnly>();
-            foreach (FilmScreening filmScreening in filmScreenings)
+            foreach (Show show in shows)
             {
-                if (!IsDatesRepeating(filmScreening.Date, dates))
+                if (!IsDatesRepeating(show.Date, dates))
                 {
-                    dates.Add(filmScreening.Date);
+                    dates.Add(show.Date);
                 }
             }
             return dates;
@@ -49,17 +49,17 @@ namespace CIS.Models
                     return true;       
             return false;
         }
-        public Schedule FindFilmScreeningByDate(DateOnly datesFilmScreenings)
+        public Schedule FindShowByDate(DateOnly datesShows)
         {
-            List<FilmScreening> filmScreeningsTemp = new ();
-            for (int i = 0; i < FilmScreenings.Count; i++)
+            List<Show> showsTemp = new ();
+            for (int i = 0; i < Shows.Count; i++)
             {
-                if (datesFilmScreenings == FilmScreenings[i].Date)
+                if (datesShows == Shows[i].Date)
                 {
-                    filmScreeningsTemp.Add(FilmScreenings[i]);
+                    showsTemp.Add(Shows[i]);
                 }
             }
-            return new(filmScreeningsTemp);
+            return new(showsTemp);
         }
     }
 }

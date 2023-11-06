@@ -18,18 +18,18 @@ namespace CIS.ViewModels
             {
                 Cinema cinema = ChoiseCinema(cinemas);
                 // Выбор фильма
-                Schedule filmScreeningsInOneFilm = ChooseFilmScreeingInCertainFilm(cinema.Schedule, cinema.Poster);
+                Schedule showsInOneFilm = ChooseShowInCertainFilm(cinema.Schedule, cinema.Poster);
                 // Выбор даты
-                Schedule filmScreeningsInOneDate = ChooseFilmScreeingInCertainDate(filmScreeningsInOneFilm);
+                Schedule showsInOneDate = ChooseShowInCertainDate(showsInOneFilm);
                 // Выбор времени
-                FilmScreening filmScreeningInCertainTime = ChooseFilmScreeningsInCertainTime(filmScreeningsInOneDate);
+                Show showInCertainTime = ChooseShowsInCertainTime(showsInOneDate);
 
-                if (filmScreeningInCertainTime.IsPlacesNotEmpty())
+                if (showInCertainTime.IsPlacesNotEmpty())
                 {
-                    ConsoleMessages.OutputCountPlace(filmScreeningInCertainTime);
+                    ConsoleMessages.OutputCountPlace(showInCertainTime);
                     if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                     {
-                        basket.AddTicket(filmScreeningInCertainTime);
+                        basket.AddTicket(showInCertainTime);
                         ConsoleMessages.MessageTicketPurchased();
                     }
                     ConsoleMessages.MessageCheck(basket);
@@ -53,7 +53,7 @@ namespace CIS.ViewModels
             } while (ConsoleMessages.PoolYesOrNo("Выбрать другой кинотеарт?"));
             return cinema;
         }
-        public static Schedule ChooseFilmScreeingInCertainFilm(Schedule schedule, Poster filmsPoster)
+        public static Schedule ChooseShowInCertainFilm(Schedule schedule, Poster filmsPoster)
         {
             Schedule scheduleWithOneFilm;
             Film film;
@@ -71,26 +71,26 @@ namespace CIS.ViewModels
             while (scheduleWithOneFilm.IsNull()); // Метод бизнес логики
             return scheduleWithOneFilm;
         }
-        public static Schedule ChooseFilmScreeingInCertainDate(Schedule filmScreenings)
+        public static Schedule ChooseShowInCertainDate(Schedule shows)
         {
-            DateOnly certainDataFilmSreening = new();
+            DateOnly certainDataShow = new();
             do
             {
-                ConsoleMessages.OutputDateFilmScreening(filmScreenings.Dates);
-                certainDataFilmSreening = ConsoleMessages.ChooseEl(filmScreenings.Dates); // Метод бизнес логики
+                ConsoleMessages.OutputDateShow(shows.Dates);
+                certainDataShow = ConsoleMessages.ChooseEl(shows.Dates); // Метод бизнес логики
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"));
-            filmScreenings.FindFilmScreeningByDate(certainDataFilmSreening); // Метод бизнес логики
-            return filmScreenings;
+            shows.FindShowByDate(certainDataShow); // Метод бизнес логики
+            return shows;
         }
-        public static FilmScreening ChooseFilmScreeningsInCertainTime(Schedule filmScreenings)
+        public static Show ChooseShowsInCertainTime(Schedule shows)
         {
-            FilmScreening filmScreeningInCertainTime;
+            Show showInCertainTime;
             do
             {
-                ConsoleMessages.OutputTimeFilmScreening(filmScreenings.FilmScreenings);
-                filmScreeningInCertainTime = ConsoleMessages.ChooseEl(filmScreenings.FilmScreenings); // Метод бизнес логики
+                ConsoleMessages.OutputTimeShow(shows.Shows);
+                showInCertainTime = ConsoleMessages.ChooseEl(shows.Shows); // Метод бизнес логики
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранное время"));
-            return filmScreeningInCertainTime;
+            return showInCertainTime;
         }
     }
 }
