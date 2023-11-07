@@ -4,7 +4,9 @@ using CIS.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,12 +40,13 @@ namespace CIS.ViewModels
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();
-            bool flagBuyTickets = true;
-            while (flagBuyTickets)
+            do
             {
+                //выбор кинотеатра
                 Cinema cinema = ChoiseCinema(cinemas);
 
-                ConsoleMessages.OutputSeatings(cinema.Schedule.Shows[0].Seating.Places);
+                //ConsoleMessages.OutputSeatings(cinema.Schedule.Shows[0].Seating.Places);
+
                 // Выбор фильма
                 Schedule showsInOneFilm = ChooseShowInCertainFilm(cinema.Schedule, cinema.Poster);
                 // Выбор даты
@@ -59,9 +62,8 @@ namespace CIS.ViewModels
                     ConsoleMessages.MessageTicketPurchased();
                 }
                 ConsoleMessages.MessageCheck(basket);
-                flagBuyTickets = !ConsoleMessages.PoolYesOrNo("Закончить");
-                
-            }
+
+            } while (!ConsoleMessages.PoolYesOrNo("Закончить"));
             return basket;
         }
         public static List<Place> ChoosePlaces(Show showInCertainTime)
@@ -69,25 +71,29 @@ namespace CIS.ViewModels
             List<Place> places = new();
             do
             {
-                ConsoleMessages.OutputSeatings(showInCertainTime.Seating.Places);
-                int row;
-                int col;
-                int price;
-                do
-                {
-                    ConsoleMessages.MessageBookingRequeast();
-                    row = ConsoleMessages.ChooseRow(showInCertainTime);
-                    col = ConsoleMessages.ChooseCol(showInCertainTime, row);
-                    ConsoleMessages.MessagePlaceCost(showInCertainTime, row, col);
-                } while (!ConsoleMessages.PoolYesOrNo("Забранировать выбранное место"));
-                price = showInCertainTime.Seating.Places[row][col];
-                Place place = new(row, col, price);
+                Place place = ChoosePlace(showInCertainTime);
                 places.Add(place);
-                showInCertainTime.Seating.Places[row][col] = -1;
             } while(ConsoleMessages.PoolYesOrNo("Хотите забранировать еще одно место"));
             return places;
         }
-        public static Cinema ChoiseCinema(List<Cinema> cinemas)
+        public static Place ChoosePlace(Show showInCertainTime)
+        {
+            ConsoleMessages.OutputSeatings(showInCertainTime.Seating.Places);
+            int row;
+            int col;
+            do
+            {
+                ConsoleMessages.MessageBookingRequeast();
+                row = ConsoleMessages.ChooseRow(showInCertainTime);
+                col = ConsoleMessages.ChooseCol(showInCertainTime, row);
+                ConsoleMessages.MessagePlaceCost(showInCertainTime, row, col);
+            } while (!ConsoleMessages.PoolYesOrNo("Забранировать выбранное место"));
+            int price = showInCertainTime.Seating.Places[row][col];
+            Place place = new(row, col, price);
+            showInCertainTime.Seating.Places[row][col] = -1;
+            return place;
+        }
+            public static Cinema ChoiseCinema(List<Cinema> cinemas)
         {
             Cinema cinema;
             do
