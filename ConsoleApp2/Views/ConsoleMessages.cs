@@ -41,7 +41,7 @@ namespace CIS.Views
             Console.WriteLine("---------------------------");
             Console.WriteLine("Информация о билете:");
             Console.WriteLine("Название фильма: {0}", ticket.Name);
-            Console.WriteLine("Дата сеанса: {0}", ticket.Data);
+            Console.WriteLine("Дата сеанса: {0}", ticket.Date);
             Console.WriteLine("Время сеанса: {0}", ticket.Time);
             Console.WriteLine("Ряд {0}, место {1}", ticket.Place.Row + 1, ticket.Place.Colum + 1);
             Console.WriteLine("Цена билета: {0}", ticket.Place.Price);

@@ -19,5 +19,10 @@ namespace CIS.Models
         public Schedule Schedule { get;}
         public List<Hall> Halls { get; }
         public Poster Poster { get;}
+
+        public void BookingPlace(int idShow,Place place)
+        {
+            Schedule.Shows[Schedule.FindShowIndexById(idShow)].Seating.BookingPlace(place);
+        }
     }
 }

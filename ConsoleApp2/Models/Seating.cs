@@ -16,7 +16,7 @@ namespace CIS.Models
         }
         public int CountAvailablePlaces { get { return CalcCountAvailablePlaces(); } }
 
-        public int[][] Places{ get; set; }
+        public int[][] Places{ get; private set; }
 
         public int IdHall { get; set; }
         private int CalcCountAvailablePlaces()
@@ -37,6 +37,11 @@ namespace CIS.Models
         public bool IsPlacesNotEmpty()
         {
             return CountAvailablePlaces != 0;
+        }
+
+        public void BookingPlace(Place place)
+        {
+            Places[place.Row][place.Colum] = -1;
         }
     }
 }

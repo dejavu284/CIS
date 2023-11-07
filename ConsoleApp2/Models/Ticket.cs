@@ -8,19 +8,23 @@ namespace CIS.Models
 {
     internal class Ticket
     {
-        public Ticket(string name, DateOnly data, TimeOnly time, Place place)
+        public Ticket(int idCinema, Show show, Place place)
         {
-            Name = name;
-            Data = data;
-            Time = time;
+            Show = show;
+            IdCinema = idCinema;
+
             Place = place;
-            Cod = CreateRandomCod();
         }
-        public string Name { get; }
-        public DateOnly Data { get; }
-        public TimeOnly Time { get; }
+        public string Name { get { return Show.Name; }}
+        public DateOnly Date { get { return Show.Date; } }
+        public TimeOnly Time { get { return Show.Time; } }
         public Place Place { get; }
-        public int Cod { get; }
+        public int Cod { get { return CreateRandomCod(); } }
+
+        private Show  Show{ get; }
+        
+        public int IdCinema { get; }    
+        public int IdShow { get { return Show.Id; } }
 
         private static int CreateRandomCod() // хорошо или плохо?
         {

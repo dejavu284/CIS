@@ -5,12 +5,13 @@ namespace CIS.Models
     
     internal class Show
     {
-        public Show(string name, DateOnly date, TimeOnly time, Seating seating)
+        public Show(string name, DateOnly date, TimeOnly time, Seating seating,int id)
         {
             Name = name;
             Date = date;
             Time = time;
             Seating = seating;
+            Id = id;
         }
 
         [JsonPropertyName("Seating")]
@@ -27,5 +28,8 @@ namespace CIS.Models
 
         [JsonPropertyName("price")]
         public int Price { get; private set; }
+
+        [JsonPropertyName("id")]
+        public int Id { get; private set; }
     }
 }

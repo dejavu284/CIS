@@ -25,8 +25,12 @@ namespace CIS.ViewModels
 
                 if (data.TryDeserializ(data.CinemasJsonPath, ref cinemas))
                 {
-                    Basket basket = MainViewModel.BuyTickets(cinemas);
+                    Basket basket = BuyTickets(cinemas);
+                    List<Cinema> new_cinemas = BookingPlaces(basket,cinemas);
+
+                    WorkingData.Save(data.CinemasJsonPath, new_cinemas);
                     WorkingData.Save(data.BasketJsonPath, basket);
+
                     ConsoleMessages.MessageCompletionProgram();
                 }
                 else
@@ -37,6 +41,35 @@ namespace CIS.ViewModels
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
+        public static int FindCinemaIndexById(int id, List<Cinema> cinemas) 
+        {
+            int index = -1;
+            for (int i = 0; i < cinemas.Count; i++)
+            {
+                if (cinemas[i].Id == id)
+                {
+                    return i;
+                }
+            }
+            return index;
+        }
+
+
+        public static List<Cinema> BookingPlaces(Basket basket,List<Cinema> cinemas) // класс List<Cinema>
+        {
+            List<Cinema> new_cinemas = cinemas;
+            for(int i = 0;i < basket.NumberTickets;i++)
+            {
+                int indexCinema = FindCinemaIndexById(basket.Tickets[i].IdCinema, cinemas);
+
+                Cinema new_cinema = cinemas[indexCinema];
+
+                new_cinema.BookingPlace(basket.Tickets[i].IdShow, basket.Tickets[i].Place);
+
+                new_cinemas[indexCinema] = new_cinema;
+            }
+            return new_cinemas;
+        }
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();
@@ -44,9 +77,6 @@ namespace CIS.ViewModels
             {
                 //выбор кинотеатра
                 Cinema cinema = ChoiseCinema(cinemas);
-
-                //ConsoleMessages.OutputSeatings(cinema.Schedule.Shows[0].Seating.Places);
-
                 // Выбор фильма
                 Schedule showsInOneFilm = ChooseShowInCertainFilm(cinema.Schedule, cinema.Poster);
                 // Выбор даты
@@ -58,7 +88,11 @@ namespace CIS.ViewModels
 
                 if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                 {
-                    basket.AddTicket(showInCertainTime, places);
+                    for(int i = 0;i < places.Count; i++)
+                    {
+                        Ticket ticket = new(cinema.Id, showInCertainTime, places[i]);//передать параметры(idCinema)
+                        basket.AddTicket(ticket);
+                    }
                     ConsoleMessages.MessageTicketPurchased();
                 }
                 ConsoleMessages.MessageCheck(basket);

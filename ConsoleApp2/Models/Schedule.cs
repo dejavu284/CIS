@@ -61,5 +61,18 @@ namespace CIS.Models
             }
             return new(showsTemp);
         }
+
+        public int FindShowIndexById(int id)
+        {
+            int index = -1;
+            for (int i = 0; i < Shows.Count; i++)
+            {
+                if (Shows[i].Id == id)
+                {
+                    return i;
+                }
+            }
+            return index;
+        }
     }
 }
