@@ -14,8 +14,8 @@ namespace Data.Data
                 CurrentDirectory = $"{Environment.CurrentDirectory}";
                 BasketJsonPath = CurrentDirectory + "\\Data\\" + args[1];
             }
-        }    
-        private string[] Args { get;}
+        }
+        private string[] Args;
         private string? CurrentDirectory { get; set; }
         public string? CinemasJsonPath { get {return CurrentDirectory + "\\Data\\" + Args[0]; } }
         public string? BasketJsonPath { get; private set; }
