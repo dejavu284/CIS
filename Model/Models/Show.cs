@@ -1,9 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CIS.Models
+namespace Model.Models
 {
     
-    internal class Show
+    public class Show
     {
         public Show(string name, DateOnly date, TimeOnly time, Seating seating,int id)
         {

@@ -1,7 +1,7 @@
 ﻿
-namespace CIS.Models
+namespace Model.Models
 {
-    internal class Cinema
+    public class Cinema
     {
         public Cinema(string name, string address, int id, Schedule schedule, List<Hall> halls, Poster poster)
         {

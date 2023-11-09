@@ -1,18 +1,8 @@
-﻿using CIS.Data;
-using CIS.Models;
-using CIS.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using Data.Data;
+using Model.Models;
+using View.Views;
 
-namespace CIS.ViewModels
+namespace ViewModel.ViewModels
 {
     internal class MainViewModel
     {

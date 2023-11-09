@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CIS.Models
+namespace Model.Models
 {
-    internal class Hall
+    public class Hall
     {
         public Hall(int id, string screen, int[][] layout) 
         {

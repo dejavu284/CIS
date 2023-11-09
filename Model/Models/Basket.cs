@@ -1,8 +1,6 @@
-﻿
-
-namespace CIS.Models
+﻿namespace Model.Models
 {
-    internal class Basket 
+    public class Basket 
     {
         public List<Ticket> Tickets { get; private set; } = new List<Ticket>();
         public int NumberTickets { get { return Tickets.Count; }}

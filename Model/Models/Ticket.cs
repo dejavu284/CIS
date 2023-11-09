@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-
-namespace CIS.Models
+﻿namespace Model.Models
 {
-    internal class Ticket
+    public class Ticket
     {
         public Ticket(int idCinema, Show show, Place place)
         {

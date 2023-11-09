@@ -1,17 +1,10 @@
-﻿using CIS.Models;
-using CIS.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using System.Threading.Tasks;
 
-namespace CIS.Data
+namespace Data.Data
 {
-    internal class WorkingData
+    public class WorkingData
     {
         public WorkingData(string[] args)
         {

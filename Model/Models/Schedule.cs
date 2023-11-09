@@ -1,7 +1,6 @@
-﻿
-namespace CIS.Models
+﻿namespace Model.Models
 {
-    internal class Schedule
+    public class Schedule
     {
         public Schedule(List<Show> shows) 
         {

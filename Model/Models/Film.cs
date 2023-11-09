@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using CIS.Views;
+﻿using System.Text.Json.Serialization;
 
-namespace CIS.Models
+namespace Model.Models
 {
-    internal class Film
+    public class Film
     {
         public Film(string name, string genre, string description, int year) // На этот конструктор 0 ссылок
         {

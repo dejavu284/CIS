@@ -1,8 +1,8 @@
-﻿using CIS.Models;
+﻿using Model.Models;
 
-namespace CIS.Views
+namespace View.Views
 {
-    internal class ConsoleMessages
+    public class ConsoleMessages
     {
         public static bool PoolYesOrNo(string question)
         {

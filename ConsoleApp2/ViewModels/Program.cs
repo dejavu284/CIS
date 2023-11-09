@@ -1,9 +1,4 @@
-
-using CIS.Models;
-using CIS.Views;
-using CIS.Data;
-
-namespace CIS.ViewModels
+namespace ViewModel.ViewModels
 {
     internal class Program
     {

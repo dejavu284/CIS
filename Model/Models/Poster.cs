@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CIS.Views;
-
-namespace CIS.Models
+﻿namespace Model.Models
 {
-    internal class Poster
+    public class Poster
     {
         public Poster(List<Film> films)
         {

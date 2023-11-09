@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CIS.Models
+﻿namespace Model.Models
 {
-    internal class Place
+    public class Place
     {
         public Place(int row,int colum,int price)
         {
