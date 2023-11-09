@@ -13,7 +13,7 @@ namespace ViewModel.ViewModels
                 WorkingData data = new(args);
                 List<Cinema> cinemas = new();
 
-                if (data.TryDeserializ(data.CinemasJsonPath, ref cinemas))
+                if (data.TryDeserializ(data.CinemasJsonPath, ref cinemas))// //////////////////////////////////
                 {
                     Basket basket = BuyTickets(cinemas);
                     List<Cinema> new_cinemas = BookingPlaces(basket,cinemas);
@@ -56,9 +56,9 @@ namespace ViewModel.ViewModels
 
                 new_cinema.BookingPlace(basket.Tickets[i].IdShow, basket.Tickets[i].Place);
 
-                new_cinemas[indexCinema] = new_cinema;
+                
             }
-            return new_cinemas;
+            return cinemas;
         }
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
