@@ -12,6 +12,9 @@ namespace Data.Data
         { 
             PathError = pathError;
         }
+        public DataException(string message) : base(message)
+        {  
+        }
         public string PathError { get; }
     }
 }

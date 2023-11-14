@@ -49,26 +49,26 @@ namespace Data.Data
                 throw new DataException("Ошибка", CinemasJsonPath);
             }
         }
-
-
         public void Save<T>(T element)
         {
             string path;
-            if (element is Cinema)
+            if (element is List<Cinema>)
                 path = CinemasJsonPath;
             else if (element is Basket)
                 path = BasketJsonPath;
             else
-                path = CurrentDirectory;
-
+            {
+                throw new DataException("Ошибка");
+            }
+                
             var options = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
                 WriteIndented = true,
                 IncludeFields = true
             };
-            string jsonString = JsonSerializer.Serialize(element, options); 
-            File.WriteAllText(path, jsonString); 
+            string jsonString = JsonSerializer.Serialize(element, options);
+            File.WriteAllText(path, jsonString);
         }
     }
 }

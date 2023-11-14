@@ -26,7 +26,7 @@ namespace ViewModel.ViewModels
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
-        public static int FindCinemaIndexById(int id, List<Cinema> cinemas) 
+        public static int FindCinemaIndexById(int id, List<Cinema> cinemas) //убрать
         {
             int index = -1;
             for (int i = 0; i < cinemas.Count; i++)
@@ -73,7 +73,7 @@ namespace ViewModel.ViewModels
                 {
                     for(int i = 0;i < places.Count; i++)
                     {
-                        Ticket ticket = new(cinema.Id, showInCertainTime, places[i]);//передать параметры(idCinema)
+                        Ticket ticket = new(cinema.Id, showInCertainTime, places[i]);
                         basket.AddTicket(ticket);
                     }
                     ConsoleMessages.MessageTicketPurchased();
