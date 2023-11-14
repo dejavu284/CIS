@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Data\basket.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

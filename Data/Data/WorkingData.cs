@@ -1,6 +1,7 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
+using Model.Models;
 
 namespace Data.Data
 {
@@ -8,17 +9,16 @@ namespace Data.Data
     {
         public WorkingData(string[] args)
         {
+            CurrentDirectory = $"{Environment.CurrentDirectory}";
             if (DataIsCorrect(args))
             {
                 Args = args;
-                CurrentDirectory = $"{Environment.CurrentDirectory}";
-                BasketJsonPath = CurrentDirectory + "\\Data\\" + args[1];
             }
         }
         private string[] Args;
-        private string? CurrentDirectory { get; set; }
-        public string? CinemasJsonPath { get {return CurrentDirectory + "\\Data\\" + Args[0]; } }
-        public string? BasketJsonPath { get; private set; }
+        private string CurrentDirectory { get; set; }
+        private string CinemasJsonPath { get {return CurrentDirectory + "\\Data\\" + Args[0]; } }
+        private string BasketJsonPath { get { return CurrentDirectory + "\\Data\\" + Args[1]; } }
 
         public static bool DataIsCorrect(string[] args)
         {
@@ -28,34 +28,39 @@ namespace Data.Data
             }
             return false;
         }
-        public bool TryDeserializ<T>(string? path, ref T element)
-            where T : new()
+        public List<Cinema> CinemasDeserializ()
         {
             try
             {
-                string textJson = File.ReadAllText(path);
-                element = JsonSerializer.Deserialize<T>(textJson)!;
-                return true;
+                string textJson = File.ReadAllText(CinemasJsonPath);
+                List<Cinema> element = JsonSerializer.Deserialize<List<Cinema>>(textJson)!;
+                return element;
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine("Не найден файл:\n{0}", path);
-                return false;
+                throw new DataException("Не найден файл", CinemasJsonPath);
             }
             catch (JsonException)
             {
-                Console.WriteLine("Ошибка в файле:\n{0}", path);
-                return false;
+                throw new DataException("Ошибка в файле", CinemasJsonPath);
             }
             catch
             {
-                Console.WriteLine("Ошибка, попробуйте еще раз.", path);
-                return false;
+                throw new DataException("Ошибка", CinemasJsonPath);
             }
         }
 
-        public static void Save<T>(string? path, T element)
+
+        public void Save<T>(T element)
         {
+            string path;
+            if (element is Cinema)
+                path = CinemasJsonPath;
+            else if (element is Basket)
+                path = BasketJsonPath;
+            else
+                path = CurrentDirectory;
+
             var options = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),

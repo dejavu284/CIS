@@ -11,20 +11,15 @@ namespace ViewModel.ViewModels
             if (WorkingData.DataIsCorrect(args))
             {
                 WorkingData data = new(args);
-                List<Cinema> cinemas = new();
+                List<Cinema> cinemas = data.CinemasDeserializ();
 
-                if (data.TryDeserializ(data.CinemasJsonPath, ref cinemas))// //////////////////////////////////
-                {
-                    Basket basket = BuyTickets(cinemas);
-                    List<Cinema> new_cinemas = BookingPlaces(basket,cinemas);
+                Basket basket = BuyTickets(cinemas);
+                List<Cinema> new_cinemas = BookingPlaces(basket,cinemas);
 
-                    WorkingData.Save(data.CinemasJsonPath, new_cinemas);
-                    WorkingData.Save(data.BasketJsonPath, basket);
+                data.Save(new_cinemas);
+                data.Save(basket);
 
-                    ConsoleMessages.MessageCompletionProgram();
-                }
-                else
-                    ConsoleMessages.MessageIncorrectInput();
+                ConsoleMessages.MessageCompletionProgram();
             }
             else
             {
@@ -55,8 +50,6 @@ namespace ViewModel.ViewModels
                 Cinema new_cinema = cinemas[indexCinema];
 
                 new_cinema.BookingPlace(basket.Tickets[i].IdShow, basket.Tickets[i].Place);
-
-                
             }
             return cinemas;
         }
