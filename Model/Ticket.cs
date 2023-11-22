@@ -1,4 +1,4 @@
-﻿namespace Model.Models
+﻿namespace CinemaModel
 {
     public class Ticket
     {
@@ -9,15 +9,15 @@
 
             Place = place;
         }
-        public string Name { get { return Show.Name; }}
+        public string Name { get { return Show.Name; } }
         public DateOnly Date { get { return Show.Date; } }
         public TimeOnly Time { get { return Show.Time; } }
         public Place Place { get; }
         public int Cod { get { return CreateRandomCod(); } }
 
-        private Show  Show{ get; }
-        
-        public int IdCinema { get; }    
+        private Show Show { get; }
+
+        public int IdCinema { get; }
         public int IdShow { get { return Show.Id; } }
 
         private static int CreateRandomCod() // хорошо или плохо?

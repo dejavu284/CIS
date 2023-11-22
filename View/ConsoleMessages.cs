@@ -1,6 +1,5 @@
-﻿using Model.Models;
-
-namespace View.Views
+﻿using CinemaModel;
+namespace View
 {
     public class ConsoleMessages
     {

@@ -1,10 +1,10 @@
-﻿using Data.Data;
-using Model.Models;
-using View.Views;
+﻿using Data;
+using CinemaModel;
+using View;
 
-namespace ViewModel.ViewModels
+namespace MainFlow
 {
-    internal class MainViewModel
+    internal class Flow
     {
         public static void StartProgram(string[] args)
         {
@@ -26,7 +26,7 @@ namespace ViewModel.ViewModels
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
-        
+
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();
@@ -45,7 +45,7 @@ namespace ViewModel.ViewModels
 
                 if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                 {
-                    for(int i = 0;i < places.Count; i++)
+                    for (int i = 0; i < places.Count; i++)
                     {
                         Ticket ticket = new(cinema.Id, showInCertainTime, places[i]);
                         basket.AddTicket(ticket);
@@ -64,7 +64,7 @@ namespace ViewModel.ViewModels
             {
                 Place place = ChoosePlace(showInCertainTime);
                 places.Add(place);
-            } while(ConsoleMessages.PoolYesOrNo("Хотите забранировать еще одно место"));
+            } while (ConsoleMessages.PoolYesOrNo("Хотите забранировать еще одно место"));
             return places;
         }
         public static Place ChoosePlace(Show showInCertainTime)
@@ -104,8 +104,8 @@ namespace ViewModel.ViewModels
                 ConsoleMessages.MessageNamesAllFilms(filmsPoster);
                 film = ConsoleMessages.ChooseEl(filmsPoster.Films, "показа");
 
-                scheduleWithOneFilm = schedule.FindByName(film.Name); 
-                if (scheduleWithOneFilm.IsNull()) 
+                scheduleWithOneFilm = schedule.FindByName(film.Name);
+                if (scheduleWithOneFilm.IsNull())
                     ConsoleMessages.MessageFilmNotExist();
                 else
                     ConsoleMessages.MessageInfo(film);

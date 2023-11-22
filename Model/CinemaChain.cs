@@ -1,4 +1,4 @@
-﻿namespace Model.Models
+﻿namespace CinemaModel
 {
     public class CinemaChain
     {

@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\View\View.csproj" />
+    <ProjectReference Include="..\Data\CIS.Data.csproj" />
+    <ProjectReference Include="..\Model\CIS.CimenaModel.csproj" />
+    <ProjectReference Include="..\View\CIS.View.csproj" />
   </ItemGroup>
 
 </Project>

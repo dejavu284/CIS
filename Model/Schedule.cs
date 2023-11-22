@@ -1,18 +1,18 @@
-﻿namespace Model.Models
+﻿namespace CinemaModel
 {
     public class Schedule
     {
-        public Schedule(List<Show> shows) 
+        public Schedule(List<Show> shows)
         {
             Shows = shows;
         }
-        public List<DateOnly> Dates { get { return FindDates(Shows); }}
+        public List<DateOnly> Dates { get { return FindDates(Shows); } }
 
         public List<Show> Shows { get; private set; } = new();
 
         public int Count { get { return Shows.Count; } }
 
-        
+
         public Schedule FindByName(string filmName)
         {
             List<Show> shows = new();
@@ -41,16 +41,16 @@
             }
             return dates;
         }
-        private bool IsDatesRepeating(DateOnly date,List<DateOnly> dates)
+        private bool IsDatesRepeating(DateOnly date, List<DateOnly> dates)
         {
             foreach (DateOnly thisDate in dates)
                 if (thisDate == date)
-                    return true;       
+                    return true;
             return false;
         }
         public Schedule FindShowByDate(DateOnly datesShows)
         {
-            List<Show> showsTemp = new ();
+            List<Show> showsTemp = new();
             for (int i = 0; i < Shows.Count; i++)
             {
                 if (datesShows == Shows[i].Date)
@@ -76,8 +76,8 @@
 
         public void BookingPlace(int idShow, Place place)
         {
-           int indexShow = FindShowIndexById(idShow);
-           Shows[indexShow].BookingPlaces(place);
+            int indexShow = FindShowIndexById(idShow);
+            Shows[indexShow].BookingPlaces(place);
         }
     }
 }

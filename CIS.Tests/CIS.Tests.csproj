@@ -22,10 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApp2\ViewModel.csproj" />
-    <ProjectReference Include="..\Data\Data.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\View\View.csproj" />
+    <ProjectReference Include="..\Model\CIS.CimenaModel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Model.Models
+namespace CinemaModel
 {
-    
+
     public class Show
     {
-        public Show(string name, DateOnly date, TimeOnly time, Seating seating,int id)
+        public Show(string name, DateOnly date, TimeOnly time, Seating seating, int id)
         {
             Name = name;
             Date = date;
@@ -18,10 +18,10 @@ namespace Model.Models
         public Seating Seating { get; }
 
         [JsonPropertyName("name")] // Эти свойства нужно убрать
-        public string Name { get;private set; }
+        public string Name { get; private set; }
 
         [JsonPropertyName("data")]
-        public DateOnly Date { get;private set; }
+        public DateOnly Date { get; private set; }
 
         [JsonPropertyName("time")]
         public TimeOnly Time { get; private set; }
@@ -36,5 +36,5 @@ namespace Model.Models
             Seating.BookingPlace(place);
         }
     }
-    
+
 }

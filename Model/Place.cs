@@ -1,8 +1,8 @@
-﻿namespace Model.Models
+﻿namespace CinemaModel
 {
     public class Place
     {
-        public Place(int row,int colum,int price)
+        public Place(int row, int colum, int price)
         {
             Row = row;
             Colum = colum;

@@ -1,5 +1,4 @@
-﻿
-namespace Model.Models
+﻿namespace CinemaModel
 {
     public class Cinema
     {
@@ -15,12 +14,12 @@ namespace Model.Models
 
         public string Name { get; }
         public string Address { get; }
-        public int Id { get; } 
-        public Schedule Schedule { get;}
+        public int Id { get; }
+        public Schedule Schedule { get; }
         public List<Hall> Halls { get; }
-        public Poster Poster { get;}
+        public Poster Poster { get; }
 
-        public void BookingPlace(int idShow,Place place)
+        public void BookingPlace(int idShow, Place place)
         {
             Schedule.BookingPlace(idShow, place);
         }

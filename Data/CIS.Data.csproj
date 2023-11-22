@@ -7,20 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj" />
+    <ProjectReference Include="..\Model\CIS.CimenaModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\basket.json">
+    <None Update="JSON\basket.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\cinemas.json">
+    <None Update="JSON\cinemas.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Data\film.json">
+    <None Update="JSON\film.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\film_screening.json">
+    <None Update="JSON\film_screening.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

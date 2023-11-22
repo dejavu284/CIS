@@ -1,4 +1,4 @@
-﻿namespace Model.Models
+﻿namespace CinemaModel
 {
     public class Seating
     {
@@ -9,7 +9,7 @@
         }
         public int CountAvailablePlaces { get { return CalcCountAvailablePlaces(); } }
 
-        public int[][] Places{ get; private set; }
+        public int[][] Places { get; private set; }
 
         public int IdHall { get; set; }
         private int CalcCountAvailablePlaces()

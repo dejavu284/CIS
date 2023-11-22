@@ -1,10 +1,11 @@
-namespace ViewModel.ViewModels
+using MainFlow;
+namespace ViewModel
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            MainViewModel.StartProgram(args);
+            Flow.StartProgram(args);
         }
     }
 }

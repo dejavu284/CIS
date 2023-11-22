@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ConsoleApp2\ViewModel.csproj", "{409754E5-A901-49C1-9976-F2F829A067E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Flow", "ConsoleApp2\CIS.Flow.csproj", "{409754E5-A901-49C1-9976-F2F829A067E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{3C7FB2A4-6F36-481B-8134-B7965B60CDFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.CimenaModel", "Model\CIS.CimenaModel.csproj", "{3C7FB2A4-6F36-481B-8134-B7965B60CDFF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "View\View.csproj", "{3E6AA606-5E82-485E-873D-18D30301F4F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.View", "View\CIS.View.csproj", "{3E6AA606-5E82-485E-873D-18D30301F4F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{EC599139-B909-4D4F-845A-488499BDD1BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Data", "Data\CIS.Data.csproj", "{EC599139-B909-4D4F-845A-488499BDD1BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIS.Tests", "CIS.Tests\CIS.Tests.csproj", "{AA853973-9704-4648-942E-E36F03BB4F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.Tests", "CIS.Tests\CIS.Tests.csproj", "{AA853973-9704-4648-942E-E36F03BB4F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

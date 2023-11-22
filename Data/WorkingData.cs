@@ -1,9 +1,9 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using Model.Models;
+using CinemaModel;
 
-namespace Data.Data
+namespace Data
 {
     public class WorkingData
     {
@@ -17,7 +17,7 @@ namespace Data.Data
         }
         private string[] Args;
         private string CurrentDirectory { get; set; }
-        private string CinemasJsonPath { get {return CurrentDirectory + "\\Data\\" + Args[0]; } }
+        private string CinemasJsonPath { get { return CurrentDirectory + "\\Data\\" + Args[0]; } }
         private string BasketJsonPath { get { return CurrentDirectory + "\\Data\\" + Args[1]; } }
 
         public static bool DataIsCorrect(string[] args)
@@ -61,8 +61,8 @@ namespace Data.Data
         }
         public void Save<T>(T element)
         {
-            string path = ChoicePath<T>(element);
-            
+            string path = ChoicePath(element);
+
             var options = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
