@@ -28,12 +28,13 @@ namespace Data.Data
             }
             return false;
         }
-        public List<Cinema> CinemasDeserializ()
+        public CinemaChain CinemasDeserializ()
         {
             try
             {
                 string textJson = File.ReadAllText(CinemasJsonPath);
-                List<Cinema> element = JsonSerializer.Deserialize<List<Cinema>>(textJson)!;
+
+                CinemaChain element = JsonSerializer.Deserialize<CinemaChain>(textJson)!;
                 return element;
             }
             catch (FileNotFoundException)
@@ -49,18 +50,19 @@ namespace Data.Data
                 throw new DataException("Ошибка", CinemasJsonPath);
             }
         }
+        private string ChoicePath<T>(T element)
+        {
+            if (element is CinemaChain)
+                return CinemasJsonPath;
+            else if (element is Basket)
+                return BasketJsonPath;
+            else
+                throw new DataException("Ошибка в типе сохраняемого элемента");
+        }
         public void Save<T>(T element)
         {
-            string path;
-            if (element is List<Cinema>)
-                path = CinemasJsonPath;
-            else if (element is Basket)
-                path = BasketJsonPath;
-            else
-            {
-                throw new DataException("Ошибка");
-            }
-                
+            string path = ChoicePath<T>(element);
+            
             var options = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),

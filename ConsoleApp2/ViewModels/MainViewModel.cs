@@ -11,12 +11,12 @@ namespace ViewModel.ViewModels
             if (WorkingData.DataIsCorrect(args))
             {
                 WorkingData data = new(args);
-                List<Cinema> cinemas = data.CinemasDeserializ();
+                CinemaChain cinemas = data.CinemasDeserializ();
 
-                Basket basket = BuyTickets(cinemas);
-                List<Cinema> new_cinemas = BookingPlaces(basket,cinemas);
+                Basket basket = BuyTickets(cinemas.Cinemas);
+                cinemas.BookingPlaces(basket);
 
-                data.Save(new_cinemas);
+                data.Save(cinemas);
                 data.Save(basket);
 
                 ConsoleMessages.MessageCompletionProgram();
@@ -26,33 +26,7 @@ namespace ViewModel.ViewModels
                 ConsoleMessages.MessageIncorrectInput();
             }
         }
-        public static int FindCinemaIndexById(int id, List<Cinema> cinemas) //убрать
-        {
-            int index = -1;
-            for (int i = 0; i < cinemas.Count; i++)
-            {
-                if (cinemas[i].Id == id)
-                {
-                    return i;
-                }
-            }
-            return index;
-        }
-
-
-        public static List<Cinema> BookingPlaces(Basket basket,List<Cinema> cinemas) // класс List<Cinema>
-        {
-            List<Cinema> new_cinemas = cinemas;
-            for(int i = 0;i < basket.NumberTickets;i++)
-            {
-                int indexCinema = FindCinemaIndexById(basket.Tickets[i].IdCinema, cinemas);
-
-                Cinema new_cinema = cinemas[indexCinema];
-
-                new_cinema.BookingPlace(basket.Tickets[i].IdShow, basket.Tickets[i].Place);
-            }
-            return cinemas;
-        }
+        
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();
@@ -110,7 +84,7 @@ namespace ViewModel.ViewModels
             showInCertainTime.Seating.Places[row][col] = -1;
             return place;
         }
-            public static Cinema ChoiseCinema(List<Cinema> cinemas)
+        public static Cinema ChoiseCinema(List<Cinema> cinemas)
         {
             Cinema cinema;
             do

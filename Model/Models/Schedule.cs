@@ -73,5 +73,11 @@
             }
             return index;
         }
+
+        public void BookingPlace(int idShow, Place place)
+        {
+           int indexShow = FindShowIndexById(idShow);
+           Shows[indexShow].BookingPlaces(place);
+        }
     }
 }

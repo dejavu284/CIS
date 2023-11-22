@@ -22,7 +22,7 @@ namespace Model.Models
 
         public void BookingPlace(int idShow,Place place)
         {
-            Schedule.Shows[Schedule.FindShowIndexById(idShow)].Seating.BookingPlace(place);
+            Schedule.BookingPlace(idShow, place);
         }
     }
 }

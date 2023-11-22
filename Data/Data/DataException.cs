@@ -15,6 +15,6 @@ namespace Data.Data
         public DataException(string message) : base(message)
         {  
         }
-        public string PathError { get; }
+        public string? PathError { get; }
     }
 }

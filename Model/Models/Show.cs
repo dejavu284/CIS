@@ -31,5 +31,10 @@ namespace Model.Models
 
         [JsonPropertyName("id")]
         public int Id { get; private set; }
+        public void BookingPlaces(Place place)
+        {
+            Seating.BookingPlace(place);
+        }
     }
+    
 }
