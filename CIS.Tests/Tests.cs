@@ -5,6 +5,8 @@ namespace CIS.Tests
 {
     public class Tests
     {
+        /*классы для тестирования:
+            Basket, CinemaChain, Hall, Seating, Schedule*/
         [Fact]
         public void Test1()
         {

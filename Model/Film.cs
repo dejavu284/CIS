@@ -4,7 +4,7 @@ namespace CinemaModel
 {
     public class Film
     {
-        public Film(string name, string genre, string description, int year) // На этот конструктор 0 ссылок
+        public Film(string name, string genre, string description, int year) 
         {
             Name = name;
             Description = description;
