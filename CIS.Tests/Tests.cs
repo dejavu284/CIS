@@ -8,7 +8,7 @@ namespace CIS.Tests
     public class Tests
     {
         /*классы для тестирования:
-            Basket, CinemaChain, Seating, Schedule*/
+            Basket, Seating(протестированно), Schedule*/
         [Fact]
         public void Booking_the_right_place()
         {
@@ -85,7 +85,79 @@ namespace CIS.Tests
 
             //assert
             Assert.Equal(seating.Places, seatingPositiv.Places);
+            
         }
+        [Fact]
+        public void Find_Schedule_by_name_film_show()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> { 
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            });
 
+            Schedule scheduleForFilmOne = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleForFilmOneTest = scheduleAll.FindByName("фильм 1");
+
+            Assert.Equal(scheduleForFilmOneTest.Shows.Count, scheduleForFilmOne.Shows.Count);
+            Assert.Equal(scheduleForFilmOneTest.Shows[0].Name, scheduleForFilmOne.Shows[0].Name);
+            Assert.Equal(scheduleForFilmOneTest.Shows[1].Name, scheduleForFilmOne.Shows[1].Name);
+            Assert.Equal(scheduleForFilmOneTest.Shows[2].Name, scheduleForFilmOne.Shows[2].Name);
+        }
+        [Fact]
+        public void Find_Schedule_by_date()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleForFilmOne = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleForFilmOneTest = scheduleAll.FindByDate(new DateOnly(2023,10,2));
+
+            Assert.Equal(scheduleForFilmOneTest.Shows.Count, scheduleForFilmOne.Shows.Count);
+            Assert.Equal(scheduleForFilmOneTest.Shows[0].Name, scheduleForFilmOne.Shows[0].Name);
+            Assert.Equal(scheduleForFilmOneTest.Shows[1].Name, scheduleForFilmOne.Shows[1].Name);
+            Assert.Equal(scheduleForFilmOneTest.Shows[2].Name, scheduleForFilmOne.Shows[2].Name);
+        }
+        [Fact]
+        public void Check_Schedule_is_not_null()
+        {
+            Schedule schedule = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            });
+
+            bool result = schedule.IsNull();
+
+            Assert.False(result);
+        }
+        [Fact]
+        public void Check_Schedule_is_null()
+        {
+            Schedule schedule = new Schedule(new List<Show> {});
+
+            bool result = schedule.IsNull();
+
+            Assert.True(result);
+        }
     }
 }

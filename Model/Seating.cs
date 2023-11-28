@@ -17,6 +17,7 @@
             int countAvailablePlaces = 0;
             for (int i = 0; i < Places.GetLength(0); i++)
             {
+                if(Places[i] != null)
                 for (int j = 0; j < Places[i].Length; j++)
                 {
                     if (Places[i][j] != -1)

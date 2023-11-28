@@ -121,7 +121,7 @@ namespace MainFlow
                 ConsoleMessages.OutputDateShow(shows.Dates);
                 certainDateShow = ConsoleMessages.ChooseEl(shows.Dates, "даты");
             } while (!ConsoleMessages.PoolYesOrNo("Оставить выбранную дату"));
-            shows.FindShowByDate(certainDateShow);
+            shows.FindByDate(certainDateShow);
             return shows;
         }
         public static Show ChooseShowsInCertainTime(Schedule shows)
