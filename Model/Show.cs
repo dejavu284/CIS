@@ -17,7 +17,7 @@ namespace CinemaModel
         [JsonPropertyName("Seating")]
         public Seating Seating { get; }
 
-        [JsonPropertyName("name")] // Эти свойства нужно убрать
+        [JsonPropertyName("name")] 
         public string Name { get; private set; }
 
         [JsonPropertyName("data")]

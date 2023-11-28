@@ -158,12 +158,12 @@ namespace View
             Console.WriteLine("Время показа фильма:");
             for (int i = 0; i < shows.Count; i++)
             {
-                Console.WriteLine("\n{0}. {1}. Количество мест: {2}", i + 1, shows[i].Time, shows[i].Seating.CountAvailablePlaces);
+                Console.WriteLine("\n{0}. {1}. Количество мест: {2}", i + 1, shows[i].Time, shows[i].Seating.NumberAvailableSeats);
             }
         }
         public static void OutputCountPlace(Show show)
         {
-            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.Seating.CountAvailablePlaces);
+            Console.WriteLine("Количесво оставшихся мест на сеанс: {0}\n", show.Seating.NumberAvailableSeats);
         }
         public static void OutputDateShow(List<DateOnly> datesShows)
         {

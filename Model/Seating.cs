@@ -7,11 +7,11 @@
             Places = places;
             IdHall = idHall;
         }
-        public int CountAvailablePlaces { get { return CalcCountAvailablePlaces(); } }
+        public int NumberAvailableSeats { get { return CalcCountAvailablePlaces(); } }
 
-        public int[][] Places { get; private set; }
+        public int[][] Places { get;}
 
-        public int IdHall { get; set; }
+        public int IdHall { get;}
         private int CalcCountAvailablePlaces()
         {
             int countAvailablePlaces = 0;
@@ -27,13 +27,27 @@
             }
             return countAvailablePlaces;
         }
-        public bool IsPlacesNotEmpty()
+        private bool CheckingPossibilityBooking(Place place)
         {
-            return CountAvailablePlaces != 0;
+            bool result;
+
+            if (place == null)
+                result = false;
+            else if (place.Row >= Places.Length)
+                result = false;
+            else if (place.Colum >= Places[place.Colum].Length)
+                result = false;
+            else if (Places[place.Row][place.Colum] == -1)
+                result = false;
+            else 
+                result = true;
+
+            return result;
         }
 
         public void BookingPlace(Place place)
         {
+            if(CheckingPossibilityBooking(place))
             Places[place.Row][place.Colum] = -1;
         }
     }

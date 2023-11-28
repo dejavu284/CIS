@@ -18,7 +18,7 @@
             List<Show> shows = new();
             foreach (Show show in Shows)
             {
-                if (filmName == show.Name && show.Seating.CountAvailablePlaces != 0)
+                if (filmName == show.Name && show.Seating.NumberAvailableSeats != 0)
                 {
                     shows.Add(show);
                 }
@@ -61,7 +61,7 @@
             return new(showsTemp);
         }
 
-        public int FindShowIndexById(int id)
+        private int FindShowIndexById(int id)
         {
             int index = -1;
             for (int i = 0; i < Shows.Count; i++)

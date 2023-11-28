@@ -12,7 +12,7 @@ namespace CinemaModel
         }
         public int Id { get; }
         public int[][] Layout { get; }
-        public string Screen { get; } // строка или отдельный класс?
+        public string Screen { get; } 
         public int CountPlase { get { return CalcCoutPlase(Layout); } }
         public int CountRows { get { return Layout.GetLength(0); } }
         public int CountCols { get { return CountPlase / CountRows; } }
