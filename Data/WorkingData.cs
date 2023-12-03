@@ -7,18 +7,18 @@ namespace Data
 {
     public class WorkingData
     {
-        public WorkingData(string[] args)
+        public WorkingData(string[] fileNames)
         {
             CurrentDirectory = $"{Environment.CurrentDirectory}";
-            if (DataIsCorrect(args))
+            if (DataIsCorrect(fileNames))
             {
-                Args = args;
+                FileNames = fileNames;
             }
         }
-        private string[] Args;
+        private string[] FileNames;
         private string CurrentDirectory { get; set; }
-        private string CinemasJsonPath { get { return CurrentDirectory + "\\Data\\" + Args[0]; } }
-        private string BasketJsonPath { get { return CurrentDirectory + "\\Data\\" + Args[1]; } }
+        private string CinemasJsonPath { get { return CurrentDirectory + "\\Data\\" + FileNames[0]; } }
+        private string BasketJsonPath { get { return CurrentDirectory + "\\Data\\" + FileNames[1]; } }
 
         public static bool DataIsCorrect(string[] args)
         {
