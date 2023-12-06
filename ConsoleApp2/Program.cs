@@ -13,8 +13,6 @@ namespace ViewModel
             {
                 WorkingData data = new(args);
                 CinemaChain cinemas = data.GetCinemaChain();
-                int? x = null;
-                data.Save(x);
 
                 Basket basket = Flow.BuyTickets(cinemas.Cinemas);
                 cinemas.BookingPlaces(basket);
