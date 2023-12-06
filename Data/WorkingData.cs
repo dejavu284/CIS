@@ -9,45 +9,45 @@ namespace Data
     {
         public WorkingData(string[] fileNames)
         {
-            CurrentDirectory = $"{Environment.CurrentDirectory}";
-            if (DataIsCorrect(fileNames))
+            if (fileNames.Length != 2)
+                throw new Exception("Неверное количество переданных загрузочных файлов");
+            else if (!fileNames.All(x => x.Contains(".json")))
+                throw new Exception("Неверное расширение у загрузочных файлов");
+            else
             {
+                CurrentDirectory = $"{Environment.CurrentDirectory}";
                 FileNames = fileNames;
             }
         }
         private string[] FileNames;
-        private string CurrentDirectory { get; set; }
+        private string CurrentDirectory { get;}
         private string CinemasJsonPath { get { return CurrentDirectory + "\\JSON\\" + FileNames[0]; } }
         private string BasketJsonPath { get { return CurrentDirectory + "\\JSON\\" + FileNames[1]; } }
 
-        public static bool DataIsCorrect(string[] args)
+        public CinemaChain GetCinemaChain()
         {
-            if (args.Length == 2)
-            {
-                return args.All(x => x.Contains(".json"));
-            }
-            return false;
+            CinemaChain cinemaChain;
+            ItemDeserializ(CinemasJsonPath, out cinemaChain);
+            return cinemaChain;
         }
-        public CinemaChain CinemasDeserializ()
+        private void ItemDeserializ<T>(string pathJson,out T element)
         {
             try
             {
-                string textJson = File.ReadAllText(CinemasJsonPath);
-
-                CinemaChain element = JsonSerializer.Deserialize<CinemaChain>(textJson)!;
-                return element;
+                string textJson = File.ReadAllText(pathJson);
+                element = JsonSerializer.Deserialize<T>(textJson)!;
             }
             catch (FileNotFoundException)
             {
-                throw new DataException("Не найден файл", CinemasJsonPath);
+                throw new DataException("Не найден загрузочный файл", pathJson);
             }
             catch (JsonException)
             {
-                throw new DataException("Ошибка в файле", CinemasJsonPath);
+                throw new DataException("Ошибка в загрузочном файле", pathJson);
             }
-            catch
+            catch (Exception ex)
             {
-                throw new DataException("Ошибка", CinemasJsonPath);
+                throw new DataException(ex.Message, pathJson);
             }
         }
         private string ChoicePath<T>(T element)
@@ -56,8 +56,10 @@ namespace Data
                 return CinemasJsonPath;
             else if (element is Basket)
                 return BasketJsonPath;
+            else if(element == null)
+                throw new Exception("Нельзя сохранить значение равное NULL");
             else
-                throw new DataException("Ошибка в типе сохраняемого элемента");
+                throw new Exception($"Тип сохраняемого элемента {element.GetType()}  не поддерживается");
         }
         public void Save<T>(T element)
         {

@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class DataException : Exception
+    public class DataException : Exception
     {
         public DataException(string message, string pathError) : base(message)
         {
             PathError = pathError;
         }
-        public DataException(string message) : base(message)
-        {
-        }
-        public string? PathError { get; }
+        public string PathError { get; }
     }
 }

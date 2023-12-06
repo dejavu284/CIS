@@ -6,27 +6,6 @@ namespace MainFlow
 {
     internal class Flow
     {
-        public static void StartProgram(string[] args)
-        {
-            if (WorkingData.DataIsCorrect(args))
-            {
-                WorkingData data = new(args);
-                CinemaChain cinemas = data.CinemasDeserializ();
-
-                Basket basket = BuyTickets(cinemas.Cinemas);
-                cinemas.BookingPlaces(basket);
-
-                data.Save(cinemas);
-                data.Save(basket);
-
-                ConsoleMessages.MessageCompletionProgram();
-            }
-            else
-            {
-                ConsoleMessages.MessageIncorrectInput();
-            }
-        }
-
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
             Basket basket = new();

@@ -23,6 +23,14 @@ namespace View
         {
             Console.WriteLine("\nНекорректный ввод поробуйте ещё раз\n");
         }
+        public static void OutputErrorsText(string errorText)
+        {
+            Console.WriteLine(errorText);
+        }
+        public static void OutputDataErrorsText(string errorText,string errorPath)
+        {
+            Console.WriteLine("{0}.\n\n В загрузочном файле по пути: {1}",errorText,errorPath);
+        }
         public static void MessageCheck(Basket basket)
         {
             Console.WriteLine("\n---------------------------");
@@ -92,7 +100,7 @@ namespace View
             do
             {
                 Console.WriteLine("Место:");
-                string strCol = Console.ReadLine()!;
+                string strCol = Console.ReadLine();
                 int col;
                 if (IsNumberInList(showInCertainTime.Seating.Places[row].Length, strCol, out col))
                 {
