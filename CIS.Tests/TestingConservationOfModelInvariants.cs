@@ -123,17 +123,22 @@ namespace CIS.Tests
         [Fact]
         public void Creating_a_Cinema_with_a_empty_name()
         {
-            Assert.Throws<Exception>(() => new Cinema("", "адресс", 1, new Schedule(new List<Show>()),new List<Hall>(), new Poster (new List<Film>())));
+            Assert.Throws<Exception>(() => new Cinema("", "адресс",4.4f, 1, new Schedule(new List<Show>()),new List<Hall>(), new Poster (new List<Film>())));
         }
         [Fact]
         public void Creating_a_Cinema_with_a_negative_id()
         {
-            Assert.Throws<Exception>(() => new Cinema("название", "адресс", -1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
+            Assert.Throws<Exception>(() => new Cinema("название", "адресс", 4.4f, -1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
         }
         [Fact]
         public void Creating_a_Cinema_with_a_empty_address()
         {
-            Assert.Throws<Exception>(() => new Cinema("название", "", 1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
+            Assert.Throws<Exception>(() => new Cinema("название", "", 4.4f, 1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
+        }
+        [Fact]
+        public void Creating_a_Cinema_with_negative_rating()
+        {
+            Assert.Throws<Exception>(() => new Cinema("название", "", -1f, 1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
         }
         //Проверка сохранения инвариантв билетов при конструировании 
         [Fact]

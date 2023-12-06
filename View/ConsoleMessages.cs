@@ -205,7 +205,7 @@ namespace View
         {
             Console.WriteLine("\nИнформация о кинотеатре \"{0}\": ",cinema.Name);
             Console.WriteLine("\nАдрес: {0} ",cinema.Address);
-            Console.WriteLine("Рейтинг:(добавить)\n");
+            Console.WriteLine("Рейтинг: {0}\n",Math.Round(cinema.Rating,1));
         }
         public static void OutputSeatings(int[][] places)
         {

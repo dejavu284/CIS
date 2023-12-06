@@ -139,13 +139,6 @@ namespace CIS.Tests
 
             Assert.Equal(scheduleForFilmOneTest.Shows, scheduleForFilmOne.Shows);
         }
-        //Schedule.FindByDate()
-        /*
-         * Поиск показов по дате в графике без показов
-         * Поиск показов по дате в графике без показов с нужной датой
-         * Поиск показов по дате в графике только с показами с нужной датой
-         * Поиск показов по дате в графике с показами с нужной и ненужными датами
-        */
         [Fact]
         public void Find_for_show_by_date_in_the_schedule_without_show()
         {

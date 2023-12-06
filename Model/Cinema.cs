@@ -2,7 +2,7 @@
 {
     public class Cinema
     {
-        public Cinema(string name, string address, int id, Schedule schedule, List<Hall> halls, Poster poster)
+        public Cinema(string name, string address,float rating, int id, Schedule schedule, List<Hall> halls, Poster poster)
         {
             Name = name;
             Address = address;
@@ -10,11 +10,13 @@
             Schedule = schedule;
             Halls = halls;
             Poster = poster;
+            Rating = rating;
         }
 
         public string Name { get; }
         public string Address { get; }
         public int Id { get; }
+        public float Rating { get; }
         public Schedule Schedule { get; }
         public List<Hall> Halls { get; }
         public Poster Poster { get; }
