@@ -16,14 +16,9 @@ namespace CIS.Tests
     {
         //Проверка сохранения инвариантв фильмов при конструировании 
         [Fact]
-        public void Creating_a_Film_with_a_negative_year()
+        public void Creating_a_Film_with_a_year_of_creation_less_than_a_year_of_making_the_first_film()
         {
-            Assert.Throws<Exception>(() => new Film("фильм 1", "жанр", "описание", -100));
-        }
-        [Fact]
-        public void Creating_a_Film_with_a_zero_year()
-        {
-            Assert.Throws<Exception>(() => new Film("фильм 1", "жанр", "описание", 0));
+            Assert.Throws<Exception>(() => new Film("фильм", "жанр", "описание", 1894));
         }
         [Fact]
         public void Creating_a_Film_with_a_empty_name()
@@ -31,9 +26,19 @@ namespace CIS.Tests
             Assert.Throws<Exception>(() => new Film("", "жанр", "описание", 2023));
         }
         [Fact]
+        public void Creating_a_Film_with_a_empty_genre()
+        {
+            Assert.Throws<Exception>(() => new Film("фильм", "", "описание", 2023));
+        }
+        [Fact]
         public void Creating_a_Film_with_a_null_name()
         {
             Assert.Throws<Exception>(() => new Film(null, "жанр", "описание", 2023));
+        }
+        [Fact]
+        public void Creating_a_Film_with_a_null_ganre()
+        {
+            Assert.Throws<Exception>(() => new Film("фильм",null, "описание", 2023));
         }
         //Проверка сохранения инвариантв мест при конструировании 
         [Fact]
