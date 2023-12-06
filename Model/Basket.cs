@@ -7,8 +7,12 @@
         public int Price { get; private set; } = 0;
         public void AddTicket(Ticket ticket)
         {
-            Tickets.Add(ticket);
-            Price += ticket.Place.Price;
+            if (Tickets.IndexOf(ticket) == -1)
+            {
+                Tickets.Add(ticket);
+                Price += ticket.Place.Price;
+            }
+            else throw new Exception("Добавление билета, который уже есть в корзине");
         }
     }
 }

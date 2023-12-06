@@ -25,7 +25,7 @@
             }
             return new(shows);
         }
-        public bool IsNull()
+        public bool IsEmpty()
         {
             return Count == 0;
         }
@@ -79,5 +79,6 @@
             int indexShow = FindShowIndexById(idShow);
             Shows[indexShow].BookingPlaces(place);
         }
+        
     }
 }

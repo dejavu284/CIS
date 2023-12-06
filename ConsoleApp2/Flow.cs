@@ -105,12 +105,12 @@ namespace MainFlow
                 film = ConsoleMessages.ChooseEl(filmsPoster.Films, "показа");
 
                 scheduleWithOneFilm = schedule.FindByName(film.Name);
-                if (scheduleWithOneFilm.IsNull())
+                if (scheduleWithOneFilm.IsEmpty())
                     ConsoleMessages.MessageFilmNotExist();
                 else
                     ConsoleMessages.MessageInfo(film);
             }
-            while (scheduleWithOneFilm.IsNull());
+            while (scheduleWithOneFilm.IsEmpty());
             return scheduleWithOneFilm;
         }
         public static Schedule ChooseShowInCertainDate(Schedule shows)

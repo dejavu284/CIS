@@ -3,162 +3,224 @@ using Xunit;
 using System.IO;
 using CinemaModel;
 using System.Net.Sockets;
+using Xunit.Sdk;
 
 namespace CIS.Tests
 {
     public class TestingFunctionalityModel
     {
         // добавить тесты расширяющие функционал имеющихся + изменить названия тестов с названий методов на названия сценариев
-        [Fact]
-        public void Booking_the_right_place()
+        // методы для тестирования
+        //
+        //Seating.BookingPlace() =>
+        /*
+         * Бронирование незабранированного места в зале
+         * Бронирование забранированного места в зале
+         * Бронирование места которого нет в зале
+        */
+        //Schedule.FindByName()
+        /*
+         * Поиск показов по названию фильма в графике без показов
+         * Поиск показов по названию фильма в графике без показов с нужным названием
+         * Поиск показов по названию фильма в графике только с показами с нужным названием
+         * Поиск показов по названию фильма в графике с показами с нужным и ненужными названиями
+        */
+        //Schedule.FindByDate()
+        /*
+         * Поиск показов по дате в графике без показов
+         * Поиск показов по дате в графике без показов с нужной датой
+         * Поиск показов по дате в графике только с показами с нужной датой
+         * Поиск показов по дате в графике с показами с нужной и ненужными датами
+        */
+        //Schedule.IsEmpty()
+        /*
+         * Проверка на пустоту пустого графика
+         * Проверка на пустоту не пустого графика
+        */
+        //Basket.AddTicket()
+        /*
+         * Добавление в корзину билета которого там нет
+         * Добавление в корзину билета который там есть
+        */
+        //
+        public static IEnumerable<object[]> ElementsDataSetForBookingPlace()
+        {
+            yield return new object[] {
+                new Seating(new int[2][] { new int[2] { 100, 100 }, new int[2] { 100, 100 } } , 1), new Place(0, 0, 100)
+            };
+            yield return new object[] {
+                new Seating(new int[2][] { new int[2] { -1, 100 }, new int[2] { 100, 100 } } , 1), new Place(0, 0, 100)
+            };
+            yield return new object[] {
+                new Seating(new int[2][] { new int[2] { 100, 100 }, new int[2] { 100, 100 } } , 1), new Place(2, 2, 100)
+            };
+        }
+        [Theory]
+        [MemberData(nameof(ElementsDataSetForBookingPlace))]
+        public void Booking_place(Seating seating,Place placeForBooking)
         {
             //arrange
-            int[][] places = new int[4][];
-            places[0] = new int[4] { 1, 2, 3, 4 };
-            places[1] = new int[4] { 5, 6, 7, 8 };
-            places[2] = new int[4] { 9, 10, 11, 12 };
-            places[3] = new int[4] { 13, 14, 15, 16 };
-            Seating seating = new Seating(places, 1);
-
-            Place placeForBooking = new Place(0,0,100);
-            int[][] placePositiv = new int[4][];
-            placePositiv[0] = new int[4] { -1, 2, 3, 4 };
-            placePositiv[1] = new int[4] { 5, 6, 7, 8 };
-            placePositiv[2] = new int[4] { 9, 10, 11, 12 };
-            placePositiv[3] = new int[4] { 13, 14, 15, 16 };
-            Seating seatingPositiv = new Seating(placePositiv, 1);
+            Seating seatingForTest = new (seating.Places,seating.IdHall);
 
             //act
-            seating.BookingPlace(placeForBooking);
+            seatingForTest.BookingPlace(placeForBooking);
 
             //assert
-            Assert.Equal(seating.Places, seatingPositiv.Places);
-        }
-
-        [Fact]
-        public void Booking_an_already_booked_seat()
-        {
-            //arrange
-            int[][] places = new int[4][];
-            places[0] = new int[4] { -1, 2, 3, 4 };
-            places[1] = new int[4] { 5, 6, 7, 8 };
-            places[2] = new int[4] { 9, 10, 11, 12 };
-            places[3] = new int[4] { 13, 14, 15, 16 };
-            Seating seating = new Seating(places, 1);
-
-            Place placeForBooking = new Place(0, 0, 100);
-            int[][] placePositiv = new int[4][];
-            placePositiv[0] = new int[4] { -1, 2, 3, 4 };
-            placePositiv[1] = new int[4] { 5, 6, 7, 8 };
-            placePositiv[2] = new int[4] { 9, 10, 11, 12 };
-            placePositiv[3] = new int[4] { 13, 14, 15, 16 };
-            Seating seatingPositiv = new Seating(placePositiv, 1);
-
-            //act
-            seating.BookingPlace(placeForBooking);
-
-            //assert
-            Assert.Equal(seating.Places, seatingPositiv.Places);
-        }
-
-        [Fact]
-        public void Booking_a_seat_that_is_not_in_the_hall()
-        {
-            //arrange
-            int[][] places = new int[4][];
-            places[0] = new int[4] { 1, 2, 3, 4 };
-            places[1] = new int[4] { 5, 6, 7, 8 };
-            places[2] = new int[4] { 9, 10, 11, 12 };
-            places[3] = new int[4] { 13, 14, 15, 16 };
-            Seating seating = new Seating(places, 1);
-
-            Place placeForBooking = new Place(4, 4, 100);
-            int[][] placePositiv = new int[4][];
-            placePositiv[0] = new int[4] { 1, 2, 3, 4 };
-            placePositiv[1] = new int[4] { 5, 6, 7, 8 };
-            placePositiv[2] = new int[4] { 9, 10, 11, 12 };
-            placePositiv[3] = new int[4] { 13, 14, 15, 16 };
-            Seating seatingPositiv = new Seating(placePositiv, 1);
-
-            //act
-            seating.BookingPlace(placeForBooking);
-
-            //assert
-            Assert.Equal(seating.Places, seatingPositiv.Places);
-            
+            Assert.Equal(seating.Places, seatingForTest.Places);
         }
         [Fact]
-        public void Find_Schedule_by_name_film_show()
+        public void Find_for_show_by_film_name_in_the_schedule_without_show()
         {
-            Schedule scheduleAll = new Schedule(new List<Show> { 
-                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            Schedule scheduleAll = new Schedule(new List<Show> {
+            });
+
+            Schedule scheduleForFilmOne = new Schedule(new List<Show>
+            {
+            });
+
+            Schedule scheduleForFilmOneTest = scheduleAll.FindByName("фильм 1");
+
+            Assert.Equal(scheduleForFilmOneTest.Shows, scheduleForFilmOne.Shows);
+        }
+        [Fact]
+        public void Find_for_show_by_film_name_in_the_schedule_without_show_with_necessary_name()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> {
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,13), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,14), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,15), new Seating(new int[1][], 1), 1)
             });
 
             Schedule scheduleForFilmOne = new Schedule(new List<Show> {
+            });
+
+            Schedule scheduleForFilmOneTest = scheduleAll.FindByName("фильм 1");
+
+            Assert.Equal(scheduleForFilmOneTest.Shows, scheduleForFilmOne.Shows);
+        }
+        [Fact]
+        public void Find_for_show_by_film_name_in_the_schedule_with_show_with_only_necessary_name()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,11), new Seating(new int[1][], 1), 1),
                 new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+            });
+
+            Schedule scheduleForFilmOne = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,11), new Seating(new int[1][], 1), 1),
                 new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
             });
 
             Schedule scheduleForFilmOneTest = scheduleAll.FindByName("фильм 1");
 
-            Assert.Equal(scheduleForFilmOneTest.Shows.Count, scheduleForFilmOne.Shows.Count);
-            Assert.Equal(scheduleForFilmOneTest.Shows[0].Name, scheduleForFilmOne.Shows[0].Name);
-            Assert.Equal(scheduleForFilmOneTest.Shows[1].Name, scheduleForFilmOne.Shows[1].Name);
-            Assert.Equal(scheduleForFilmOneTest.Shows[2].Name, scheduleForFilmOne.Shows[2].Name);
+            Assert.Equal(scheduleForFilmOneTest.Shows, scheduleForFilmOne.Shows);
         }
         [Fact]
-        public void Сorrect_number_of_impressions_found_by_date_with_a_non_empty_schedule()
+        public void Find_for_show_by_film_name_in_the_schedule_with_show_with_necessary_and_unnecessary_name()
         {
-            Schedule scheduleAll = new Schedule(new List<Show> {
+            Schedule scheduleAll = new Schedule(new List<Show> { 
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,11), new Seating(new int[1][], 1), 1),
                 new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 3", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 4", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 5", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 6", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,13), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,14), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,15), new Seating(new int[1][], 1), 1)
             });
 
-            Schedule scheduleShowsByOneDate = new Schedule(new List<Show> {
-                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 3", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 5", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            Schedule scheduleForFilmOne = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,11), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
             });
 
-            Schedule scheduleShowsByOneDateTest = scheduleAll.FindByDate(new DateOnly(2023,10,2));
+            Schedule scheduleForFilmOneTest = scheduleAll.FindByName("фильм 1");
 
-            Assert.Equal(scheduleShowsByOneDate.Count,scheduleShowsByOneDateTest.Count);
+            Assert.Equal(scheduleForFilmOneTest.Shows, scheduleForFilmOne.Shows);
         }
+        //Schedule.FindByDate()
+        /*
+         * Поиск показов по дате в графике без показов
+         * Поиск показов по дате в графике без показов с нужной датой
+         * Поиск показов по дате в графике только с показами с нужной датой
+         * Поиск показов по дате в графике с показами с нужной и ненужными датами
+        */
         [Fact]
-        public void Same_found_impressions_by_date_with_a_non_empty_schedule()
+        public void Find_for_show_by_date_in_the_schedule_without_show()
         {
-            Schedule scheduleAll = new Schedule(new List<Show> {
-                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 3", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 4", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 5", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 6", new DateOnly(2023,11,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            Schedule scheduleAll = new Schedule(new List<Show> 
+            {
             });
 
-            Schedule scheduleShowsByOneDate = new Schedule(new List<Show> {
-                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 3", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
-                new Show("фильм 5", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
+            Schedule scheduleShowsByOneDate = new Schedule(new List<Show>
+            {
             });
 
             Schedule scheduleShowsByOneDateTest = scheduleAll.FindByDate(new DateOnly(2023, 10, 2));
 
-            Assert.True(false);
+            Assert.Equal(scheduleShowsByOneDate.Shows, scheduleShowsByOneDateTest.Shows);
+        }
+        [Fact]
+        public void Find_for_show_by_date_in_the_schedule_without_show_with_necessary_date()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> { 
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,11), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,13), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,15), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleShowsByOneDate = new Schedule(new List<Show> {
+            });
+
+            Schedule scheduleShowsByOneDateTest = scheduleAll.FindByDate(new DateOnly(2023, 10, 2));
+
+            Assert.Equal(scheduleShowsByOneDate.Shows, scheduleShowsByOneDateTest.Shows);
+        }
+        [Fact]
+        public void Find_for_show_by_date_in_the_schedule_only_with_show_with_necessary_date()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,14), new Seating(new int[1][], 1), 1),
+            });
+
+            Schedule scheduleShowsByOneDate = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,14), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleShowsByOneDateTest = scheduleAll.FindByDate(new DateOnly(2023, 10, 2));
+
+            Assert.Equal(scheduleShowsByOneDate.Shows, scheduleShowsByOneDateTest.Shows);
+        }
+        [Fact]
+        public void Find_for_show_by_date_in_the_schedule_with_show_with_necessary_and_unnecessary_date()
+        {
+            Schedule scheduleAll = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,11,2), new TimeOnly(12,11), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,13), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,14), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,11,2), new TimeOnly(12,15), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleShowsByOneDate = new Schedule(new List<Show> {
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,10), new Seating(new int[1][], 1), 1),
+                new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
+                new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,14), new Seating(new int[1][], 1), 1)
+            });
+
+            Schedule scheduleShowsByOneDateTest = scheduleAll.FindByDate(new DateOnly(2023, 10, 2));
+
+            Assert.Equal(scheduleShowsByOneDate.Shows, scheduleShowsByOneDateTest.Shows);
         }
 
         [Fact]
-        public void Checking_a_non_empty_schedule_for_null()
+        public void Checking_a_non_empty_schedule_for_emptiness()
         {
             Schedule schedule = new Schedule(new List<Show> {
                 new Show("фильм 1", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1),
@@ -166,25 +228,16 @@ namespace CIS.Tests
                 new Show("фильм 2", new DateOnly(2023,10,2), new TimeOnly(12,12), new Seating(new int[1][], 1), 1)
             });
 
-            bool result = schedule.IsNull();
+            bool result = schedule.IsEmpty();
 
             Assert.False(result);
         }
         [Fact]
-        public void Checking_a_schedule_with_empty_shows_for_null()
+        public void Checking_a_schedule_with_empty_shows_for_emptiness()
         {
             Schedule schedule = new Schedule(new List<Show> {});
 
-            bool result = schedule.IsNull();
-
-            Assert.True(result);
-        }
-        [Fact]
-        public void Checking_a_empty_schedule_for_null()
-        {
-            Schedule schedule = null;
-
-            bool result = schedule.IsNull();
+            bool result = schedule.IsEmpty();
 
             Assert.True(result);
         }
@@ -213,6 +266,7 @@ namespace CIS.Tests
 
             Assert.Same(basket.Tickets[0], ticket);
         }
+        [Fact]
         public void Adding_a_ticket_that_is_already_in_the_basket()
         {
             Basket basket = new Basket();
@@ -234,9 +288,8 @@ namespace CIS.Tests
                 );
 
             basket.AddTicket(ticket);
-            basket.AddTicket(ticket);
-
-            Assert.True(false);
+            
+            Assert.Throws<Exception>(() => basket.AddTicket(ticket));
         }
     }
 }

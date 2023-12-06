@@ -26,6 +26,25 @@
             int res = random.Next(1000, 9999);
             return res;
         }
+        public override bool Equals(object? obj)
+        {
+            if (obj is Ticket)
+            {
+                var item = obj as Ticket;
+                if (item == null)
+                    return false;
+                else if (item.Show.Equals(Show) && item.Place.Equals(Place) && item.IdCinema.Equals(IdCinema))
+                    return true;
+                else
+                    return false;
+            }
+            else return false;
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -35,6 +35,25 @@ namespace CinemaModel
         {
             Seating.BookingPlace(place);
         }
+        public override bool Equals(object? obj)
+        {
+            if (obj is Show)
+            {
+                var item = obj as Show;
+                if (item == null)
+                    return false;
+                else if (item.Name.Equals(Name) && item.Date.Equals(Date) && item.Time.Equals(Time) && item.Id.Equals(Id))
+                    return true;
+                else
+                    return false;
+            }
+            else return false;
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

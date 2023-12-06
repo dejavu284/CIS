@@ -48,8 +48,10 @@
 
         public void BookingPlace(Place place)
         {
-            if(CheckingPossibilityBooking(place))
-            Places[place.Row][place.Colum] = -1;
+            if (CheckingPossibilityBooking(place))
+            {
+                Places[place.Row][place.Colum] = -1;
+            }
         }
     }
 }
