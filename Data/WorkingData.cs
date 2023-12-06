@@ -43,7 +43,7 @@ namespace Data
             }
             catch (JsonException)
             {
-                throw new DataException("Ошибка в загрузочном файле", pathJson);
+                throw new DataException("Ошибка в при получении данных из загрузочного файла", pathJson);
             }
             catch (Exception ex)
             {

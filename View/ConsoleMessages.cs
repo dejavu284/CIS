@@ -29,7 +29,7 @@ namespace View
         }
         public static void OutputDataErrorsText(string errorText,string errorPath)
         {
-            Console.WriteLine("{0}.\n\n В загрузочном файле по пути: {1}",errorText,errorPath);
+            Console.WriteLine("{0}.\n\n В при работе с файлом по пути: {1}",errorText,errorPath);
         }
         public static void MessageCheck(Basket basket)
         {
