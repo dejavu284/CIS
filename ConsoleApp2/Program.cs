@@ -20,7 +20,7 @@ namespace ViewModel
                 data.Save(cinemas);
                 data.Save(basket);
             }
-            catch (DataException ex)
+            catch (BootFileException ex)
             {
                 ConsoleMessages.OutputDataErrorsText(ex.Message,ex.PathError);
             }

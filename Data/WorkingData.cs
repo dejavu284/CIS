@@ -39,15 +39,15 @@ namespace Data
             }
             catch (FileNotFoundException)
             {
-                throw new DataException("Не найден загрузочный файл", pathJson);
+                throw new BootFileException("Не найден загрузочный файл", pathJson);
             }
             catch (JsonException)
             {
-                throw new DataException("Ошибка в при получении данных из загрузочного файла", pathJson);
+                throw new BootFileException("Ошибка в при получении данных из загрузочного файла", pathJson);
             }
             catch (Exception ex)
             {
-                throw new DataException(ex.Message, pathJson);
+                throw new BootFileException(ex.Message, pathJson);
             }
         }
         private string ChoicePath<T>(T element)
