@@ -9,12 +9,17 @@ namespace ViewModel
     {
         static void Main(string[] args)
         {
+            // Задачи:
+            /*
+                * Написать Unit Tests для новых методов в классе Seating
+                * Разделить и переименовать ConsoleMessages
+             */
             try
             {
                 WorkingData data = new(args);
                 CinemaChain cinemas = data.GetCinemaChain();
 
-                Basket basket = Flow.BuyTickets(cinemas.Cinemas);
+                Basket basket = ConsoleFlow.BuyTickets(cinemas.Cinemas);
                 cinemas.BookingPlaces(basket);
 
                 data.Save(cinemas);
@@ -27,6 +32,10 @@ namespace ViewModel
             catch(Exception ex)
             {
                 ConsoleMessages.OutputErrorsText(ex.Message);
+            }
+            finally
+            {
+                ConsoleMessages.MessageCompletionProgram();
             }
         }
     }

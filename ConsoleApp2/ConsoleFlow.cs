@@ -1,10 +1,9 @@
-﻿using Data;
-using CinemaModel;
+﻿using CinemaModel;
 using View;
 
 namespace MainFlow
 {
-    internal class Flow
+    internal class ConsoleFlow
     {
         public static Basket BuyTickets(List<Cinema> cinemas)
         {
