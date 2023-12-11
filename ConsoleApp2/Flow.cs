@@ -49,18 +49,18 @@ namespace MainFlow
         public static Place ChoosePlace(Show showInCertainTime)
         {
             ConsoleMessages.OutputSeatings(showInCertainTime.Seating.Places);
-            int row;
-            int col;
+            int indexRow;
+            int indexColum;
             do
             {
                 ConsoleMessages.MessageBookingRequeast();
-                row = ConsoleMessages.ChooseRow(showInCertainTime);
-                col = ConsoleMessages.ChooseCol(showInCertainTime, row);
-                ConsoleMessages.MessagePlaceCost(showInCertainTime, row, col);
+                indexRow = ConsoleMessages.ChooseIndexRow(showInCertainTime);
+                indexColum = ConsoleMessages.ChooseIndexColum(showInCertainTime, indexRow);
+                ConsoleMessages.MessagePlaceCost(showInCertainTime, indexRow, indexColum);
             } while (!ConsoleMessages.PoolYesOrNo("Забранировать выбранное место"));
-            int price = showInCertainTime.Seating.Places[row][col];
-            Place place = new(row, col, price);
-            showInCertainTime.Seating.Places[row][col] = -1;
+            int price = showInCertainTime.Seating.Places[indexRow][indexColum];
+            Place place = new(indexRow, indexColum, price);
+            showInCertainTime.BookingPlaces(place);
             return place;
         }
         public static Cinema ChoiseCinema(List<Cinema> cinemas)

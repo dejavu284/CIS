@@ -9,6 +9,21 @@ namespace CIS.Tests
 {
     public class TestingFunctionalityModel
     {
+        //Seating.CheckAvailabilityPlace()
+        /*
+         * 
+         * 
+        */
+        //Seating.CheckExistenceRow()
+        /*
+         * 
+         * 
+        */
+        //Seating.CheckAvailabilityRow()
+        /*
+         * 
+         * 
+        */
         //Seating.BookingPlace() =>
         /*
          * Ѕронирование незабранированного места в зале

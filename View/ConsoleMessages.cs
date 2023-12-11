@@ -1,4 +1,7 @@
 ﻿using CinemaModel;
+using System;
+using System.Reflection;
+
 namespace View
 {
     public class ConsoleMessages
@@ -62,28 +65,23 @@ namespace View
         {
             Console.WriteLine("Стоимость покупки места состовляет: {0}", shoInCertainTime.Seating.Places[row][col]);
         }
-        public static int ChooseRow(Show showInCertainTime)
+        public static int ChooseIndexRow(Show showInCertainTime)
         {
+            MessageToSelectItemEnterNumber("ряда");
             do
             {
-                Console.WriteLine("Ряд:");
-                string strRow = Console.ReadLine();
-                int row;
-                if (IsNumberInList(showInCertainTime.Seating.Places.GetLength(0), strRow, out row))
+                int numberRow = EnteringNumber();
+                if (!showInCertainTime.Seating.CheckExistenceRow(numberRow))
                 {
-                    for (int j = 0; j < showInCertainTime.Seating.Places[row-1].Length; j++) // перенести в seating.cs
-                    {
-                        if(showInCertainTime.Seating.Places[row - 1][j] != -1)
-                        {
-                            return row - 1;
-                        }
-                    }
+                    MessageIncorrectInput();   
+                }
+                else if(!showInCertainTime.Seating.CheckAvailabilityRow(numberRow))
+                {
                     MessageRowOccupied();
-                    continue;
                 }
                 else
                 {
-                    MessageIncorrectInput();
+                    return numberRow - 1;
                 }
             } while (true);
         }
@@ -95,28 +93,23 @@ namespace View
         {
             Console.WriteLine("Все места в ряду заняты, пожалуйста, выберете другой.");
         }
-        public static int ChooseCol(Show showInCertainTime, int row)
+        public static int ChooseIndexColum(Show showInCertainTime, int indexRow)
         {
+            MessageToSelectItemEnterNumber("места");
             do
             {
-                Console.WriteLine("Место:");
-                string strCol = Console.ReadLine();
-                int col;
-                if (IsNumberInList(showInCertainTime.Seating.Places[row].Length, strCol, out col))
+                int numberColum = EnteringNumber();
+                if (numberColum >= showInCertainTime.Seating.Places[indexRow].Length || numberColum < 1)
                 {
-                    if (showInCertainTime.Seating.Places[row][col-1] != -1) // перенести в seating.cs
-                    {
-                        return col - 1;
-                    }
-                    else
-                    {
-                        MessagePlaceOccupied();
-                        continue;
-                    }
+                    MessageIncorrectInput();
+                }
+                else if (!showInCertainTime.Seating.CheckAvailabilityPlace(indexRow + 1,numberColum))
+                {
+                    MessagePlaceOccupied();
                 }
                 else
                 {
-                    MessageIncorrectInput();
+                    return numberColum-1;
                 }
             } while (true);
         }
@@ -130,12 +123,10 @@ namespace View
             MessageToSelectItemEnterNumber(nameOfTypeElement);
             do
             {
-                string? inputNumber = Console.ReadLine();
-                Console.WriteLine();
-                int index;
-                if(IsNumberInList(elements.Count, inputNumber, out index))
+                int numberEl = EnteringNumber();
+                if(numberEl <= elements.Count && numberEl > 0)
                 {
-                    return elements[index - 1];
+                    return elements[numberEl - 1];
                 }
                 else
                 {
@@ -143,10 +134,20 @@ namespace View
                 }
             } while (true);
         }
-        private static bool IsNumberInList(int count, string? indexStr, out int index)
+        public static int EnteringNumber()
         {
-            bool tryParseChecked = int.TryParse(indexStr, out index);
-            return tryParseChecked && count >= index && index > 0;
+            int number;
+            string? inputNumber;
+            do
+            {
+                inputNumber = Console.ReadLine();
+                if (int.TryParse(inputNumber, out number))
+                    break;
+                else
+                    MessageIncorrectInput();
+                
+            } while (true);
+            return number;
         }
         public static void MessageTicketPurchased()
         {
