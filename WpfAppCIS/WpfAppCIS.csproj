@@ -8,4 +8,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Data\CIS.Data.csproj" />
+    <ProjectReference Include="..\Model\CIS.CimenaModel.csproj" />
+  </ItemGroup>
+
 </Project>

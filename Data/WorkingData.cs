@@ -39,15 +39,15 @@ namespace Data
             }
             catch (FileNotFoundException)
             {
-                throw new BootDataException("Не найден загрузочный файл", pathJson);
+                throw new BootDataException("Не найден источник данных", pathJson);
             }
             catch (JsonException)
             {
-                throw new BootDataException("Ошибка в при получении данных из загрузочного файла", pathJson);
+                throw new BootDataException("Ошибка при получении данных, не коррекрные данные:", pathJson);
             }
             catch (ArgumentException ex)
             {
-                throw new BootDataException($"Ошибка при соблюдении инвариантов: {ex.Message}", pathJson); ;
+                throw new BootDataException($"Ошибка при получении данных, не коррекрные данные: {ex.Message}", pathJson); ;
             }
             catch(InvalidOperationException ex)
             {
