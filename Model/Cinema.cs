@@ -4,13 +4,19 @@
     {
         public Cinema(string name, string address,float rating, int id, Schedule schedule, List<Hall> halls, Poster poster)
         {
-            Name = name;
-            Address = address;
-            Id = id;
-            Schedule = schedule;
-            Halls = halls;
-            Poster = poster;
-            Rating = rating;
+            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Имя кинотеатра должно быть не пустым");
+            else if (id < 0) throw new ArgumentException("id не может быть меньше нуля");
+            else if (string.IsNullOrEmpty(address)) throw new ArgumentException("адрес кинотеатра должен быть не пустым");
+            else
+            {
+                Name = name;
+                Address = address;
+                Id = id;
+                Schedule = schedule;
+                Halls = halls;
+                Poster = poster;
+                Rating = rating;
+            }
         }
 
         public string Name { get; }

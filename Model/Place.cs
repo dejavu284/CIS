@@ -6,9 +6,14 @@ namespace CinemaModel
     {
         public Place(int row, int colum, int price)
         {
-            Row = row;
-            Colum = colum;
-            Price = price;
+            if (row<0) throw new ArgumentException("Номер ряда не может быть отрицательным");
+            else if (colum<0) throw new ArgumentException("Номер столбца не может быть отрицательным");
+            else if (price<=0) throw new ArgumentException("Стоимость не может быть меньше или равна нулю");
+            else {
+                Row = row;
+                Colum = colum;
+                Price = price;
+            }
         }
 
         public int Price { get; }

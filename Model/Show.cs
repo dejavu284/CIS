@@ -7,11 +7,16 @@ namespace CinemaModel
     {
         public Show(string name, DateOnly date, TimeOnly time, Seating seating, int id)
         {
-            Name = name;
-            Date = date;
-            Time = time;
-            Seating = seating;
-            Id = id;
+            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Имя фильма должно быть не пустым");
+            else if (id < 0) throw new ArgumentException("id не может быть меньше нуля");
+            else
+            {
+                Name = name;
+                Date = date;
+                Time = time;
+                Seating = seating;
+                Id = id;
+            }
         }
 
         [JsonPropertyName("Seating")]

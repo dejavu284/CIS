@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel.Design;
+using System.Numerics;
 
 namespace CinemaModel
 {
@@ -6,9 +7,18 @@ namespace CinemaModel
     {
         public Seating(int[][] places, int idHall)
         {
-            Places = places;
-            IdHall = idHall;
+            if (idHall < 0) throw new ArgumentException("id не может быть меньше нуля");
+            else if (!CheckingNullRow(places)) throw new ArgumentException("рассадка не должна быть пустой");
+            else if (!CheckingDifferentCountRow(places)) throw new ArgumentException("вместимость всех рядов должна быть одинакова");
+            else if (!CheckingPositivNumberPlase(places)) throw new ArgumentException("стоимость мест должна быть положительна или место должно быть занято");
+            else {
+                Places = places;
+                IdHall = idHall;
+            }
         }
+
+        
+
         public int NumberAvailableSeats { get { return CalcCountAvailablePlaces(); } }
         public int CountRow { get { return Places.GetLength(0); } }
 
@@ -80,6 +90,37 @@ namespace CinemaModel
             else
                 result = true;
             return result;
+        }
+        private bool CheckingDifferentCountRow(int[][] layout)
+        {
+            for (int i = 1; i < layout.Length; i++)
+            {
+                if (layout[i - 1].Length != layout[i].Length)
+                    return false;
+            }
+            return true;
+        }
+        private bool CheckingPositivNumberPlase(int[][] layout)
+        {
+            for (int i = 0; i < layout.Length; i++)
+            {
+                for (int j = 0; j < layout[i].Length; j++)
+                {
+                    if (layout[i][j] <= 0 && layout[i][j] != -1)
+                        return false;
+                }
+            }
+            return true;
+        }
+        private bool CheckingNullRow(int[][] layout)
+        {
+            if(layout.Length == 0) return false;
+            for (int i = 0; i < layout.Length; i++)
+            {
+                if (layout[i] == null || layout[i].Length == 0)
+                    return false;
+            }
+            return true;
         }
     }
 }

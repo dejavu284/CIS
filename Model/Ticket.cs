@@ -1,13 +1,20 @@
-﻿namespace CinemaModel
+﻿using System.Net;
+using System.Xml.Linq;
+
+namespace CinemaModel
 {
     public class Ticket
     {
         public Ticket(int idCinema, Show show, Place place)
         {
-            Show = show;
-            IdCinema = idCinema;
+            if (idCinema < 0) throw new ArgumentException("id не может быть меньше нуля");
+            else
+            {
+                Show = show;
+                IdCinema = idCinema;
 
-            Place = place;
+                Place = place;
+            }
         }
         public string Name { get { return Show.Name; } }
         public DateOnly Date { get { return Show.Date; } }
@@ -40,7 +47,6 @@
             }
             else return false;
         }
-
         public override int GetHashCode()
         {
             throw new NotImplementedException();
