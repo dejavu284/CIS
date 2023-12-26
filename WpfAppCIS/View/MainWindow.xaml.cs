@@ -18,8 +18,8 @@ namespace WpfAppCIS
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CinemaChain cinemas { get; set; }
-        private WorkingData data { get; set; }
+        private CinemaChain CinemaChain { get; set; }
+        private WorkingData Data { get; set; }
         public MainWindow()
         {
             string[] args = { "cinemas.json", "basket.json" };
@@ -30,8 +30,8 @@ namespace WpfAppCIS
         {
             try
             {
-                data = new(args);
-                cinemas = data.GetCinemaChain();
+                Data = new(args);
+                CinemaChain = Data.GetCinemaChain();
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace WpfAppCIS
 
         private void bt_SearchCinema_Click(object sender, RoutedEventArgs e)
         {
-
+            contentControl_MainWindow.Content = new View.ListCinema(CinemaChain.Cinemas);
         }
 
         private void bt_SearchFilm_Click(object sender, RoutedEventArgs e)

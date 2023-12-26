@@ -6,6 +6,20 @@
         xmlns:local="clr-namespace:WpfAppCIS.View"
         mc:Ignorable="d">
     <Grid>
-        
+        <ListView Name="menulist" ItemsSource="{Binding ListCinemaViewModel}" MouseLeftButtonUp="leftmouse">
+            <ListView.View >
+                <GridView >
+                    <GridViewColumn Header="Название" DisplayMemberBinding ="{ Binding Path= Name}">
+
+                    </GridViewColumn>
+                    <GridViewColumn Header ="Адрес " DisplayMemberBinding ="{Binding Path= Address}">
+
+                    </GridViewColumn>
+                    <GridViewColumn Header ="Рейтинг" DisplayMemberBinding ="{Binding Path= Rating}">
+
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>
