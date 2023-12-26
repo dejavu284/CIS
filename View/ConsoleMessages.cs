@@ -34,19 +34,19 @@ namespace View
         {
             Console.WriteLine("{0}.\n\n В при работе с файлом по пути: {1}",errorText,errorPath);
         }
-        public static void MessageCheck(Basket basket)
+        public static void MessageBacketInfo(Basket basket)
         {
             Console.WriteLine("\n---------------------------");
             Console.WriteLine("Чек:");
             for (int i = 0; i < basket.NumberTickets; i++)
             {
                 Console.WriteLine("\nБилет №{0}", i + 1);
-                MessangInfo(basket.Tickets[i]);
+                MessangTicketInfo(basket.Tickets[i]);
             }
             Console.WriteLine("\nИтоговая стоимость составила: {0}", basket.Price);
             Console.WriteLine("---------------------------");
         }
-        public static void MessangInfo(Ticket ticket)
+        public static void MessangTicketInfo(Ticket ticket)
         {
             Console.WriteLine("---------------------------");
             Console.WriteLine("Информация о билете:");
@@ -187,7 +187,7 @@ namespace View
         {
             Console.WriteLine("На выбранное время мест нет.\n");
         }
-        public static void MessageInfo(Film film)
+        public static void MessageFilmInfo(Film film)
         {
             Console.WriteLine("\nИнформация о фильме {0}", film.Name);
             Console.WriteLine("\nЖанр: {0}", film.Genre);
@@ -213,7 +213,7 @@ namespace View
         public static void MessageInfoCinema(Cinema cinema)
         {
             Console.WriteLine("\nИнформация о кинотеатре \"{0}\": ",cinema.Name);
-            Console.WriteLine("\nАдрес: {0} ",cinema.Address);
+            Console.WriteLine("\nАдрес: {0} {1} ",cinema.Address.Street,cinema.Address.NumberHouse);
             Console.WriteLine("Рейтинг: {0}\n",Math.Round(cinema.Rating,1));
         }
         public static void OutputSeatings(int[][] places)

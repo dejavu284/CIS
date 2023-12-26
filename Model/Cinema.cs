@@ -2,11 +2,11 @@
 {
     public class Cinema
     {
-        public Cinema(string name, string address,float rating, int id, Schedule schedule, List<Hall> halls, Poster poster)
+        public Cinema(string name, Address address,float rating, int id, Schedule schedule, List<Hall> halls, Poster poster)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentException("Имя кинотеатра должно быть не пустым");
             else if (id < 0) throw new ArgumentException("id не может быть меньше нуля");
-            else if (string.IsNullOrEmpty(address)) throw new ArgumentException("адрес кинотеатра должен быть не пустым");
+            else if (rating < 0) throw new ArgumentException("рейтинг не может быть меньше нуля");
             else
             {
                 Name = name;
@@ -20,7 +20,7 @@
         }
 
         public string Name { get; }
-        public string Address { get; }
+        public Address Address { get; }
         public int Id { get; }
         public float Rating { get; }
         public Schedule Schedule { get; }

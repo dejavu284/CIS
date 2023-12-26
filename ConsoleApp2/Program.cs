@@ -9,11 +9,6 @@ namespace ViewModel
     {
         static void Main(string[] args)
         {
-            // Задачи:
-            /*
-                * Написать Unit Tests для новых методов в классе Seating
-                * Разделить и переименовать ConsoleMessages
-             */
             try
             {
                 WorkingData data = new(args);
@@ -25,11 +20,15 @@ namespace ViewModel
                 data.Save(cinemas);
                 data.Save(basket);
             }
-            catch (BootFileException ex)
+            catch (BootDataException ex)
             {
                 ConsoleMessages.OutputDataErrorsText(ex.Message,ex.PathError);
             }
-            catch(Exception ex)
+            catch (ArgumentException ex)
+            {
+                ConsoleMessages.OutputErrorsText(ex.Message);
+            }
+            catch (Exception ex)
             {
                 ConsoleMessages.OutputErrorsText(ex.Message);
             }

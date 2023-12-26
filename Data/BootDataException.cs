@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    public class BootFileException : Exception
+    public class BootDataException : Exception
     {
-        public BootFileException(string message, string pathError) : base(message)
+        public BootDataException(string message, string pathError) : base(message)
         {
             PathError = pathError;
         }

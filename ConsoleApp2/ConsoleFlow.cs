@@ -30,7 +30,7 @@ namespace MainFlow
                     }
                     ConsoleMessages.MessageTicketPurchased();
                 }
-                ConsoleMessages.MessageCheck(basket);
+                ConsoleMessages.MessageBacketInfo(basket);
 
             } while (!ConsoleMessages.PoolYesOrNo("Закончить"));
             return basket;
@@ -86,7 +86,7 @@ namespace MainFlow
                 if (scheduleWithOneFilm.IsEmpty())
                     ConsoleMessages.MessageFilmNotExist();
                 else
-                    ConsoleMessages.MessageInfo(film);
+                    ConsoleMessages.MessageFilmInfo(film);
             }
             while (scheduleWithOneFilm.IsEmpty());
             return scheduleWithOneFilm;

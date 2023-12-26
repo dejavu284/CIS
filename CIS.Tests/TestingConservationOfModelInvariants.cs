@@ -1,6 +1,7 @@
 ﻿using CinemaModel;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Numerics;
@@ -128,22 +129,28 @@ namespace CIS.Tests
         [Fact]
         public void Creating_a_Cinema_with_a_empty_name()
         {
-            Assert.Throws<ArgumentException>(() => new Cinema("", "адресс",4.4f, 1, new Schedule(new List<Show>()),new List<Hall>(), new Poster (new List<Film>())));
+            Assert.Throws<ArgumentException>(() => new Cinema("", new Address("улица","12/2",new PointF(0,0)),4.4f, 1, new Schedule(new List<Show>()),new List<Hall>(), new Poster (new List<Film>())));
         }
         [Fact]
         public void Creating_a_Cinema_with_a_negative_id()
         {
-            Assert.Throws<ArgumentException>(() => new Cinema("название", "адресс", 4.4f, -1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
+            Assert.Throws<ArgumentException>(() => new Cinema("название", new Address("улица", "12/2", new PointF(0, 0)), 4.4f, -1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
         }
         [Fact]
-        public void Creating_a_Cinema_with_a_empty_address()
+        public void Creating_a_Address_with_a_empty_street()
         {
-            Assert.Throws<ArgumentException>(() => new Cinema("название", "", 4.4f, 1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
+            Assert.Throws<ArgumentException>(() => new Address("", "12/2", new PointF(0, 0)));
         }
+        [Fact]
+        public void Creating_a_Address_with_a_empty_number_house()
+        {
+            Assert.Throws<ArgumentException>(() => new Address("улица", "", new PointF(0, 0)));
+        }
+
         [Fact]
         public void Creating_a_Cinema_with_negative_rating()
         {
-            Assert.Throws<ArgumentException>(() => new Cinema("название", "", -1f, 1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
+            Assert.Throws<ArgumentException>(() => new Cinema("название", new Address("улица", "12/2", new PointF(0, 0)),-1f, 1, new Schedule(new List<Show>()), new List<Hall>(), new Poster(new List<Film>())));
         }
         //Проверка сохранения инвариантв билетов при конструировании 
         [Fact]
