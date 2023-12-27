@@ -22,21 +22,24 @@ namespace WpfAppCIS.View
     /// 
     public partial class ListCinema : UserControl
     {
-        private CinemaChain CinemaChain { get;}
-        private ListCollectionView CinemasView { get;}
+        private List<Cinema> Cinemas;
+        private Window _parentWindow;
         public ListCinema(List<Cinema> cinemas)
         {
             InitializeComponent();
-            List <CinemaViewModel> cinemaViewModels = ConvertCinemaInCinemaViewModel(cinemas);
+            List <ListCinemaModel> cinemaViewModels = ConvertCinemaInCinemaViewModel(cinemas);
+            Cinemas = cinemas;
             menulist.ItemsSource = cinemaViewModels;
+            _parentWindow = (Window)this.Parent;
+
         }
 
-        private List<CinemaViewModel> ConvertCinemaInCinemaViewModel(List<Cinema> cinemas)
+        private List<ListCinemaModel> ConvertCinemaInCinemaViewModel(List<Cinema> cinemas)
         {
-            List<CinemaViewModel> cinemaViewModels = new List<CinemaViewModel>();
+            List<ListCinemaModel> cinemaViewModels = new List<ListCinemaModel>();
             foreach (var item in cinemas)
             {
-                cinemaViewModels.Add(new CinemaViewModel(item));
+                cinemaViewModels.Add(new ListCinemaModel(item));
             }
             return cinemaViewModels;
         }
@@ -44,8 +47,9 @@ namespace WpfAppCIS.View
         private void leftmouse(object sender, MouseButtonEventArgs e)
         {
             int i = menulist.SelectedIndex;
-            Cinema cinema = CinemaChain.Cinemas[i];
-            // переход на форму кинофильма(cinema)
+            Cinema cinema = Cinemas[i];
+            new CinemaInfo(cinema).Show();
+            //_parentWindow.Close();
         }
     }
 }

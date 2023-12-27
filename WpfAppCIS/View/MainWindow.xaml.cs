@@ -18,11 +18,11 @@ namespace WpfAppCIS
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CinemaChain CinemaChain { get; set; }
-        private WorkingData Data { get; set; }
+        private CinemaChain CinemaChain;
+        private WorkingData Data;
         public MainWindow()
         {
-            string[] args = { "cinemas.json", "basket.json" };
+            string[] args = { "cinemas_test.json", "basket.json" };
             InitializeComponent();
             GetData(args);
         }

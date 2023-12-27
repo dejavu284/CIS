@@ -10,9 +10,9 @@ using System.Windows;
 
 namespace WpfAppCIS.ViewModel
 {
-    class CinemaViewModel
+    class ListCinemaModel
     {
-        public CinemaViewModel(Cinema cinema) 
+        public ListCinemaModel(Cinema cinema) 
         {
             Name = cinema.Name;
             Address = $"{cinema.Address.Street} {cinema.Address.NumberHouse}";

@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:WpfAppCIS"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+
+        <Style x:Key="StyleButtonMenu">
+            <Setter Property="Control.FontFamily" Value="Verdana" />
+            <Setter Property="Control.Background" Value="LightGreen" />
+            <Setter Property="Control.Foreground" Value="Black" />
+            <Setter Property="Control.Margin" Value="5" />
+        </Style>
+
     </Application.Resources>
 </Application>
