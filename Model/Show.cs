@@ -31,9 +31,6 @@ namespace CinemaModel
         [JsonPropertyName("time")]
         public TimeOnly Time { get; private set; }
 
-        [JsonPropertyName("price")]
-        public int Price { get; private set; }
-
         [JsonPropertyName("id")]
         public int Id { get; private set; }
         public void BookingPlaces(Place place)

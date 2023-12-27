@@ -8,12 +8,12 @@
         }
         public List<Cinema> Cinemas { get; }
 
-        private int FindCinemaIndexById(int id, List<Cinema> cinemas)
+        private int FindCinemaIndexById(int id)
         {
             int index = -1;
-            for (int i = 0; i < cinemas.Count; i++)
+            for (int i = 0; i < Cinemas.Count; i++)
             {
-                if (cinemas[i].Id == id)
+                if (Cinemas[i].Id == id)
                 {
                     return i;
                 }
@@ -25,7 +25,7 @@
         {
             for (int i = 0; i < basket.NumberTickets; i++)
             {
-                int indexCinema = FindCinemaIndexById(basket.Tickets[i].IdCinema, Cinemas);
+                int indexCinema = FindCinemaIndexById(basket.Tickets[i].IdCinema);
                 Cinemas[indexCinema].BookingPlace(basket.Tickets[i].IdShow, basket.Tickets[i].Place);
             }
         }
