@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppCIS.View;
+using WpfAppCIS.ViewModel;
 
 namespace WpfAppCIS
 {
@@ -18,53 +20,19 @@ namespace WpfAppCIS
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CinemaChain CinemaChain;
-        private WorkingData Data;
-        public ContentControl ContentControl { get; set; }
+        private CinemaChain CinemaChain;//?
+        private MainWindowInitializeDataViewModel InitializeDataViewModel;
+        private MainWindowViewModel ViewModel;
+        public ContentControl ContentControl { get; set; }//??
         public MainWindow()
         {
-            string[] args = { "cinemas_test.json", "basket.json" };
             InitializeComponent();
-            GetData(args);
-        }
-        private void GetData(string[] args)
-        {
-            try
-            {
-                Data = new(args);
-                CinemaChain = Data.GetCinemaChain();
-                ContentControl = contentControl_MainWindow;
-            }
-            catch (Exception ex)
-            {
-                OutputErrorMessage(ex.Message);
-                Close();
-            }
-        }
-
-        private void OutputErrorMessage(string messageThis)
-        {
-            MessageBox.Show(messageThis, "Ошибка");
-        }
-
-        private void bt_SearchCinema_Click(object sender, RoutedEventArgs e)
-        {
-            ContentControl.Content = new View.ListCinema(CinemaChain,this);
-        }
-
-        private void bt_SearchFilm_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void bt_Map_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void bt_Basket_Click(object sender, RoutedEventArgs e)
-        {
-
+            string[] args = { "cinemas_test.json", "basket.json" };
+            
+            InitializeDataViewModel = new MainWindowInitializeDataViewModel(args, this);
+            CinemaChain = InitializeDataViewModel.CinemaChain;
+            ViewModel = new MainWindowViewModel(CinemaChain,contentControl_MainWindow);
+            DataContext = ViewModel;
         }
     }
 }

@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:WpfAppCIS.View"
         mc:Ignorable="d">
     <Grid>
-        <ListView Name="menulist" ItemsSource="{Binding CinemasInfo}" SelectedItem="{Binding ItemSelected, Mode=TwoWay}" >
+        <ListView Name="menulist" ItemsSource="{Binding CinemaChain.Cinemas}" SelectedItem="{Binding ItemSelected, Mode=TwoWay}" >
             <ListView.View >
                 <GridView >
                     <GridViewColumn Header="Название" DisplayMemberBinding ="{ Binding Path= Name}">
 
                     </GridViewColumn>
-                    <GridViewColumn Header ="Адрес " DisplayMemberBinding ="{Binding Path= Address}">
+                    <GridViewColumn Header ="Адрес" DisplayMemberBinding ="{Binding Path= Address.FullAddress}">
 
                     </GridViewColumn>
                     <GridViewColumn Header ="Рейтинг" DisplayMemberBinding ="{Binding Path= Rating}">

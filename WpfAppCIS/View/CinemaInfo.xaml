@@ -8,6 +8,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -15,8 +16,8 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            
-            <Image Grid.Column="0" />
+
+            <Image Grid.Column="0" Source="/Images/cinema.png" Stretch="Uniform" Width="150"/>
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
@@ -31,8 +32,28 @@
                 <TextBlock Grid.Row="3" Name="tb_cinemaRating" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding Rating}" FontSize="15"/>
             </Grid>
         </Grid>
-        <Grid x:Name="ShowInfo" Grid.Row="1">
+        <Label Content="Фильмы в прокате:" Grid.Row="1"/>
+        <Grid x:Name="ShowInfo" Grid.Row="2">
             <Line Stroke="Black" X1="0" X2="1" Y1="0" Y2="0" Stretch="Fill" VerticalAlignment="Top"/>
+            <Grid>
+                <ScrollViewer>
+                    <ListView Name="menulist" ItemsSource="{Binding Films}" SelectedItem="{Binding ItemSelected, Mode=TwoWay}" >
+                        <ListView.View >
+                            <GridView >
+                                <GridViewColumn Header="Название" DisplayMemberBinding ="{ Binding Path= Name}">
+
+                                </GridViewColumn>
+                                <GridViewColumn Header ="Жанр" DisplayMemberBinding ="{Binding Path= Genre}">
+
+                                </GridViewColumn>
+                                <GridViewColumn Header ="Год выпуска" DisplayMemberBinding ="{Binding Path= Year}">
+
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

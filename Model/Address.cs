@@ -24,6 +24,8 @@ namespace CinemaModel
         public string Street { get; }
         public string NumberHouse { get; }
         public PointF Coordinates { get; }
+
+        public string FullAddress { get { return $"{Street} {NumberHouse}"; } }
     }
 
 }

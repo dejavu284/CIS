@@ -16,29 +16,15 @@ using WpfAppCIS.ViewModel;
 
 namespace WpfAppCIS.View
 {
-    /// <summary>
-    /// Логика взаимодействия для ListCinema.xaml
-    /// </summary>
-    /// 
     public partial class ListCinema : UserControl
     {
-        private CinemaChain _cinemas;
-        private MainWindow _parentWindow;
         private ListCinemaViewModel _listCinemaViewModel;
-        public ListCinema(CinemaChain cinemas, MainWindow parentWindow)
+        public ListCinema(CinemaChain cinemas, ContentControl contentControl)
         {
             InitializeComponent();
-            _cinemas = cinemas;
-            _parentWindow = parentWindow;
 
-            _listCinemaViewModel = new ListCinemaViewModel(cinemas, parentWindow);
-            this.DataContext = _listCinemaViewModel;
-        }
-        private void leftmouse(object sender, MouseButtonEventArgs e)
-        {
-            int i = menulist.SelectedIndex;
-            Cinema cinema = _cinemas.Cinemas[i];
-            _parentWindow.ContentControl.Content = new CinemaInfo(cinema,_parentWindow);
+            _listCinemaViewModel = new ListCinemaViewModel(cinemas, contentControl);
+            DataContext = _listCinemaViewModel;
         }
     }
 }

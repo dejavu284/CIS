@@ -21,14 +21,10 @@ namespace WpfAppCIS.View
     /// </summary>
     public partial class CinemaInfo : UserControl
     {
-        private Cinema Cinema;
-        private MainWindow _parentWindow;
         public CinemaInfoViewModel CinemaInfoViewModel;
-        public CinemaInfo(Cinema cinema, MainWindow parentWindow)
+        public CinemaInfo(Cinema cinema, ContentControl contentControl)// нужен ли parentWindow в View Model?
         {
             InitializeComponent();
-            Cinema = cinema;
-            _parentWindow = parentWindow;
             CinemaInfoViewModel = new CinemaInfoViewModel(cinema);
             this.DataContext = CinemaInfoViewModel;
         }

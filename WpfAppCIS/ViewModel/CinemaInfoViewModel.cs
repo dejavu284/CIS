@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace WpfAppCIS.ViewModel
 {
@@ -13,6 +15,14 @@ namespace WpfAppCIS.ViewModel
     {
         private Cinema _cinema;
         public CinemaInfoViewModel(Cinema cinema) { _cinema = cinema; }
+
+        public List<Film> Films
+        {
+            get { return _cinema.Poster.Films; }
+            //set { _cinema.Address = value; OnPropertyChanged("Address"); }
+        }
+
+
 
         public string Name
         {

@@ -9,8 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\cinema.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Data\CIS.Data.csproj" />
     <ProjectReference Include="..\Model\CIS.CimenaModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\cinema.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
