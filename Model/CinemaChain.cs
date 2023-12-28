@@ -20,7 +20,19 @@
             }
             return index;
         }
-
+        /*public Cinema? FindCinemaById(int id)
+        {
+            
+            for (int i = 0; i < Cinemas.Count; i++)
+            {
+                if (Cinemas[i].Id == id)
+                {
+                    return Cinemas[i];
+                }
+            }
+            return null;
+        }
+*/
         public void BookingPlaces(Basket basket)
         {
             for (int i = 0; i < basket.NumberTickets; i++)

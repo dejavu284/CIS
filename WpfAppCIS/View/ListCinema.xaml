@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfAppCIS.View"
         mc:Ignorable="d">
     <Grid>
-        <ListView Name="menulist" ItemsSource="{Binding ListCinemaViewModel}" MouseLeftButtonUp="leftmouse">
+        <ListView Name="menulist" ItemsSource="{Binding CinemasInfo}" SelectedItem="{Binding ItemSelected, Mode=TwoWay}" >
             <ListView.View >
                 <GridView >
                     <GridViewColumn Header="Название" DisplayMemberBinding ="{ Binding Path= Name}">

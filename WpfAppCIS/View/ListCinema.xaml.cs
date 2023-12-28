@@ -22,34 +22,23 @@ namespace WpfAppCIS.View
     /// 
     public partial class ListCinema : UserControl
     {
-        private List<Cinema> Cinemas;
-        private Window _parentWindow;
-        public ListCinema(List<Cinema> cinemas)
+        private CinemaChain _cinemas;
+        private MainWindow _parentWindow;
+        private ListCinemaViewModel _listCinemaViewModel;
+        public ListCinema(CinemaChain cinemas, MainWindow parentWindow)
         {
             InitializeComponent();
-            List <ListCinemaModel> cinemaViewModels = ConvertCinemaInCinemaViewModel(cinemas);
-            Cinemas = cinemas;
-            menulist.ItemsSource = cinemaViewModels;
-            _parentWindow = (Window)this.Parent;
+            _cinemas = cinemas;
+            _parentWindow = parentWindow;
 
+            _listCinemaViewModel = new ListCinemaViewModel(cinemas, parentWindow);
+            this.DataContext = _listCinemaViewModel;
         }
-
-        private List<ListCinemaModel> ConvertCinemaInCinemaViewModel(List<Cinema> cinemas)
-        {
-            List<ListCinemaModel> cinemaViewModels = new List<ListCinemaModel>();
-            foreach (var item in cinemas)
-            {
-                cinemaViewModels.Add(new ListCinemaModel(item));
-            }
-            return cinemaViewModels;
-        }
-
         private void leftmouse(object sender, MouseButtonEventArgs e)
         {
             int i = menulist.SelectedIndex;
-            Cinema cinema = Cinemas[i];
-            new CinemaInfo(cinema).Show();
-            //_parentWindow.Close();
+            Cinema cinema = _cinemas.Cinemas[i];
+            _parentWindow.ContentControl.Content = new CinemaInfo(cinema,_parentWindow);
         }
     }
 }
