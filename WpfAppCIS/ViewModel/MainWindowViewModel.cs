@@ -8,22 +8,24 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfAppCIS.Model;
 using WpfAppCIS.View;
 
 namespace WpfAppCIS.ViewModel
 {
     internal class MainWindowViewModel
     {
-        public MainWindowViewModel(CinemaChain cinemaChain, ContentControl ContentControl) 
+        public MainWindowViewModel(CinemaChain cinemaChain, WindowPartView windowPartView) 
         {
             _cinemaChain = cinemaChain;
-            _contentControl = ContentControl;
+            _windowPartView = windowPartView;
 
             InitCommand();
         }
         private CinemaChain _cinemaChain;
-        private ContentControl _contentControl;
-        
+        private WindowPartView _windowPartView;
+
+
         public ICommand SearchCinemaCommand { get; private set; }
         public ICommand SearchFilmCommand { get; private set; }
         public ICommand MapCommand { get; private set; }
@@ -38,7 +40,7 @@ namespace WpfAppCIS.ViewModel
         }
         private void LoadListCinemaView()
         {
-            _contentControl.Content = new ListCinema(_cinemaChain, _contentControl);
+            _windowPartView.LoadView(new ListCinema(_cinemaChain, _windowPartView));
         }
 
         private void LoadListFilmView()

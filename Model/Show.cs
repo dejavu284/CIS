@@ -33,6 +33,8 @@ namespace CinemaModel
 
         [JsonPropertyName("id")]
         public int Id { get; private set; }
+
+        public int CountAvailablePlaces {get { return Seating.CountAvailableSeats; } }
         public void BookingPlaces(Place place)
         {
             Seating.BookingPlace(place);
@@ -54,7 +56,16 @@ namespace CinemaModel
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            unchecked
+            {
+                // Комбинируем хэш-коды всех значимых свойств для получения уникального хэш-кода
+                int hashCode = Name.GetHashCode();
+                hashCode = (hashCode * 397) ^ Date.GetHashCode();
+                hashCode = (hashCode * 397) ^ Time.GetHashCode();
+                hashCode = (hashCode * 397) ^ Id;
+                // Опускаем Seating, так как он не влияет на равенство объектов Show
+                return hashCode;
+            }
         }
     }
 

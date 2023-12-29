@@ -8,31 +8,36 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using WpfAppCIS.Model;
 using WpfAppCIS.View;
 
 namespace WpfAppCIS.ViewModel
 {
     internal class ListCinemaViewModel
     {
-        public ListCinemaViewModel(CinemaChain cinemas, ContentControl contentControl) 
+        public ListCinemaViewModel(CinemaChain cinemas, WindowPartView windowPartView) 
         {
             CinemaChain = cinemas;
-            _contentControl = contentControl;
+            _windowPartView = windowPartView;
         }
         public CinemaChain CinemaChain { get; }
-        private ContentControl _contentControl;
+        private WindowPartView _windowPartView;
         private Cinema? _itemSelected = null;
-        public Cinema? ItemSelected { 
+        public Cinema? ItemSelected 
+        { 
             get { return _itemSelected; } 
-            set{ _itemSelected = value; OnLeftMouseClick(); } }
+            set
+            { 
+                _itemSelected = value; 
+                LoadCinemaInfoView(); 
+            } 
+        }
         
-        private void OnLeftMouseClick()
+        private void LoadCinemaInfoView()
         {
-            Cinema? cinema = CinemaChain.Cinemas.FirstOrDefault(item => item.Id == ItemSelected?.Id);
+            Cinema? cinema = ItemSelected;
             if (cinema != null)
-            {
-                _contentControl.Content = new CinemaInfo(cinema, _contentControl);
-            }
+                _windowPartView.LoadView(new CinemaInfo(cinema, _windowPartView));
         }
         
     }

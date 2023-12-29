@@ -12,21 +12,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfAppCIS.Model;
 using WpfAppCIS.ViewModel;
 
 namespace WpfAppCIS.View
 {
-    /// <summary>
-    /// Логика взаимодействия для CinemaInfo.xaml
-    /// </summary>
     public partial class CinemaInfo : UserControl
     {
         public CinemaInfoViewModel CinemaInfoViewModel;
-        public CinemaInfo(Cinema cinema, ContentControl contentControl)// нужен ли parentWindow в View Model?
+        public CinemaInfo(Cinema cinema, WindowPartView windowPartView)
         {
             InitializeComponent();
-            CinemaInfoViewModel = new CinemaInfoViewModel(cinema);
-            this.DataContext = CinemaInfoViewModel;
+            CinemaInfoViewModel = new CinemaInfoViewModel(cinema, windowPartView);
+            DataContext = CinemaInfoViewModel;
         }
     }
 }

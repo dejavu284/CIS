@@ -17,15 +17,15 @@ using WpfAppCIS.ViewModel;
 
 namespace WpfAppCIS.View
 {
-    public partial class ListCinema : UserControl
+    /// <summary>
+    /// Логика взаимодействия для FilmInfoAndHisShows.xaml
+    /// </summary>
+    public partial class FilmInfoAndHisShows : UserControl
     {
-        private ListCinemaViewModel _listCinemaViewModel;
-        public ListCinema(CinemaChain cinemas, WindowPartView windowPartView)
+        public FilmInfoAndHisShows(FilmInfoAndHisShowsViewModel viewModel)
         {
             InitializeComponent();
-
-            _listCinemaViewModel = new ListCinemaViewModel(cinemas, windowPartView);
-            DataContext = _listCinemaViewModel;
+            DataContext = viewModel;
         }
     }
 }

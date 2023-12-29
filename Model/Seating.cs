@@ -19,7 +19,7 @@ namespace CinemaModel
 
         
 
-        public int NumberAvailableSeats { get { return CalcCountAvailablePlaces(); } }
+        public int CountAvailableSeats { get { return CalcCountAvailablePlaces(); } }
         public int CountRow { get { return Places.GetLength(0); } }
 
         public int[][] Places { get; }

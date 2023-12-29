@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppCIS.Model;
 using WpfAppCIS.View;
 using WpfAppCIS.ViewModel;
 
@@ -31,7 +32,8 @@ namespace WpfAppCIS
             
             InitializeDataViewModel = new MainWindowInitializeDataViewModel(args, this);
             CinemaChain = InitializeDataViewModel.CinemaChain;
-            ViewModel = new MainWindowViewModel(CinemaChain,contentControl_MainWindow);
+            WindowPartView windowPartView = new(contentControl_MainWindow);
+            ViewModel = new MainWindowViewModel(CinemaChain,windowPartView);
             DataContext = ViewModel;
         }
     }

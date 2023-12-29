@@ -8,62 +8,58 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using WpfAppCIS.Model;
+using WpfAppCIS.View;
 
 namespace WpfAppCIS.ViewModel
 {
-    public class CinemaInfoViewModel : INotifyPropertyChanged
+    public class CinemaInfoViewModel
     {
         private Cinema _cinema;
-        public CinemaInfoViewModel(Cinema cinema) { _cinema = cinema; }
-
+        public CinemaInfoViewModel(Cinema cinema, WindowPartView windowPartView) 
+        { 
+            _cinema = cinema; 
+            _windowPartView = windowPartView;
+        }
+        
+        public Film? FilmSelected 
+        { 
+            get { return _filmSelected; } 
+            set 
+            {
+                _filmSelected = value; 
+                LoadShowsView(); 
+            } 
+        }
+        private Film? _filmSelected;
+        private WindowPartView _windowPartView;
+        private void LoadShowsView()
+        {
+            if (FilmSelected != null)
+                _windowPartView.LoadView(new FilmInfoAndHisShows(new FilmInfoAndHisShowsViewModel(FilmSelected,_cinema.Schedule.FindByName(FilmSelected.Name),_cinema.Halls,_windowPartView)));
+        }
         public List<Film> Films
         {
             get { return _cinema.Poster.Films; }
-            //set { _cinema.Address = value; OnPropertyChanged("Address"); }
+            
         }
-
-
-
         public string Name
         {
             get { return _cinema.Name; }
-            //set { _cinema.Name = value; OnPropertyChanged("Name"); }
         }
 
         public string Address
         {
             get { return $"Адресс: {_cinema.Address.Street} {_cinema.Address.NumberHouse}"; }
-            //set { _cinema.Address = value; OnPropertyChanged("Address"); }
         }
         public string Rating
         {
-            get { return $"Рейтинг: {_cinema.Rating.ToString()}";}
-            //set { _cinema.Rating = value; OnPropertyChanged("Rating"); }
+            get { return $"Рейтинг: {_cinema.Rating}";}
         }
-
-        /*public Schedule Schedule
-        {
-            get { return _cinema.Schedule; }
-            //set { _cinema.Schedule = value; OnPropertyChanged("Schedule"); }
-        }*/
 
         public string CountHalls
         {
             get { return $"Кол-во залов: {_cinema.Halls.Count}";}
-            //set { _cinema.Halls = value; OnPropertyChanged("Halls"); }
-        }
-
-        /*public Poster Poster
-        {
-            get { return _cinema.Poster; }
-            //set { _cinema.Poster = value; OnPropertyChanged("Poster"); }
-        }*/
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-
         }
     }
 }

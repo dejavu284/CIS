@@ -18,7 +18,7 @@
             List<Show> shows = new();
             foreach (Show show in Shows)
             {
-                if (filmName == show.Name /*&& show.Seating.NumberAvailableSeats != 0*/)
+                if (filmName == show.Name)
                 {
                     shows.Add(show);
                 }

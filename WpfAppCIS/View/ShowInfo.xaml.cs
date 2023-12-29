@@ -1,5 +1,4 @@
-﻿using CinemaModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +11,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using WpfAppCIS.Model;
 using WpfAppCIS.ViewModel;
 
 namespace WpfAppCIS.View
 {
-    public partial class ListCinema : UserControl
+    /// <summary>
+    /// Логика взаимодействия для ShowInfo.xaml
+    /// </summary>
+    public partial class ShowInfo : UserControl
     {
-        private ListCinemaViewModel _listCinemaViewModel;
-        public ListCinema(CinemaChain cinemas, WindowPartView windowPartView)
+        public ShowInfo(ShowInfoViewModel showInfoViewModel)
         {
             InitializeComponent();
-
-            _listCinemaViewModel = new ListCinemaViewModel(cinemas, windowPartView);
-            DataContext = _listCinemaViewModel;
+            DataContext = showInfoViewModel;
         }
     }
 }
