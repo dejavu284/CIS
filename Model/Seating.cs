@@ -85,7 +85,7 @@ namespace CinemaModel
             bool result;
             if (!CheckExistenceRow(numberRow))
                 result = false;
-            else if (numberColum >= Places[numberRow].Length)
+            else if (numberColum > Places[numberRow-1].Length)
                 result = false;
             else
                 result = true;

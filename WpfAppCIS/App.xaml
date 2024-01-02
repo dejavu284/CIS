@@ -11,6 +11,18 @@
             <Setter Property="Control.Foreground" Value="Black" />
             <Setter Property="Control.Margin" Value="5" />
         </Style>
+        <Style x:Key="StyleButtonSeat" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <Setter Property="Background" Value="DarkBlue"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
     </Application.Resources>
 </Application>
