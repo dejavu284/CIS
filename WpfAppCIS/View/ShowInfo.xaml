@@ -38,7 +38,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBlock Text="{Binding ContextErrorMessage}" Grid.Row="1" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding ContextErrorMessage}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Button 
             Content="{Binding ContextButtonAddBasket}" 
             IsEnabled="{Binding EnabledButtonAddBasket}"

@@ -27,7 +27,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Name="tb_cinemaName" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="30" Text="{Binding PriceTag}" />
                 <TextBlock Grid.Row="1" Name="tb_cinemaAddress" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding CountTicketsTag}" FontSize="15"/>
-                <Button Grid.Row="2" Content="Купить" Width="100" Height="30"/>
+                <Button Grid.Row="2" Content="Купить" Width="120" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="17"/>
             </Grid>
         </Grid>
         <Label Content="Билеты в корзине:" Grid.Row="1"/>

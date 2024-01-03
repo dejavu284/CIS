@@ -177,7 +177,7 @@ namespace WpfAppCIS.ViewModel
                     _dataBase.Basket.AddTicket(ticket);
                     _dataBase.BookingPlace();
                 }
-                ContextErrorMessage = "Билеты добавленные в корзину <З";
+                ContextErrorMessage = "Билеты добавленны в корзину <З";
             }
             catch (Exception ex)
             {
