@@ -13,15 +13,17 @@ using WpfAppCIS.View;
 
 namespace WpfAppCIS.ViewModel
 {
-    internal class ListCinemaViewModel
+    public class ListCinemaViewModel
     {
-        public ListCinemaViewModel(CinemaChain cinemas, WindowPartView windowPartView) 
+        public ListCinemaViewModel(CinemaChain cinemas, WindowPartView windowPartView, DataBase dataBase) 
         {
             CinemaChain = cinemas;
             _windowPartView = windowPartView;
+            _dataBase = dataBase;
         }
         public CinemaChain CinemaChain { get; }
         private WindowPartView _windowPartView;
+        private DataBase _dataBase;
         private Cinema? _itemSelected = null;
         public Cinema? ItemSelected 
         { 
@@ -37,7 +39,7 @@ namespace WpfAppCIS.ViewModel
         {
             Cinema? cinema = ItemSelected;
             if (cinema != null)
-                _windowPartView.LoadView(new CinemaInfo(cinema, _windowPartView));
+                _windowPartView.LoadView(new CinemaInfo(new CinemaInfoViewModel(cinema, _windowPartView,_dataBase)));
         }
         
     }

@@ -11,14 +11,22 @@ namespace WpfAppCIS.ViewModel
 {
     public class FilmInfoAndHisShowsViewModel
     {
-        public FilmInfoAndHisShowsViewModel(Film film,Schedule schedule,List<Hall> halls, WindowPartView windowPartView)
+        public FilmInfoAndHisShowsViewModel(Film film,Schedule schedule,List<Hall> halls,int idCinema, WindowPartView windowPartView, DataBase dataBase)
         {
             _film = film;
             _schedule = schedule;
             _windowPartView = windowPartView;
             _halls = halls;
+            _idCinema = idCinema;
+            _dataBase = dataBase;
         }
-        
+        private Show? _showSelected;
+        private readonly Film _film;
+        private Schedule _schedule;
+        private WindowPartView _windowPartView;
+        private List<Hall> _halls;
+        private int _idCinema;
+        private DataBase _dataBase;
         public Show? ShowSelected 
         { 
             get { return _showSelected; }
@@ -36,17 +44,13 @@ namespace WpfAppCIS.ViewModel
             {
                 Hall? hallSelected = _halls.Where(x => x.Id == ShowSelected.Seating.IdHall).FirstOrDefault();
                 if (hallSelected != null)
-                    _windowPartView.LoadView(new ShowInfo(new ShowInfoViewModel(ShowSelected, hallSelected)));
+                    _windowPartView.LoadView(new ShowInfo(new ShowInfoViewModel(ShowSelected, hallSelected,_idCinema, _windowPartView,_dataBase)));
             }
              
             
         }
 
-        private Show? _showSelected;
-        private readonly Film _film;
-        private Schedule _schedule;
-        private WindowPartView _windowPartView;
-        private List<Hall> _halls;
+        
 
         public string FilmName 
         {

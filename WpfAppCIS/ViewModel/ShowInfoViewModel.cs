@@ -1,38 +1,51 @@
 ﻿using CinemaModel;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WpfAppCIS.Model;
+using WpfAppCIS.View;
 
 namespace WpfAppCIS.ViewModel
 {
     public class ShowInfoViewModel : INotifyPropertyChanged
     {
-        public ShowInfoViewModel(Show show, Hall hall)
+        public ShowInfoViewModel(Show show, Hall hall,int idCinema, WindowPartView windowPartView, DataBase dataBase)
         {
             _seats = GetSeats(show,hall);
             _hall = hall;
+            _show = show;
+            _idCinema = idCinema;
+            _windowPartView = windowPartView;
             ContextButtonAddBasket = GenerateTextButon(0);
             CountCheckedPlaces = 0;
+            AddTicketsInBasket = new RelayCommand(AddTicketsInBasketClick);
+            _dataBase = dataBase;
         }
-
+        private WindowPartView _windowPartView;
         public List<SeatViewModel> SeatsViewModel 
         { 
             get { return _seats; }
         }
         private List<SeatViewModel> _seats = new List<SeatViewModel>();
         private Hall _hall;
+        private Show _show;
+        private int _idCinema;
+        private DataBase _dataBase;
 
         public double Width { get { return _hall.CountCols * (SeatViewModel.WidthCell + 2 * SeatViewModel.MarginCell); }}
         public double Height { get {return _hall.CountRows * (SeatViewModel.HeightCell + 2 * SeatViewModel.MarginCell); }}
         public double CountColumns { get { return _hall.CountCols; } }
         public double CountRows { get { return _hall.CountRows; } }
         public int CountCheckedPlaces { get; private set; }
+        public ICommand AddTicketsInBasket { get; }
 
-        public string _contextButtonAddBasket;
+        public string _contextButtonAddBasket = "";
+        public string _contextErrorMessage = "";
         public bool EnabledButtonAddBasket 
         {
             get 
@@ -52,6 +65,15 @@ namespace WpfAppCIS.ViewModel
             {
                 _contextButtonAddBasket = value;
                 OnPropertyChanged("ContextButtonAddBasket");
+            }
+        }
+        public string ContextErrorMessage
+        {
+            get { return _contextErrorMessage; }
+            private set
+            {
+                _contextErrorMessage = value;
+                OnPropertyChanged("ContextErrorMessage");
             }
         }
         private bool CheckedEnabledButtonAddBasket(int countCheckedPlaces)
@@ -125,6 +147,44 @@ namespace WpfAppCIS.ViewModel
                 }
             }
             return seats;
+        }
+        private List<Ticket> GeneratedGroupTikets()
+        {
+            List<Ticket> groupTikets = new List<Ticket>();
+            for (int i = 0; i < _seats.Count; i++)
+            {
+                if (_seats[i].Checked && _seats[i].Prise != null)
+                {
+                    _seats[i].Checked = false;
+                    Ticket ticket = new Ticket
+                        (
+                        _idCinema,
+                        _show,
+                        new Place(_seats[i].NumberRow, _seats[i].NumberColum, (int)_seats[i].Prise!)
+                        ) ;
+                    groupTikets.Add(ticket);
+                }
+            }
+            return groupTikets;
+        }
+        private void AddTicketsInBasketClick()
+        {
+            List<Ticket> groupTikets = GeneratedGroupTikets();
+            try
+            {
+                foreach (Ticket ticket in groupTikets)
+                {
+                    _dataBase.Basket.AddTicket(ticket);
+                    _dataBase.BookingPlace();
+                }
+                ContextErrorMessage = "Билеты добавленные в корзину <З";
+            }
+            catch (Exception ex)
+            {
+                //вывод предупреждения
+                ContextErrorMessage = ex.Message;
+            }
+
         }
     }
 }

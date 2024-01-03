@@ -16,12 +16,15 @@ namespace WpfAppCIS.ViewModel
     public class CinemaInfoViewModel
     {
         private Cinema _cinema;
-        public CinemaInfoViewModel(Cinema cinema, WindowPartView windowPartView) 
+        public CinemaInfoViewModel(Cinema cinema, WindowPartView windowPartView, DataBase dataBase) 
         { 
             _cinema = cinema; 
             _windowPartView = windowPartView;
+            _dataBase = dataBase;
         }
-        
+        private Film? _filmSelected;
+        private WindowPartView _windowPartView;
+        private DataBase _dataBase;
         public Film? FilmSelected 
         { 
             get { return _filmSelected; } 
@@ -31,12 +34,21 @@ namespace WpfAppCIS.ViewModel
                 LoadShowsView(); 
             } 
         }
-        private Film? _filmSelected;
-        private WindowPartView _windowPartView;
         private void LoadShowsView()
         {
             if (FilmSelected != null)
-                _windowPartView.LoadView(new FilmInfoAndHisShows(new FilmInfoAndHisShowsViewModel(FilmSelected,_cinema.Schedule.FindByName(FilmSelected.Name),_cinema.Halls,_windowPartView)));
+                _windowPartView.LoadView(
+                    new FilmInfoAndHisShows(
+                        new FilmInfoAndHisShowsViewModel(
+                            FilmSelected,
+                            _cinema.Schedule.FindByName(FilmSelected.Name),
+                            _cinema.Halls
+                            ,_cinema.Id,
+                            _windowPartView,
+                            _dataBase
+                            )
+                        )
+                    );
         }
         public List<Film> Films
         {

@@ -12,7 +12,7 @@
                 Tickets.Add(ticket);
                 Price += ticket.Place.Price;
             }
-            else throw new Exception("Добавление билета, который уже есть в корзине");
+            else throw new Exception($"Билет с местом на {ticket.Place.Row}ом ряду с номером {ticket.Place.Colum}, уже есть в корзине");
         }
     }
 }

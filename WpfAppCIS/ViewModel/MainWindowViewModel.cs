@@ -15,15 +15,17 @@ namespace WpfAppCIS.ViewModel
 {
     internal class MainWindowViewModel
     {
-        public MainWindowViewModel(CinemaChain cinemaChain, WindowPartView windowPartView) 
+        
+        public MainWindowViewModel(CinemaChain cinemaChain, WindowPartView windowPartView,DataBase dataBase) 
         {
             _cinemaChain = cinemaChain;
             _windowPartView = windowPartView;
-
+            _dataBase = dataBase;
             InitCommand();
         }
         private CinemaChain _cinemaChain;
         private WindowPartView _windowPartView;
+        private DataBase _dataBase;
 
 
         public ICommand SearchCinemaCommand { get; private set; }
@@ -40,7 +42,7 @@ namespace WpfAppCIS.ViewModel
         }
         private void LoadListCinemaView()
         {
-            _windowPartView.LoadView(new ListCinema(_cinemaChain, _windowPartView));
+            _windowPartView.LoadView(new ListCinema(new ListCinemaViewModel (_cinemaChain, _windowPartView, _dataBase)));
         }
 
         private void LoadListFilmView()
@@ -55,7 +57,7 @@ namespace WpfAppCIS.ViewModel
 
         private void LoadBasketView()
         {
-
+            _windowPartView.LoadView(new BasketInfo(new BasketInfoViewModel(_windowPartView,_dataBase)));
         }
     }
 }

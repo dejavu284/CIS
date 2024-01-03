@@ -9,11 +9,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="8*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <ItemsControl ItemsSource="{Binding SeatsViewModel}" Width="{Binding Width}" Height="{Binding Height}" Grid.Row="0" Background="LightGray">
+        <ItemsControl 
+            ItemsSource="{Binding SeatsViewModel}" 
+            Width="{Binding Width}" 
+            Height="{Binding Height}" 
+            Grid.Row="0" Background="LightGray"
+            >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="{Binding CountColumns}" Rows="{Binding CountRows}"/>
+                    <UniformGrid 
+                        Columns="{Binding CountColumns}" 
+                        Rows="{Binding CountRows}"
+                        />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -21,16 +30,21 @@
                     <CheckBox
                         Height="{Binding HeightCell}"
                         Width="{Binding WidthCell}"
-                        Content="{Binding Number}"
+                        Content="{Binding NumberColum}"
                         IsEnabled="{Binding Enabled}"
                         IsChecked="{Binding Checked}"
-                        ToolTip ="{Binding Prise}"
-                        >
-                    </CheckBox>
+                        ToolTip ="{Binding PriseTag}"
+                        />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Button Content="{Binding ContextButtonAddBasket}" IsEnabled="{Binding EnabledButtonAddBasket}" Grid.Row="1" Width="200" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding ContextErrorMessage}" Grid.Row="1" VerticalAlignment="Center"/>
+        <Button 
+            Content="{Binding ContextButtonAddBasket}" 
+            IsEnabled="{Binding EnabledButtonAddBasket}"
+            Command="{Binding AddTicketsInBasket}"
+            Grid.Row="2" Width="200" VerticalAlignment="Center"
+            />
 
     </Grid>
 </UserControl>

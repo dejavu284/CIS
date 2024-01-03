@@ -9,13 +9,12 @@ using WpfAppCIS.Model;
 
 namespace WpfAppCIS.ViewModel
 {
-    public class SeatViewModel
+    public class SeatViewModel : INotifyPropertyChanged
     {
         public SeatViewModel(Seat seat, ShowInfoViewModel parent)
         {
             _seat = seat;
             Parent = parent;
-            Number = _seat.Number;
         }
         private Seat _seat;
 
@@ -26,20 +25,22 @@ namespace WpfAppCIS.ViewModel
         public static double WidthCell { get { return _widthCell; } }
         public static double HeightCell { get { return _heightCell; } }
         public static double MarginCell { get { return _marginCell; } }
-        public int Number { get; }
 
         private bool _checked = false;
         public bool Enabled { get { return _seat.Free; } }
+        public int NumberRow { get {  return _seat.NumberRow; } }
+        public int NumberColum { get {  return _seat.Number; } }
         public bool Checked
         {
             get { return _checked; }
             set
             {
                 _checked = value;
+                OnPropertyChanged("Checked");
                 Parent.UpdateCountCheckedPlaces();
             }
         }
-        public string Prise
+        public string PriseTag
         {
             get
             {
@@ -49,7 +50,21 @@ namespace WpfAppCIS.ViewModel
                     return $"{_seat.Prise}р"; 
             } 
         }
-       
+        public int? Prise
+        {
+            get
+            {
+                return _seat.Prise;
+            }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
     }
 }

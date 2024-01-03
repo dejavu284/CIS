@@ -1,5 +1,4 @@
-﻿using CinemaModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,12 +16,15 @@ using WpfAppCIS.ViewModel;
 
 namespace WpfAppCIS.View
 {
-    public partial class ListCinema : UserControl
+    /// <summary>
+    /// Логика взаимодействия для Basket.xaml
+    /// </summary>
+    public partial class BasketInfo : UserControl
     {
-        public ListCinema(ListCinemaViewModel listCinemaViewModel)
+        public BasketInfo(BasketInfoViewModel basketViewModel)
         {
             InitializeComponent();
-            DataContext = listCinemaViewModel;
+            DataContext = basketViewModel;
         }
     }
 }

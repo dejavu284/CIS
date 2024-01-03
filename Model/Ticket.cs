@@ -49,7 +49,15 @@ namespace CinemaModel
         }
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            unchecked
+            {
+                // Комбинируем хэш-коды всех значимых свойств для получения уникального хэш-кода
+                int hashCode = Show.GetHashCode();
+                hashCode = (hashCode * 397) ^ Place.GetHashCode();
+                hashCode = (hashCode * 397) ^ IdCinema;
+                // Опускаем Seating, так как он не влияет на равенство объектов Show
+                return hashCode;
+            }
         }
     }
 

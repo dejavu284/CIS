@@ -37,7 +37,15 @@ namespace CinemaModel
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            unchecked
+            {
+                // Комбинируем хэш-коды всех значимых свойств для получения уникального хэш-кода
+                int hashCode = Row;
+                hashCode = (hashCode * 397) ^ Colum.GetHashCode();
+                hashCode = (hashCode * 397) ^ Price;
+                // Опускаем Seating, так как он не влияет на равенство объектов Show
+                return hashCode;
+            }
         }
     }
 }

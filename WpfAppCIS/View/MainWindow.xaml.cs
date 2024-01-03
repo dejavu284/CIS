@@ -21,20 +21,28 @@ namespace WpfAppCIS
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CinemaChain CinemaChain;//?
-        private MainWindowInitializeDataViewModel InitializeDataViewModel;
-        private MainWindowViewModel ViewModel;
-        public ContentControl ContentControl { get; set; }//??
         public MainWindow()
         {
             InitializeComponent();
             string[] args = { "cinemas_test.json", "basket.json" };
             
-            InitializeDataViewModel = new MainWindowInitializeDataViewModel(args, this);
-            CinemaChain = InitializeDataViewModel.CinemaChain;
-            WindowPartView windowPartView = new(contentControl_MainWindow);
-            ViewModel = new MainWindowViewModel(CinemaChain,windowPartView);
-            DataContext = ViewModel;
+            try 
+            {
+                DataBase dataBase = new DataBase(args);
+                CinemaChain cinemaChain = dataBase.CinemaChain;
+                WindowPartView windowPartView = new(contentControl_MainWindow);
+                DataContext = new MainWindowViewModel(cinemaChain, windowPartView, dataBase);
+            }
+            catch (Exception ex)
+            {
+                OutputErrorMessage(ex.Message);
+                this.Close();
+            }
+        }
+        private void OutputErrorMessage(string messageThis)
+        {
+            MessageBox.Show(messageThis, "Ошибка");
         }
     }
+
 }

@@ -19,12 +19,10 @@ namespace WpfAppCIS.View
 {
     public partial class CinemaInfo : UserControl
     {
-        public CinemaInfoViewModel CinemaInfoViewModel;
-        public CinemaInfo(Cinema cinema, WindowPartView windowPartView)
+        public CinemaInfo(CinemaInfoViewModel cinemaInfoViewModel)
         {
             InitializeComponent();
-            CinemaInfoViewModel = new CinemaInfoViewModel(cinema, windowPartView);
-            DataContext = CinemaInfoViewModel;
+            DataContext = cinemaInfoViewModel;
         }
     }
 }
