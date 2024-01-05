@@ -33,34 +33,39 @@
         <Label Content="Билеты в корзине:" Grid.Row="1"/>
         <Grid x:Name="ShowInfo" Grid.Row="2">
             <Line Stroke="Black" X1="0" X2="1" Y1="0" Y2="0" Stretch="Fill" VerticalAlignment="Top"/>
-            <Grid>
-                <ScrollViewer>
-                    <ListView Name="menulist" ItemsSource="{Binding Basket.Tickets}" >
-                        <ListView.View >
-                            <GridView >
-                                <GridViewColumn Header="Название фильма" DisplayMemberBinding ="{ Binding Path= Name}">
+            <ScrollViewer>
+                <ListView Name="menulist" ItemsSource="{Binding Basket.Tickets}" HorizontalContentAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Line Stroke="Black" X1="0" X2="1" Y1="0" Y2="0.1" Stretch="Fill" VerticalAlignment="Top"/>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                </GridViewColumn>
-                                <GridViewColumn Header ="Дата показа" DisplayMemberBinding ="{Binding Path= Date}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*"/>
+                                        <RowDefinition Height="1*"/>
+                                    </Grid.RowDefinitions>
 
-                                </GridViewColumn>
-                                <GridViewColumn Header ="Время показа" DisplayMemberBinding ="{Binding Path= Time}">
-
-                                </GridViewColumn>
-                                <GridViewColumn Header ="Ряд" DisplayMemberBinding ="{Binding Path= Place.Row}">
-
-                                </GridViewColumn>
-                                <GridViewColumn Header ="Место" DisplayMemberBinding ="{Binding Path= Place.Colum }">
-
-                                </GridViewColumn>
-                                <GridViewColumn Header ="Cтоимость" DisplayMemberBinding ="{Binding Path= Place.Price }">
-
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </ScrollViewer>
-            </Grid>
+                                    <TextBlock Text="Название кинотеатра" Grid.Column="0" Grid.Row="0" Margin="5"/>
+                                    <TextBlock Text="Название показа" Grid.Column="0" Grid.Row="1" Margin="5"/>
+                                    <TextBlock Text="Дата показа" Grid.Column="1" Grid.Row="0" Margin="5"/>
+                                    <TextBlock Text="Время показа" Grid.Column="1" Grid.Row="1" Margin="5"/>
+                                    <TextBlock Text="Место" Grid.Column="2" Grid.Row="0" Margin="5"/>
+                                    <TextBlock Text="Ряд" Grid.Column="2" Grid.Row="1" Margin="5"/>
+                                    <TextBlock Text="Стоимость"  Grid.Column="3" Grid.Row="0" Margin="5"/>
+                                    <Button Content="Удалить"  Grid.Column="3" Grid.Row="1" Width="50" HorizontalAlignment="Left" Margin="5"/>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>
