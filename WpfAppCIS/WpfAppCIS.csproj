@@ -15,24 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GMap.NET.Core" Version="2.1.7" />
-    <PackageReference Include="GMap.NET.WinForms" Version="2.1.7" />
-    <PackageReference Include="GMap.NET.WinPresentation" Version="2.1.7" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data\CIS.Data.csproj" />
     <ProjectReference Include="..\Model\CIS.CimenaModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="GMap.NET.Core">
-      <HintPath>..\..\..\..\.nuget\packages\gmap.net.core\2.1.7\lib\net6.0\GMap.NET.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="GMap.NET.WindowsPresentation">
-      <HintPath>..\..\..\..\.nuget\packages\gmap.net.winpresentation\2.1.7\lib\net6.0-windows7.0\GMap.NET.WindowsPresentation.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
