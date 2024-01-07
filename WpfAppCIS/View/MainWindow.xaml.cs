@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppCIS.Data;
 using WpfAppCIS.Model;
 using WpfAppCIS.View;
 using WpfAppCIS.ViewModel;
@@ -21,11 +22,9 @@ namespace WpfAppCIS
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(string[] args)
         {
             InitializeComponent();
-            string[] args = { "cinemas_test.json", "basket.json" };
-            
             try 
             {
                 DataBase dataBase = new DataBase(args);

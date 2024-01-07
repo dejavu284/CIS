@@ -3,6 +3,10 @@
     "ConsoleApp2": {
       "commandName": "Project",
       "commandLineArgs": "cinemas.json basket.json"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
     }
   }
 }

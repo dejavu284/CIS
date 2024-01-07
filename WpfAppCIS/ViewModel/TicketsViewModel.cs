@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfAppCIS.Data;
 
 namespace WpfAppCIS.ViewModel
 {

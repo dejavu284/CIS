@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using WpfAppCIS.Data;
 
 namespace WpfAppCIS
 {
@@ -9,6 +10,7 @@ namespace WpfAppCIS
     /// </summary>
     public partial class App : Application
     {
+        public static string[] DbConnectionStr { get {return DataLoader.LoadData(); }}
     }
 
 }

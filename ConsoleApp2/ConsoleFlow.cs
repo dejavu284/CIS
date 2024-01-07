@@ -18,14 +18,17 @@ namespace MainFlow
                 Schedule showsInOneDate = ChooseShowInCertainDate(showsInOneFilm);
                 // Выбор времени
                 Show showInCertainTime = ChooseShowsInCertainTime(showsInOneDate);
+
+                Hall hallInCertainShow = ChooseHallInCertainShow(showInCertainTime, cinema.Halls);
+                
                 // Выбор места
-                List<Place> places = ChoosePlaces(showInCertainTime);
+                List <Place> places = ChoosePlaces(showInCertainTime,hallInCertainShow );
 
                 if (ConsoleMessages.PoolYesOrNo("Купить билет"))
                 {
                     for (int i = 0; i < places.Count; i++)
                     {
-                        Ticket ticket = new(cinema.Id, showInCertainTime, places[i]);
+                        Ticket ticket = new Ticket(cinema.Id,cinema.Name, showInCertainTime, places[i]);
                         basket.AddTicket(ticket);
                     }
                     ConsoleMessages.MessageTicketPurchased();
@@ -35,17 +38,28 @@ namespace MainFlow
             } while (!ConsoleMessages.PoolYesOrNo("Закончить"));
             return basket;
         }
-        public static List<Place> ChoosePlaces(Show showInCertainTime)
+
+        private static Hall ChooseHallInCertainShow(Show showInCertainTime, List<Hall> halls)
+        {
+            foreach (Hall hall in halls)
+            {
+                if (hall.Id == showInCertainTime.Seating.IdHall)
+                    return hall;
+            }
+            throw new Exception("Не удалось найти зал кинотеатра у выбранного показа");
+        }
+
+        public static List<Place> ChoosePlaces(Show showInCertainTime,Hall hall)
         {
             List<Place> places = new();
             do
             {
-                Place place = ChoosePlace(showInCertainTime);
+                Place place = ChoosePlace(showInCertainTime,hall);
                 places.Add(place);
             } while (ConsoleMessages.PoolYesOrNo("Хотите забранировать еще одно место"));
             return places;
         }
-        public static Place ChoosePlace(Show showInCertainTime)
+        public static Place ChoosePlace(Show showInCertainTime, Hall hall)
         {
             ConsoleMessages.OutputSeatings(showInCertainTime.Seating.Places);
             int indexRow;
@@ -58,7 +72,7 @@ namespace MainFlow
                 ConsoleMessages.MessagePlaceCost(showInCertainTime, indexRow, indexColum);
             } while (!ConsoleMessages.PoolYesOrNo("Забранировать выбранное место"));
             int price = showInCertainTime.Seating.Places[indexRow][indexColum];
-            Place place = new(indexRow, indexColum, price);
+            Place place = new Place(indexRow, indexColum,hall.Layout[indexRow][indexColum], price);
             showInCertainTime.BookingPlaces(place);
             return place;
         }

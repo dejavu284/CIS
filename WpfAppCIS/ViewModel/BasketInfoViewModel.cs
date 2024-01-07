@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using WpfAppCIS.Data;
 using WpfAppCIS.Model;
 
 namespace WpfAppCIS.ViewModel

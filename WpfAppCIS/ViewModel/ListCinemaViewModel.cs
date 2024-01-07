@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using WpfAppCIS.Data;
 using WpfAppCIS.Model;
 using WpfAppCIS.View;
 

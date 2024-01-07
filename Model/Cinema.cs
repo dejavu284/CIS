@@ -1,4 +1,6 @@
-﻿namespace CinemaModel
+﻿using System.Drawing;
+
+namespace CinemaModel
 {
     public class Cinema
     {
