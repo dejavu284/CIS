@@ -21,6 +21,7 @@ namespace WpfAppCIS.ViewModel
             _cinemaChain = cinemaChain;
             _windowPartView = windowPartView;
             _dataBase = dataBase;
+            windowPartView.LoadView(new Welcome());
             InitCommand();
         }
         private CinemaChain _cinemaChain;
@@ -29,14 +30,12 @@ namespace WpfAppCIS.ViewModel
 
 
         public ICommand SearchCinemaCommand { get; private set; }
-        public ICommand SearchFilmCommand { get; private set; }
         public ICommand MapCommand { get; private set; }
         public ICommand BasketCommand { get; private set; }
 
         private void InitCommand() 
         {
             SearchCinemaCommand = new RelayCommand(LoadListCinemaView);
-            SearchFilmCommand = new RelayCommand(LoadListFilmView);
             MapCommand = new RelayCommand(LoadMapView);
             BasketCommand = new RelayCommand(LoadBasketView);
         }
@@ -44,17 +43,10 @@ namespace WpfAppCIS.ViewModel
         {
             _windowPartView.LoadView(new ListCinema(new ListCinemaViewModel (_cinemaChain, _windowPartView, _dataBase)));
         }
-
-        private void LoadListFilmView()
-        {
-
-        }
-
         private void LoadMapView()
         {
-
+            _windowPartView.LoadView(new Map(new MapViewModel(_cinemaChain, _windowPartView, _dataBase)));
         }
-
         private void LoadBasketView()
         {
             _windowPartView.LoadView(new BasketInfo(new BasketInfoViewModel(_windowPartView,_dataBase)));

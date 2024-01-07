@@ -30,7 +30,7 @@
                     <CheckBox
                         Height="{Binding HeightCell}"
                         Width="{Binding WidthCell}"
-                        Content="{Binding NumberColum}"
+                        Content="{Binding Number}"
                         IsEnabled="{Binding Enabled}"
                         IsChecked="{Binding Checked}"
                         ToolTip ="{Binding PriseTag}"

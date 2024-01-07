@@ -27,14 +27,14 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Name="tb_cinemaName" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="30" Text="{Binding PriceTag}" />
                 <TextBlock Grid.Row="1" Name="tb_cinemaAddress" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding CountTicketsTag}" FontSize="15"/>
-                <Button Grid.Row="2" Content="Купить" Width="120" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="17"/>
+                <Button Grid.Row="2" Content="Купить" Command="{Binding BuyTicketsClick}" Width="120" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" FontSize="17"/>
             </Grid>
         </Grid>
         <Label Content="Билеты в корзине:" Grid.Row="1"/>
         <Grid x:Name="ShowInfo" Grid.Row="2">
             <Line Stroke="Black" X1="0" X2="1" Y1="0" Y2="0" Stretch="Fill" VerticalAlignment="Top"/>
             <ScrollViewer>
-                <ListView Name="menulist" ItemsSource="{Binding Basket.Tickets}" HorizontalContentAlignment="Stretch">
+                <ListView Name="menulist" ItemsSource="{Binding TicketsViewModels}" HorizontalContentAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -52,14 +52,14 @@
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Text="Название кинотеатра" Grid.Column="0" Grid.Row="0" Margin="5"/>
-                                    <TextBlock Text="Название показа" Grid.Column="0" Grid.Row="1" Margin="5"/>
-                                    <TextBlock Text="Дата показа" Grid.Column="1" Grid.Row="0" Margin="5"/>
-                                    <TextBlock Text="Время показа" Grid.Column="1" Grid.Row="1" Margin="5"/>
-                                    <TextBlock Text="Место" Grid.Column="2" Grid.Row="0" Margin="5"/>
-                                    <TextBlock Text="Ряд" Grid.Column="2" Grid.Row="1" Margin="5"/>
-                                    <TextBlock Text="Стоимость"  Grid.Column="3" Grid.Row="0" Margin="5"/>
-                                    <Button Content="Удалить"  Grid.Column="3" Grid.Row="1" Width="50" HorizontalAlignment="Left" Margin="5"/>
+                                    <TextBlock Text="{Binding NameCinema}" Grid.Column="0" Grid.Row="0" Margin="5"/>
+                                    <TextBlock Text="{Binding NameFilm}" Grid.Column="0" Grid.Row="1" Margin="5"/>
+                                    <TextBlock Text="{Binding DateShow}" Grid.Column="1" Grid.Row="0" Margin="5"/>
+                                    <TextBlock Text="{Binding TimeShow}" Grid.Column="1" Grid.Row="1" Margin="5"/>
+                                    <TextBlock Text="{Binding NumberPlace}" Grid.Column="2" Grid.Row="0" Margin="5"/>
+                                    <TextBlock Text="{Binding NumberRow}" Grid.Column="2" Grid.Row="1" Margin="5"/>
+                                    <TextBlock Text="{Binding Price}"  Grid.Column="3" Grid.Row="0" Margin="5"/>
+                                    <Button Content="Удалить"  Command="{Binding DeletClick}" Grid.Column="3" Grid.Row="1" Width="50" HorizontalAlignment="Left" Margin="5"/>
                                 </Grid>
                             </Grid>
                         </DataTemplate>

@@ -24,7 +24,16 @@ namespace WpfAppCIS.ViewModel
         public Basket Basket { get; }
         public void BookingPlace()
         {
-            CinemaChain.BookingPlaces(Basket);
+            try
+            {
+                CinemaChain.BookingPlaces(Basket);
+                Data.Save(CinemaChain);
+                Data.Save(Basket);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Не удалось забранировать места");
+            }
         }
         
     }

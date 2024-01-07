@@ -44,14 +44,11 @@ namespace WpfAppCIS.ViewModel
             {
                 Hall? hallSelected = _halls.Where(x => x.Id == ShowSelected.Seating.IdHall).FirstOrDefault();
                 if (hallSelected != null)
-                    _windowPartView.LoadView(new ShowInfo(new ShowInfoViewModel(ShowSelected, hallSelected,_idCinema, _windowPartView,_dataBase)));
+                    _windowPartView.LoadView(new ShowInfo(new ShowInfoViewModel(ShowSelected, hallSelected,_idCinema,_dataBase)));
             }
              
             
         }
-
-        
-
         public string FilmName 
         {
             get { return _film.Name; }

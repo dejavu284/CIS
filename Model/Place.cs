@@ -4,21 +4,24 @@ namespace CinemaModel
 {
     public class Place
     {
-        public Place(int row, int colum, int price)
+        public Place(int row, int colum,int number, int price)
         {
             if (row<0) throw new ArgumentException("Номер ряда не может быть отрицательным");
             else if (colum<0) throw new ArgumentException("Номер столбца не может быть отрицательным");
             else if (price<=0) throw new ArgumentException("Стоимость не может быть меньше или равна нулю");
+            else if (number<=0) throw new ArgumentException("НОмер места не может быть меньше или равнен нулю");
             else {
                 Row = row;
                 Colum = colum;
                 Price = price;
+                Number = number;
             }
         }
 
         public int Price { get; }
         public int Row { get; }
         public int Colum { get; }
+        public int Number { get; }
 
         public override bool Equals(object? obj)
         {

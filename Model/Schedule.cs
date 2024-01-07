@@ -77,7 +77,9 @@
         public void BookingPlace(int idShow, Place place)
         {
             int indexShow = FindShowIndexById(idShow);
-            Shows[indexShow].BookingPlaces(place);
+            if (indexShow != -1)
+                Shows[indexShow].BookingPlaces(place);
+            else throw new Exception("не удалось найти показ фильма в графике показов");
         }
         
     }

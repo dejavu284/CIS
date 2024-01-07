@@ -5,18 +5,19 @@ namespace CinemaModel
 {
     public class Ticket
     {
-        public Ticket(int idCinema, Show show, Place place)
+        public Ticket(int idCinema,string nameCinema, Show show, Place place)
         {
             if (idCinema < 0) throw new ArgumentException("id не может быть меньше нуля");
             else
             {
                 Show = show;
                 IdCinema = idCinema;
-
+                NameCinema = nameCinema;
                 Place = place;
             }
         }
-        public string Name { get { return Show.Name; } }
+        public string NameCinema { get; }
+        public string NameFilm { get { return Show.Name; } }
         public DateOnly Date { get { return Show.Date; } }
         public TimeOnly Time { get { return Show.Time; } }
         public Place Place { get; }

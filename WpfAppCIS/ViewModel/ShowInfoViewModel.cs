@@ -14,19 +14,17 @@ namespace WpfAppCIS.ViewModel
 {
     public class ShowInfoViewModel : INotifyPropertyChanged
     {
-        public ShowInfoViewModel(Show show, Hall hall,int idCinema, WindowPartView windowPartView, DataBase dataBase)
+        public ShowInfoViewModel(Show show, Hall hall,int idCinema, DataBase dataBase)
         {
             _seats = GetSeats(show,hall);
             _hall = hall;
             _show = show;
             _idCinema = idCinema;
-            _windowPartView = windowPartView;
             ContextButtonAddBasket = GenerateTextButon(0);
             CountCheckedPlaces = 0;
             AddTicketsInBasket = new RelayCommand(AddTicketsInBasketClick);
             _dataBase = dataBase;
         }
-        private WindowPartView _windowPartView;
         public List<SeatViewModel> SeatsViewModel 
         { 
             get { return _seats; }
@@ -130,6 +128,7 @@ namespace WpfAppCIS.ViewModel
                 {
                     int numberSeat = hall.Layout[i][j];
                     int numberRowSeat = i;
+                    int numberColumnSeat = j;
 
                     int? priseSeat;
                     bool freeSeat;
@@ -143,13 +142,14 @@ namespace WpfAppCIS.ViewModel
                         freeSeat = false;
                         priseSeat = null;
                     }
-                    seats.Add(new SeatViewModel(new Seat(numberSeat,priseSeat,numberRowSeat,freeSeat),this));
+                    seats.Add(new SeatViewModel(new PlaseInView(numberSeat,priseSeat,numberRowSeat,numberColumnSeat,freeSeat),this));
                 }
             }
             return seats;
         }
         private List<Ticket> GeneratedGroupTikets()
         {
+            
             List<Ticket> groupTikets = new List<Ticket>();
             for (int i = 0; i < _seats.Count; i++)
             {
@@ -159,8 +159,9 @@ namespace WpfAppCIS.ViewModel
                     Ticket ticket = new Ticket
                         (
                         _idCinema,
+                        _dataBase.CinemaChain.FindCinemaById(_idCinema).Name,
                         _show,
-                        new Place(_seats[i].NumberRow, _seats[i].NumberColum, (int)_seats[i].Prise!)
+                        new Place(_seats[i].NumberRow, _seats[i].NumberColum,_seats[i].Number, (int)_seats[i].Prise!)
                         ) ;
                     groupTikets.Add(ticket);
                 }
@@ -169,13 +170,12 @@ namespace WpfAppCIS.ViewModel
         }
         private void AddTicketsInBasketClick()
         {
-            List<Ticket> groupTikets = GeneratedGroupTikets();
             try
             {
+                List<Ticket> groupTikets = GeneratedGroupTikets();
                 foreach (Ticket ticket in groupTikets)
                 {
                     _dataBase.Basket.AddTicket(ticket);
-                    _dataBase.BookingPlace();
                 }
                 ContextErrorMessage = "Билеты добавленны в корзину <З";
             }

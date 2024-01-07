@@ -11,12 +11,12 @@ namespace WpfAppCIS.ViewModel
 {
     public class SeatViewModel : INotifyPropertyChanged
     {
-        public SeatViewModel(Seat seat, ShowInfoViewModel parent)
+        public SeatViewModel(PlaseInView seat, ShowInfoViewModel parent)
         {
             _seat = seat;
             Parent = parent;
         }
-        private Seat _seat;
+        private PlaseInView _seat;
 
         public static readonly double _widthCell = 30;
         public static readonly double _heightCell = 30;
@@ -29,7 +29,8 @@ namespace WpfAppCIS.ViewModel
         private bool _checked = false;
         public bool Enabled { get { return _seat.Free; } }
         public int NumberRow { get {  return _seat.NumberRow; } }
-        public int NumberColum { get {  return _seat.Number; } }
+        public int Number { get { return _seat.Number; } }
+        public int NumberColum { get { return _seat.NumberColum; } }
         public bool Checked
         {
             get { return _checked; }
